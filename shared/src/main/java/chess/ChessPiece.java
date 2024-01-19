@@ -75,6 +75,30 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+
         return new ArrayList<>(); // update after implementing available moves
+    }
+
+    public Collection<ChessMove> helperKing(ChessBoard board, ChessPosition myPosition){
+        throw new RuntimeException("Not implemented");
+    }
+
+    public Collection<ChessMove> helperPawn(ChessBoard board, ChessPosition myPosition){
+        throw new RuntimeException("Not implemented");
+    }
+
+    public Collection<ChessMove> helperRook(ChessBoard board, ChessPosition myPosition){
+        throw new RuntimeException("Not implemented");
+    }
+
+    public Collection<ChessMove> helperKnight(ChessBoard board, ChessPosition myPosition){
+        throw new RuntimeException("Not implemented");
+    }
+
+    public Collection<ChessMove> helperBishop(ChessBoard board, ChessPosition myPosition){
+        throw new RuntimeException("Not implemented");
+    }
+    public Collection<ChessMove> helperQueen(ChessBoard board, ChessPosition myPosition){
+        throw new RuntimeException("Not implemented");
     }
 }
