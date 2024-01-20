@@ -77,32 +77,32 @@ public class ChessPiece {
         // get the piece's type
         var piece = board.getPiece(myPosition);
         var type = piece.getPieceType();
-        Collection<ChessMove> moveList = new ArrayList<>();
+        Collection<ChessMove> validMoves = new ArrayList<>();
 
         // add switch statement structure
         switch (type) {
             case KING:
-                moveList = helperKing(board, myPosition);
+                validMoves = helperKing(board, myPosition);
                 break;
             case PAWN:
-                moveList = helperPawn(board, myPosition);
+                validMoves = helperPawn(board, myPosition);
                 break;
             case ROOK:
-                moveList = helperRook(board, myPosition);
+                validMoves = helperRook(board, myPosition);
                 break;
             case QUEEN:
-                moveList = helperQueen(board, myPosition);
+                validMoves = helperQueen(board, myPosition);
                 break;
             case BISHOP:
-                moveList = helperBishop(board, myPosition);
+                validMoves = helperBishop(board, myPosition);
                 break;
             case KNIGHT:
-                moveList = helperKnight(board, myPosition);
+                validMoves = helperKnight(board, myPosition);
                 break;
             default:
         }
 
-        return moveList;
+        return validMoves;
     }
 
     public Collection<ChessMove> helperKing(ChessBoard board, ChessPosition myPosition){
@@ -123,21 +123,117 @@ public class ChessPiece {
 
     public Collection<ChessMove> helperBishop(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
-        var row = myPosition.getRow();
-        var col = myPosition.getColumn();
-        ArrayList<ChessMove> myMoves = new ArrayList<>();
-        // loop up/right
-        while (row + 1 < 8 && col + 1 < 8) { // checking for edge
-            var endPosition = new ChessPosition(row+1,col+1);
-            var newPiece = board.getPiece(endPosition);
+        int r = myPosition.getRow() + 1;
+        int c = myPosition.getColumn() + 1;
+        ArrayList<ChessMove> validMoves = new ArrayList<>();
 
-            // checks
-            myMoves.add(new ChessMove(myPosition, endPosition, null));
+
+        // loop up/right
+        int row = r;
+        int col = c;
+        while (row + 1 < 9 && col + 1 < 9) { // checking for edge
+            // update variables for looping to function properly
+            row++;
+            col++;
+
+            ChessPosition endPosition = new ChessPosition(row,col);
+            ChessPiece newPiece = board.getPiece(endPosition);
+
+            // movement checks
+            if (newPiece == null) { // if the space is empty save position and continue loop
+                validMoves.add(new ChessMove(myPosition, endPosition, null));
+            }
+            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
+                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                break;
+            }
+            else { // ally is blocking way, break loop
+                break;
+            }
+        }
+
+        // loop down/right
+        row = r;
+        col = c;
+        while (row - 1 > 0 && col + 1 < 9) { // checking for edge
+            // update variables for looping to function properly
+            row--;
+            col++;
+
+            ChessPosition endPosition = new ChessPosition(row,col);
+            ChessPiece newPiece = board.getPiece(endPosition);
+
+            // movement checks
+            if (newPiece == null) { // if the space is empty save position and continue loop
+                validMoves.add(new ChessMove(myPosition, endPosition, null));
+            }
+            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
+                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                break;
+            }
+            else { // ally is blocking way, break loop
+                break;
+            }
+
 
         }
 
-        throw new RuntimeException("Not implemented");
+        // loop down/left
+        row = r;
+        col = c;
+        while (row - 1 > 0 && col - 1 > 0) { // checking for edge
+            // update variables for looping to function properly
+            row--;
+            col--;
+
+            ChessPosition endPosition = new ChessPosition(row,col);
+            ChessPiece newPiece = board.getPiece(endPosition);
+
+            // movement checks
+            if (newPiece == null) { // if the space is empty save position and continue loop
+                validMoves.add(new ChessMove(myPosition, endPosition, null));
+            }
+            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
+                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                break;
+            }
+            else { // ally is blocking way, break loop
+                break;
+            }
+
+
+        }
+
+        // loop up/left
+        row = r;
+        col = c;
+        while (row + 1 < 9 && col - 1 > 0) { // checking for edge
+            // update variables for looping to function properly
+            row++;
+            col--;
+
+            ChessPosition endPosition = new ChessPosition(row,col);
+            ChessPiece newPiece = board.getPiece(endPosition);
+
+            // movement checks
+            if (newPiece == null) { // if the space is empty save position and continue loop
+                validMoves.add(new ChessMove(myPosition, endPosition, null));
+            }
+            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
+                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                break;
+            }
+            else { // ally is blocking way, break loop
+                break;
+            }
+
+
+        }
+
+        return validMoves;
     }
+
+
 
     public Collection<ChessMove> helperQueen(ChessBoard board, ChessPosition myPosition){
         throw new RuntimeException("Not implemented");
