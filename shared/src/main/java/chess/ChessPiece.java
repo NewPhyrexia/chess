@@ -411,7 +411,109 @@ public class ChessPiece {
     }
 
     public Collection<ChessMove> helperKnight(ChessBoard board, ChessPosition myPosition){
-        throw new RuntimeException("Not implemented");
+        // Stops at edge, stops before allies, stops on top of enemy
+        int row = myPosition.getRow() + 1;
+        int col = myPosition.getColumn() + 1;
+        ArrayList<ChessMove> validMoves = new ArrayList<>();
+
+        // up
+        if (row + 2 < 9) {
+            //check left
+            if (col - 1 > 0){
+                ChessPosition endPosition = new ChessPosition(row+2,col-1);
+                ChessPiece newPiece = board.getPiece(endPosition);
+
+                // movement check
+                if (newPiece == null || newPiece.pieceColor != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, endPosition, null));
+                }
+            }
+            // Check right
+            if (col + 1 < 9){
+                ChessPosition endPosition = new ChessPosition(row+2,col+1);
+                ChessPiece newPiece = board.getPiece(endPosition);
+
+                // movement check
+                if (newPiece == null || newPiece.pieceColor != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, endPosition, null));
+                }
+            }
+
+        }
+
+        // down
+        if (row - 2 > 0) {
+            //check left
+            if (col - 1 > 0){
+                ChessPosition endPosition = new ChessPosition(row-2,col-1);
+                ChessPiece newPiece = board.getPiece(endPosition);
+
+                // movement check
+                if (newPiece == null || newPiece.pieceColor != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, endPosition, null));
+                }
+            }
+            // Check right
+            if (col + 1 < 9){
+                ChessPosition endPosition = new ChessPosition(row-2,col+1);
+                ChessPiece newPiece = board.getPiece(endPosition);
+
+                // movement check
+                if (newPiece == null || newPiece.pieceColor != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, endPosition, null));
+                }
+            }
+        }
+
+        // left
+        if (col - 2 > 0) {
+            // check up
+            if (row + 1 < 9) {
+                ChessPosition endPosition = new ChessPosition(row+1,col-2);
+                ChessPiece newPiece = board.getPiece(endPosition);
+
+                // movement check
+                if (newPiece == null || newPiece.pieceColor != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, endPosition, null));
+                }
+            }
+            // check down
+            if (row - 1 > 0) {
+                ChessPosition endPosition = new ChessPosition(row-1,col-2);
+                ChessPiece newPiece = board.getPiece(endPosition);
+
+                // movement check
+                if (newPiece == null || newPiece.pieceColor != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, endPosition, null));
+                }
+            }
+        }
+
+        // right
+        if (col + 2 < 9) {
+            // check up
+            if (row + 1 < 9) {
+                ChessPosition endPosition = new ChessPosition(row+1,col+2);
+                ChessPiece newPiece = board.getPiece(endPosition);
+
+                // movement check
+                if (newPiece == null || newPiece.pieceColor != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, endPosition, null));
+                }
+            }
+            // check down
+            if (row - 1 > 0) {
+                ChessPosition endPosition = new ChessPosition(row-1,col+2);
+                ChessPiece newPiece = board.getPiece(endPosition);
+
+                // movement check
+                if (newPiece == null || newPiece.pieceColor != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, endPosition, null));
+                }
+            }
+        }
+
+        return validMoves;
     }
 
     public Collection<ChessMove> helperBishop(ChessBoard board, ChessPosition myPosition){
