@@ -105,7 +105,7 @@ public class ChessPiece {
         return validMoves;
     }
 
-    public Collection<ChessMove> helperKing(ChessBoard board, ChessPosition myPosition){
+    private Collection<ChessMove> helperKing(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
         int r = myPosition.getRow() + 1;
         int c = myPosition.getColumn() + 1;
@@ -308,7 +308,7 @@ public class ChessPiece {
         return validMoves;
     }
 
-    public Collection<ChessMove> helperPawn(ChessBoard board, ChessPosition myPosition){
+    private Collection<ChessMove> helperPawn(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
         int row = myPosition.getRow() + 1;
         int col = myPosition.getColumn() + 1;
@@ -381,7 +381,7 @@ public class ChessPiece {
         return validMoves;
     }
 
-    public Collection<ChessMove> helperRook(ChessBoard board, ChessPosition myPosition){
+    private Collection<ChessMove> helperRook(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
         int r = myPosition.getRow() + 1;
         int c = myPosition.getColumn() + 1;
@@ -479,7 +479,7 @@ public class ChessPiece {
         return validMoves;
     }
 
-    public Collection<ChessMove> helperKnight(ChessBoard board, ChessPosition myPosition){
+    private Collection<ChessMove> helperKnight(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
         int row = myPosition.getRow() + 1;
         int col = myPosition.getColumn() + 1;
@@ -585,7 +585,7 @@ public class ChessPiece {
         return validMoves;
     }
 
-    public Collection<ChessMove> helperBishop(ChessBoard board, ChessPosition myPosition){
+    private Collection<ChessMove> helperBishop(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
         int r = myPosition.getRow() + 1;
         int c = myPosition.getColumn() + 1;
@@ -692,7 +692,7 @@ public class ChessPiece {
     }
 
 
-    public Collection<ChessMove> helperQueen(ChessBoard board, ChessPosition myPosition){
+    private Collection<ChessMove> helperQueen(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
         int r = myPosition.getRow() + 1;
         int c = myPosition.getColumn() + 1;
@@ -886,4 +886,6 @@ public class ChessPiece {
 
         return validMoves;
     }
+
+    private
 }
