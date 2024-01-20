@@ -122,6 +122,20 @@ public class ChessPiece {
     }
 
     public Collection<ChessMove> helperBishop(ChessBoard board, ChessPosition myPosition){
+        // Stops at edge, stops before allies, stops on top of enemy
+        var row = myPosition.getRow();
+        var col = myPosition.getColumn();
+        ArrayList<ChessMove> myMoves = new ArrayList<>();
+        // loop up/right
+        while (row + 1 < 8 && col + 1 < 8) { // checking for edge
+            var endPosition = new ChessPosition(row+1,col+1);
+            var newPiece = board.getPiece(endPosition);
+
+            // checks
+            myMoves.add(new ChessMove(myPosition, endPosition, null));
+
+        }
+
         throw new RuntimeException("Not implemented");
     }
 
