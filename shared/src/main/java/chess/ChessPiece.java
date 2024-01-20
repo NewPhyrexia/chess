@@ -887,5 +887,30 @@ public class ChessPiece {
         return validMoves;
     }
 
-    private
+//    private void moveInDirection(ChessBoard board, ChessPosition startPosition, Collection<ChessMove> validMoves) {
+//        int r = startPosition.getRow() + 1;
+//        int c = startPosition.getColumn() + 1;
+//        // loop up
+//        int row = r;
+//        int col = c;
+//        while (row + 1 < 9 ) { // checking for edge
+//            // update variables for looping to function properly
+//            row++;
+//
+//            ChessPosition endPosition = new ChessPosition(row,col);
+//            ChessPiece newPiece = board.getPiece(endPosition);
+//
+//            // movement checks
+//            if (newPiece == null) { // if the space is empty save position and continue loop
+//                validMoves.add(new ChessMove(startPosition, endPosition, null));
+//            }
+//            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
+//                validMoves.add(new ChessMove(startPosition, endPosition, null));
+//                break;
+//            }
+//            else { // ally is blocking way, break loop
+//                break;
+//            }
+//        }
+//    }
 }
