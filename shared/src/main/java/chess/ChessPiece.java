@@ -326,15 +326,15 @@ public class ChessPiece {
 
                     if (newPiece == null) { // if the space is empty save position and continue loop
                         validMoves.add(new ChessMove(myPosition, endPosition, null));
-                    }
 
-                    // if pawn hasn't moved before
-                    if (row == 2 && row + 2 < 9) {
-                        endPosition = new ChessPosition(row+2,col);
-                        newPiece = board.getPiece(endPosition);
+                        // if pawn hasn't moved before
+                        if (row == 2) {
+                            endPosition = new ChessPosition(row+2,col);
+                            newPiece = board.getPiece(endPosition);
 
-                        if (newPiece == null) { // if the space is empty save position and continue loop
-                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            if (newPiece == null) { // if the space is empty save position and continue loop
+                                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            }
                         }
                     }
                 }
@@ -346,9 +346,25 @@ public class ChessPiece {
                 break;
 
             case BLACK: // moves down
-                // Pawn can move forward
+                if (row - 1 > 0){
 
-                // can move forward twice if it is the first move
+                    ChessPosition endPosition = new ChessPosition(row-1,col);
+                    ChessPiece newPiece = board.getPiece(endPosition);
+
+                    if (newPiece == null) { // if the space is empty save position and continue loop
+                        validMoves.add(new ChessMove(myPosition, endPosition, null));
+
+                        // if pawn hasn't moved before
+                        if (row == 7) {
+                            endPosition = new ChessPosition(row-2,col);
+                            newPiece = board.getPiece(endPosition);
+
+                            if (newPiece == null) { // if the space is empty save position and continue loop
+                                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            }
+                        }
+                    }
+                }
 
                 // can only capture diagonal 1 forward
 
