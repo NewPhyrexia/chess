@@ -324,21 +324,21 @@ public class ChessPiece {
                     ChessPosition endPosition = new ChessPosition(row+1,col);
                     ChessPiece newPiece = board.getPiece(endPosition);
 
-                    if (newPiece == null) { // if the space is empty save position and continue loop
+                    // no piece in front of pawn
+                    if (newPiece == null) {
                         validMoves.add(new ChessMove(myPosition, endPosition, null));
 
-                        // if pawn hasn't moved before
+                        // if pawn hasn't moved before try moving 2
                         if (row == 2) {
                             endPosition = new ChessPosition(row+2,col);
                             newPiece = board.getPiece(endPosition);
 
-                            if (newPiece == null) { // if the space is empty save position and continue loop
+                            if (newPiece == null) {
                                 validMoves.add(new ChessMove(myPosition, endPosition, null));
                             }
                         }
                     }
                 }
-
                 // can only capture diagonal 1 forward
 
                 // if reaches enemy side can promote to anything but pawn or king
@@ -351,22 +351,28 @@ public class ChessPiece {
                     ChessPosition endPosition = new ChessPosition(row-1,col);
                     ChessPiece newPiece = board.getPiece(endPosition);
 
-                    if (newPiece == null) { // if the space is empty save position and continue loop
+                    // no piece in front of pawn
+                    if (newPiece == null) {
                         validMoves.add(new ChessMove(myPosition, endPosition, null));
 
-                        // if pawn hasn't moved before
+                        // if pawn hasn't moved before try moving 2
                         if (row == 7) {
                             endPosition = new ChessPosition(row-2,col);
                             newPiece = board.getPiece(endPosition);
 
-                            if (newPiece == null) { // if the space is empty save position and continue loop
+                            if (newPiece == null) {
                                 validMoves.add(new ChessMove(myPosition, endPosition, null));
                             }
                         }
                     }
-                }
+                    // diagonal capture (Already on row 1 space forward)
+                    // check left for enemy
 
-                // can only capture diagonal 1 forward
+                    if (col - 1 > 0 && ) {
+
+                    }
+                    // check right for enemy
+                }
 
                 // if reaches enemy side can promote to anything but pawn or king
 
