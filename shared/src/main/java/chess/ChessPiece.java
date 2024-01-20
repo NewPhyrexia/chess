@@ -309,7 +309,54 @@ public class ChessPiece {
     }
 
     public Collection<ChessMove> helperPawn(ChessBoard board, ChessPosition myPosition){
-        throw new RuntimeException("Not implemented");
+        // Stops at edge, stops before allies, stops on top of enemy
+        int row = myPosition.getRow() + 1;
+        int col = myPosition.getColumn() + 1;
+        ArrayList<ChessMove> validMoves = new ArrayList<>();
+
+        // check piece color and feed through switch statement
+        switch(pieceColor){
+
+            case WHITE: // moves up
+                // Pawn can move forward
+                if (row + 1 < 9){
+
+                    ChessPosition endPosition = new ChessPosition(row+1,col);
+                    ChessPiece newPiece = board.getPiece(endPosition);
+
+                    if (newPiece == null) { // if the space is empty save position and continue loop
+                        validMoves.add(new ChessMove(myPosition, endPosition, null));
+                    }
+
+                    // if pawn hasn't moved before
+                    if (row == 2 && row + 2 < 9) {
+                        endPosition = new ChessPosition(row+2,col);
+                        newPiece = board.getPiece(endPosition);
+
+                        if (newPiece == null) { // if the space is empty save position and continue loop
+                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                        }
+                    }
+                }
+
+                // can only capture diagonal 1 forward
+
+                // if reaches enemy side can promote to anything but pawn or king
+
+                break;
+
+            case BLACK: // moves down
+                // Pawn can move forward
+
+                // can move forward twice if it is the first move
+
+                // can only capture diagonal 1 forward
+
+                // if reaches enemy side can promote to anything but pawn or king
+
+                break;
+        }
+        return validMoves;
     }
 
     public Collection<ChessMove> helperRook(ChessBoard board, ChessPosition myPosition){
