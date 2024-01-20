@@ -56,7 +56,6 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-
         return pieceColor;
     }
 
@@ -75,8 +74,35 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+        // get the piece's type
+        var piece = board.getPiece(myPosition);
+        var type = piece.getPieceType();
+        Collection<ChessMove> moveList = new ArrayList<>();
 
-        return new ArrayList<>(); // update after implementing available moves
+        // add switch statement structure
+        switch (type) {
+            case KING:
+                moveList = helperKing(board, myPosition);
+                break;
+            case PAWN:
+                moveList = helperPawn(board, myPosition);
+                break;
+            case ROOK:
+                moveList = helperRook(board, myPosition);
+                break;
+            case QUEEN:
+                moveList = helperQueen(board, myPosition);
+                break;
+            case BISHOP:
+                moveList = helperBishop(board, myPosition);
+                break;
+            case KNIGHT:
+                moveList = helperKnight(board, myPosition);
+                break;
+            default:
+        }
+
+        return moveList;
     }
 
     public Collection<ChessMove> helperKing(ChessBoard board, ChessPosition myPosition){
@@ -98,6 +124,7 @@ public class ChessPiece {
     public Collection<ChessMove> helperBishop(ChessBoard board, ChessPosition myPosition){
         throw new RuntimeException("Not implemented");
     }
+
     public Collection<ChessMove> helperQueen(ChessBoard board, ChessPosition myPosition){
         throw new RuntimeException("Not implemented");
     }
