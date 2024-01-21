@@ -325,7 +325,7 @@ public class ChessPiece {
                     ChessPiece newPiece = board.getPiece(endPosition);
 
                     // no piece in front of pawn
-                    if (newPiece == null) {
+                    if (newPiece == null && endPosition.getRow()+1 != 8) {
                         validMoves.add(new ChessMove(myPosition, endPosition, null));
 
                         // if pawn hasn't moved before try moving 2
@@ -337,6 +337,11 @@ public class ChessPiece {
                                 validMoves.add(new ChessMove(myPosition, endPosition, null));
                             }
                         }
+                    } else if (row+1 == 8){ // can use endPosition.getRow()+1 instead of row +1
+                        validMoves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
+                        validMoves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
+                        validMoves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
+                        validMoves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
                     }
 
                     // left (diagonal capture)
@@ -371,7 +376,7 @@ public class ChessPiece {
                     ChessPiece newPiece = board.getPiece(endPosition);
 
                     // no piece in front of pawn
-                    if (newPiece == null) {
+                    if (newPiece == null && endPosition.getRow()+1 != 1) {
                         validMoves.add(new ChessMove(myPosition, endPosition, null));
 
                         // if pawn hasn't moved before try moving 2
@@ -383,6 +388,11 @@ public class ChessPiece {
                                 validMoves.add(new ChessMove(myPosition, endPosition, null));
                             }
                         }
+                    } else if (row-1 == 1){ // can use endPosition.getRow()+1 instead of row -1
+                        validMoves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
+                        validMoves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
+                        validMoves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
+                        validMoves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
                     }
 
                     // left (diagonal capture)
