@@ -384,6 +384,26 @@ public class ChessPiece {
                             }
                         }
                     }
+
+                    // left (diagonal capture)
+                    if (col - 1 > 0) {
+                        endPosition = new ChessPosition(row-1, col-1);
+                        newPiece = board.getPiece(endPosition);
+
+                        if (newPiece != null && newPiece.pieceColor != pieceColor) {
+                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                        }
+                    }
+
+                    // right (diagonal capture)
+                    if (col + 1 < 9) {
+                        endPosition = new ChessPosition(row-1, col+1);
+                        newPiece = board.getPiece(endPosition);
+
+                        if (newPiece != null && newPiece.pieceColor != pieceColor) {
+                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                        }
+                    }
                 }
 
                 // if reaches enemy side can promote to anything but pawn or king
