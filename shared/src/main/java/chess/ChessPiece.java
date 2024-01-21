@@ -350,7 +350,14 @@ public class ChessPiece {
                         newPiece = board.getPiece(endPosition);
 
                         if (newPiece != null && newPiece.pieceColor != pieceColor) {
-                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            if (row+1 != 8) {
+                                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            } else {
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
+                            }
                         }
                     }
 
@@ -360,7 +367,14 @@ public class ChessPiece {
                         newPiece = board.getPiece(endPosition);
 
                         if (newPiece != null && newPiece.pieceColor != pieceColor) {
-                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            if (row+1 != 8) {
+                                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            } else {
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
+                            }
                         }
                     }
                 }
@@ -401,7 +415,14 @@ public class ChessPiece {
                         newPiece = board.getPiece(endPosition);
 
                         if (newPiece != null && newPiece.pieceColor != pieceColor) {
-                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            if (row-1 != 1) {
+                                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            } else {
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
+                            }
                         }
                     }
 
@@ -411,7 +432,14 @@ public class ChessPiece {
                         newPiece = board.getPiece(endPosition);
 
                         if (newPiece != null && newPiece.pieceColor != pieceColor) {
-                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            if (row-1 != 1) {
+                                validMoves.add(new ChessMove(myPosition, endPosition, null));
+                            } else {
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
+                                validMoves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
+                            }
                         }
                     }
                 }
