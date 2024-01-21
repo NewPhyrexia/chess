@@ -338,8 +338,27 @@ public class ChessPiece {
                             }
                         }
                     }
+
+                    // left (diagonal capture)
+                    if (col - 1 > 0) {
+                        endPosition = new ChessPosition(row+1, col-1);
+                        newPiece = board.getPiece(endPosition);
+
+                        if (newPiece != null && newPiece.pieceColor != pieceColor) {
+                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                        }
+                    }
+
+                    // right (diagonal capture)
+                    if (col + 1 < 9) {
+                        endPosition = new ChessPosition(row+1, col+1);
+                        newPiece = board.getPiece(endPosition);
+
+                        if (newPiece != null && newPiece.pieceColor != pieceColor) {
+                            validMoves.add(new ChessMove(myPosition, endPosition, null));
+                        }
+                    }
                 }
-                // can only capture diagonal 1 forward
 
                 // if reaches enemy side can promote to anything but pawn or king
 
@@ -365,13 +384,6 @@ public class ChessPiece {
                             }
                         }
                     }
-                    // diagonal capture (Already on row 1 space forward)
-                    // check left for enemy
-
-                    if (col - 1 > 0 && ) {
-
-                    }
-                    // check right for enemy
                 }
 
                 // if reaches enemy side can promote to anything but pawn or king
@@ -690,7 +702,6 @@ public class ChessPiece {
 
         return validMoves;
     }
-
 
     private Collection<ChessMove> helperQueen(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
