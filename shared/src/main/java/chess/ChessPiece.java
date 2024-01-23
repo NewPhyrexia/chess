@@ -107,8 +107,8 @@ public class ChessPiece {
 
     private Collection<ChessMove> helperKing(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
-        int r = myPosition.getRow() + 1;
-        int c = myPosition.getColumn() + 1;
+        int r = myPosition.getRow();
+        int c = myPosition.getColumn();
         ArrayList<ChessMove> validMoves = new ArrayList<>();
 
 
@@ -310,8 +310,8 @@ public class ChessPiece {
 
     private Collection<ChessMove> helperPawn(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
-        int row = myPosition.getRow() + 1;
-        int col = myPosition.getColumn() + 1;
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
         ArrayList<ChessMove> validMoves = new ArrayList<>();
 
         // check piece color and feed through switch statement
@@ -325,7 +325,7 @@ public class ChessPiece {
                     ChessPiece newPiece = board.getPiece(endPosition);
 
                     // no piece in front of pawn
-                    if (newPiece == null && endPosition.getRow()+1 != 8) {
+                    if (newPiece == null && endPosition.getRow() != 8) {
                         validMoves.add(new ChessMove(myPosition, endPosition, null));
 
                         // if pawn hasn't moved before try moving 2
@@ -390,7 +390,7 @@ public class ChessPiece {
                     ChessPiece newPiece = board.getPiece(endPosition);
 
                     // no piece in front of pawn
-                    if (newPiece == null && endPosition.getRow()+1 != 1) {
+                    if (newPiece == null && endPosition.getRow() != 1) {
                         validMoves.add(new ChessMove(myPosition, endPosition, null));
 
                         // if pawn hasn't moved before try moving 2
@@ -453,8 +453,8 @@ public class ChessPiece {
 
     private Collection<ChessMove> helperRook(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
-        int r = myPosition.getRow() + 1;
-        int c = myPosition.getColumn() + 1;
+        int r = myPosition.getRow();
+        int c = myPosition.getColumn();
         ArrayList<ChessMove> validMoves = new ArrayList<>();
 
         // loop up
@@ -551,8 +551,8 @@ public class ChessPiece {
 
     private Collection<ChessMove> helperKnight(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
-        int row = myPosition.getRow() + 1;
-        int col = myPosition.getColumn() + 1;
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
         ArrayList<ChessMove> validMoves = new ArrayList<>();
 
         // up
@@ -657,8 +657,8 @@ public class ChessPiece {
 
     private Collection<ChessMove> helperBishop(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
-        int r = myPosition.getRow() + 1;
-        int c = myPosition.getColumn() + 1;
+        int r = myPosition.getRow();
+        int c = myPosition.getColumn();
         ArrayList<ChessMove> validMoves = new ArrayList<>();
 
 
@@ -763,8 +763,8 @@ public class ChessPiece {
 
     private Collection<ChessMove> helperQueen(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
-        int r = myPosition.getRow() + 1;
-        int c = myPosition.getColumn() + 1;
+        int r = myPosition.getRow();
+        int c = myPosition.getColumn();
         ArrayList<ChessMove> validMoves = new ArrayList<>();
 
 
@@ -957,8 +957,8 @@ public class ChessPiece {
     }
 
 //    private void moveInDirection(ChessBoard board, ChessPosition startPosition, Collection<ChessMove> validMoves) {
-//        int r = startPosition.getRow() + 1;
-//        int c = startPosition.getColumn() + 1;
+//        int r = startPosition.getRow();
+//        int c = startPosition.getColumn();
 //        // loop up
 //        int row = r;
 //        int col = c;
