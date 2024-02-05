@@ -101,6 +101,12 @@ public class ChessGame {
         // instantiate exceptions
         InvalidMoveException inCheck = new InvalidMoveException("Wow really?");
         InvalidMoveException offBoard = new InvalidMoveException("You'll fall off the board if you go there");
+        InvalidMoveException general = new InvalidMoveException("You'll fall off the board if you go there");
+
+        // check to see if "move" is in the piece types available move list
+        if (!piece.pieceMoves(board,startPosition).contains(move)){
+            throw general;
+        }
 
         // Check if endPosition is on the board
         var row = move.getEndPosition().getRow();
