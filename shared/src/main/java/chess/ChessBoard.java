@@ -55,6 +55,19 @@ public class ChessBoard {
         return squares[position.getRow()-1][position.getColumn()-1];
     }
 
+    public ChessPosition findKingsPosition(ChessGame.TeamColor color) {
+
+        for (int i = 0; i < 9; i++){
+            for (int j = 0; j < 9; j++){
+                if (squares[j][i].getTeamColor() == color && squares[j][i].getPieceType() == ChessPiece.PieceType.KING){
+                    return new ChessPosition(j,i);
+                }
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Sets the board to the default starting board
      * (How the game of chess normally starts)

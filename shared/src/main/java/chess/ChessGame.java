@@ -101,7 +101,7 @@ public class ChessGame {
         // instantiate exceptions
         InvalidMoveException inCheck = new InvalidMoveException("Wow really?");
         InvalidMoveException offBoard = new InvalidMoveException("You'll fall off the board if you go there");
-        InvalidMoveException general = new InvalidMoveException("You'll fall off the board if you go there");
+        InvalidMoveException general = new InvalidMoveException("Not a valid move");
 
         // check to see if "move" is in the piece types available move list
         if (!piece.pieceMoves(board,startPosition).contains(move)){
@@ -123,27 +123,23 @@ public class ChessGame {
         board.addPiece(endPosition, piece);
         board.addPiece(startPosition, null);
 
-        // checks after move
+        // revert back if the move fails the check and throw error
         if (isInCheck(team)){
-            // throw error
             board = savedBoardState;
             throw inCheck;
         }
 
+        // revert back if the move fails the check and throw error
         if (isInCheckmate(team)){
-            // throw error
             board = savedBoardState;
             throw inCheck;
         }
 
+        // revert back if the move fails the check and throw error
         if (isInStalemate(team)){
-            // throw error
             board = savedBoardState;
-            throw new InvalidMoveException("Stalemate occured");
+            throw new InvalidMoveException("Stalemate occurred");
         }
-
-        // if move not valid rollback move with tempo board
-
     }
 
     /**
@@ -175,7 +171,7 @@ public class ChessGame {
 
         // Can King move out of check
 
-        // Can allie piece move to remove king from Check
+        // Can an ally piece move to remove king from Check
 
         // Can Any piece capture the piece threatening the king
 
