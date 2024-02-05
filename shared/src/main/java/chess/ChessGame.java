@@ -63,7 +63,7 @@ public class ChessGame {
         }
         // return all legal moves
         for (ChessMove move : pieceMoves){
-            var testGame = new ChessGame();
+            var testGame = new ChessGame(board,piece.getTeamColor());
             boolean isValid = true;
             try {
                 testGame.makeMove(move);
