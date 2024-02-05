@@ -155,7 +155,12 @@ public class ChessGame {
     public boolean isInCheck(TeamColor teamColor) {
         // Returns true if the specified team’s King could be captured by an opposing piece
 
-        throw new RuntimeException("Not implemented");
+        // get king's position
+
+        // go through board and see if enemies can move to king's position
+
+
+        return false;
     }
 
     /**
