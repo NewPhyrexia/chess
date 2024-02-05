@@ -117,7 +117,7 @@ public class ChessGame {
         }
 
         // save board state
-        var saveBoardState = board;
+        var savedBoardState = board;
 
         // make move
         board.addPiece(endPosition, piece);
@@ -126,19 +126,19 @@ public class ChessGame {
         // checks after move
         if (isInCheck(team)){
             // throw error
-            board = saveBoardState;
+            board = savedBoardState;
             throw inCheck;
         }
 
         if (isInCheckmate(team)){
             // throw error
-            board = saveBoardState;
+            board = savedBoardState;
             throw inCheck;
         }
 
         if (isInStalemate(team)){
             // throw error
-            board = saveBoardState;
+            board = savedBoardState;
             throw new InvalidMoveException("Stalemate occured");
         }
 
@@ -183,7 +183,12 @@ public class ChessGame {
      */
     public boolean isInStalemate(TeamColor teamColor) {
         // Returns true if the given team has no legal moves, and it is currently that team’s turn
-        throw new RuntimeException("Not implemented");
+
+        // check current team's pieces for valid moves
+
+        // return true if validMoves is null/ empty ?
+
+        return false;
     }
 
     /**
