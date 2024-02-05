@@ -160,7 +160,8 @@ public class ChessGame {
         // go through board and see if enemies can move to king's position
 
 
-        return false;
+//        return false;
+        throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -171,6 +172,14 @@ public class ChessGame {
      */
     public boolean isInCheckmate(TeamColor teamColor) {
         // Returns true if the given team has no way to protect their king from being captured
+
+        // Can King move out of check
+
+        // Can allie piece move to remove king from Check
+
+        // Can Any piece capture the piece threatening the king
+
+//        return false;
         throw new RuntimeException("Not implemented");
     }
 
@@ -188,7 +197,9 @@ public class ChessGame {
 
         // return true if validMoves is null/ empty ?
 
-        return false;
+//        return false;
+        throw new RuntimeException("Not implemented");
+
     }
 
     /**
