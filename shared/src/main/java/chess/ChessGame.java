@@ -15,7 +15,10 @@ public class ChessGame {
 
     private TeamColor team;
 
-
+    public ChessGame(){
+        this.board = new ChessBoard();
+        this.team = TeamColor.WHITE;
+    }
     public ChessGame(ChessBoard board, TeamColor team) {
         this.board = board;
         this.team = team;
@@ -91,14 +94,47 @@ public class ChessGame {
          A move is illegal if the chess piece cannot move there,
          if the move leaves the team’s king in danger,
          or if it’s not the corresponding team's turn*/
+        var piece = board.getPiece(move.getStartPosition());
+        var endPosition = move.getEndPosition();
+        var startPosition = move.getStartPosition();
 
         // instantiate exceptions
+        InvalidMoveException inCheck = new InvalidMoveException("Wow really?");
+        InvalidMoveException offBoard = new InvalidMoveException("You'll fall off the board if you go there");
+
+        // Check if endPosition is on the board
+        var row = move.getEndPosition().getRow();
+        var col = move.getEndPosition().getColumn();
+
+        if (row > 9 || row < 0 || col > 9 || col < 0){
+            throw offBoard;
+        }
 
         // save board state
+        var saveBoardState = board;
 
         // make move
+        board.addPiece(endPosition, piece);
+        board.addPiece(startPosition, null);
 
-            // checks after move
+        // checks after move
+        if (isInCheck(team)){
+            // throw error
+            board = saveBoardState;
+            throw inCheck;
+        }
+
+        if (isInCheckmate(team)){
+            // throw error
+            board = saveBoardState;
+            throw inCheck;
+        }
+
+        if (isInStalemate(team)){
+            // throw error
+            board = saveBoardState;
+            throw new InvalidMoveException("Stalemate occured");
+        }
 
         // if move not valid rollback move with tempo board
 
@@ -135,7 +171,7 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        // Returns true if the given team has no legal moves and it is currently that team’s turn
+        // Returns true if the given team has no legal moves, and it is currently that team’s turn
         throw new RuntimeException("Not implemented");
     }
 
