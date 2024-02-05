@@ -15,10 +15,10 @@ public class ChessGame {
 
     private TeamColor team;
 
-    private ChessMove move;
 
-    public ChessGame() {
-
+    public ChessGame(ChessBoard board, TeamColor team) {
+        this.board = board;
+        this.team = team;
     }
 
     /**
@@ -55,13 +55,26 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         Collection<ChessMove> validMoves = new ArrayList<>();
         var piece = board.getPiece(startPosition);
+        var pieceMoves = piece.pieceMoves(board, startPosition);
 
         // return null if a piece is not on starting position
         if (piece == null){
             return null;
         }
         // return all legal moves
-
+        for (ChessMove move : pieceMoves){
+            var testGame = new ChessGame();
+            boolean isValid = true;
+            try {
+                testGame.makeMove(move);
+            }  catch (InvalidMoveException e){
+                isValid = false;
+            } finally {
+                if (isValid) {
+                    validMoves.add(move);
+                }
+            }
+        }
 
         return validMoves;
     }
@@ -73,7 +86,22 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        this.move = move;
+        /*Receives a given move and executes it, provided it is a legal move.
+         If the move is illegal, it throws an InvalidMoveException.
+         A move is illegal if the chess piece cannot move there,
+         if the move leaves the team’s king in danger,
+         or if it’s not the corresponding team's turn*/
+
+        // instantiate exceptions
+
+        // save board state
+
+        // make move
+
+            // checks after move
+
+        // if move not valid rollback move with tempo board
+
     }
 
     /**
@@ -83,6 +111,8 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        // Returns true if the specified team’s King could be captured by an opposing piece
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -93,6 +123,7 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
+        // Returns true if the given team has no way to protect their king from being captured
         throw new RuntimeException("Not implemented");
     }
 
@@ -104,6 +135,7 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        // Returns true if the given team has no legal moves and it is currently that team’s turn
         throw new RuntimeException("Not implemented");
     }
 
