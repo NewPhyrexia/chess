@@ -127,11 +127,10 @@ public class ChessGame {
         var startPosition = move.getStartPosition();
 
         // instantiate exceptions
-        InvalidMoveException invalidMove = new InvalidMoveException("Not a valid move");
 
         // throw not valid move if the piece selected is null or cannot move to the chosen location
         if (piece == null || !validMoves(startPosition).isEmpty()){
-            throw invalidMove;
+            throw new InvalidMoveException("Not a valid move for: "+ piece);
         }
 
         // save board state
