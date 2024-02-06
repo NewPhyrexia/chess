@@ -71,7 +71,6 @@ public class ChessGame {
             boolean isValid = true;
             try {
                 testGame.validMoveHelper(move, piece);
-//                validMoveHelper(move, piece);
             }  catch (InvalidMoveException e){
                 isValid = false;
             } finally {
@@ -197,7 +196,21 @@ public class ChessGame {
         // Can Any piece capture the piece threatening the king
 
 //        return false;
-        throw new RuntimeException("Not implemented");
+//        throw new RuntimeException("Not implemented");
+
+        for (int i = 1; i < 9; i++){
+            for (int j = 1; j < 9; j++){
+                var position = new ChessPosition(i,j);
+                var piece = board.getPiece(position);
+                if(piece != null && piece.getTeamColor() == teamColor) {
+                    if (validMoves(position).isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -229,16 +242,12 @@ public class ChessGame {
      *
      * @param board the new board to use
      */
-    public void setBoard(ChessBoard board) {
-        this.board = board;
-    }
+    public void setBoard(ChessBoard board) {this.board = board;}
 
     /**
      * Gets the current chessboard
      *
      * @return the chessboard
      */
-    public ChessBoard getBoard() {
-        return board;
-    }
+    public ChessBoard getBoard() {return board;}
 }
