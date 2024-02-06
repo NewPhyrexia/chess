@@ -89,9 +89,6 @@ public class ChessGame {
 
         InvalidMoveException inCheck = new InvalidMoveException("King in check");
 
-        // save board state
-        var savedBoardState = new ChessBoard(board.getBoard());
-
         // save piece
 
         var tempPiece = board.getPiece(endPosition);
@@ -194,8 +191,11 @@ public class ChessGame {
                 var position = new ChessPosition(i,j);
                 var piece = board.getPiece(position);
                 if(piece != null && piece.getTeamColor() != teamColor) {
-                    if (piece.pieceMoves(board,position).contains(new ChessMove(position,kingsPosition,null))) {
-                        return true;
+                    var enemyMoves = piece.pieceMoves(board,position);
+                    for (ChessMove move : enemyMoves) {
+                        if (move.getEndPosition().equals(kingsPosition)) {
+                            return true;
+                        }
                     }
                 }
             }
@@ -211,30 +211,19 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        // Returns true if the given team has no way to protect their king from being captured
-
-        // Can King move out of check
-
-        // Can an ally piece move to remove king from Check
-
-        // Can Any piece capture the piece threatening the king
-
-//        return false;
-//        throw new RuntimeException("Not implemented");
-
         for (int i = 1; i < 9; i++){
             for (int j = 1; j < 9; j++){
                 var position = new ChessPosition(i,j);
                 var piece = board.getPiece(position);
                 if(piece != null && piece.getTeamColor() == teamColor) {
-                    if (validMoves(position).isEmpty()) {
-                        return true;
+                    if (!validMoves(position).isEmpty()) {
+                        return false;
                     }
                 }
             }
         }
 
-        return false;
+        return true;
     }
 
     /**
