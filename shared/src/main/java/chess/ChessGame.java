@@ -82,7 +82,7 @@ public class ChessGame {
         return validMoves;
     }
 
-    private void validMoveHelper(ChessMove move, ChessPiece piece){
+    private void validMoveHelper(ChessMove move, ChessPiece piece) throws InvalidMoveException {
         var endPosition = move.getEndPosition();
         var startPosition = move.getStartPosition();
 
