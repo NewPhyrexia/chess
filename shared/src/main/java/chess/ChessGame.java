@@ -66,11 +66,12 @@ public class ChessGame {
         }
         // return all legal moves
         for (ChessMove move : pieceMoves){
-            var testBoard = new ChessBoard(board);
+            var testBoard = new ChessBoard(board.getBoard());
             var testGame = new ChessGame(testBoard,piece.getTeamColor());
             boolean isValid = true;
             try {
                 testGame.validMoveHelper(move, piece);
+//                validMoveHelper(move, piece);
             }  catch (InvalidMoveException e){
                 isValid = false;
             } finally {

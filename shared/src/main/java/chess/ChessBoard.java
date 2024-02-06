@@ -9,13 +9,24 @@ import java.util.Arrays;
  * signature of the existing methods.
  */
 public class ChessBoard {
-    private ChessPiece[][] squares = new ChessPiece[8][8];
+    private ChessPiece[][] squares= new ChessPiece[8][8];
     public ChessBoard() {
         
     }
 
-    public ChessBoard(ChessBoard copy){
-        squares = Arrays.copyOf(copy.squares,copy.squares.length);
+    public ChessBoard(ChessPiece[][] board){
+        this.squares= new ChessPiece[8][8];
+        for(int i = 0; i < 8; i++){
+            System.arraycopy(board[i], 0, this.squares[i], 0, 8);
+        }
+    }
+
+//    public ChessBoard(ChessPiece[][] board){
+//        this.board= Arrays.copyOf(copy.squares,copy.squares.length);
+//    }
+
+    public ChessPiece[][] getBoard(){
+        return squares;
     }
 
     @Override
@@ -80,7 +91,7 @@ public class ChessBoard {
      */
     public void resetBoard() {
         // create a blank board
-        squares = new ChessPiece[8][8];
+        squares= new ChessPiece[8][8];
 
         // Set board with correct pieces
 
