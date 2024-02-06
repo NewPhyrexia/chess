@@ -137,9 +137,10 @@ public class ChessGame {
         var savedBoardState = board;
 
         // make move
+        board.addPiece(startPosition, null);
 
         // Promote pawn
-        if (endPosition.getRow() == 8 || endPosition.getRow() == 1
+        if ((endPosition.getRow() == 8 || endPosition.getRow() == 1)
                 && piece.getPieceType() == ChessPiece.PieceType.PAWN){
 
             // promote Bishop
@@ -148,24 +149,23 @@ public class ChessGame {
             }
 
             // promote knight
-            if (move.getPromotionPiece() == ChessPiece.PieceType.KNIGHT){
+            else if (move.getPromotionPiece() == ChessPiece.PieceType.KNIGHT){
                 board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.KNIGHT));
             }
 
             // promote rook
-            if (move.getPromotionPiece() == ChessPiece.PieceType.ROOK){
+            else if (move.getPromotionPiece() == ChessPiece.PieceType.ROOK){
                 board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.ROOK));
             }
 
             // promote queen
-            if (move.getPromotionPiece() == ChessPiece.PieceType.QUEEN){
+            else if (move.getPromotionPiece() == ChessPiece.PieceType.QUEEN){
                 board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.QUEEN));
             }
 
-        } else{
+        } else {
             board.addPiece(endPosition, piece);
         }
-        board.addPiece(startPosition, null);
 
 
 
