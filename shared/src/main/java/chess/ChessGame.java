@@ -155,12 +155,12 @@ public class ChessGame {
         var kingsPosition = board.findKingsPosition(teamColor);
 
         // go through board and see if enemies can move to king's position
-        for (int i = 0; i < 9; i++){
-            for (int j = 0; j < 9; j++){
+        for (int i = 1; i < 9; i++){
+            for (int j = 1; j < 9; j++){
                 var position = new ChessPosition(j,i);
                 var piece = board.getPiece(position);
                 if(piece != null && piece.getTeamColor() != teamColor) {
-                    if (!piece.pieceMoves(board,position).contains(new ChessMove(position,kingsPosition,null))) {
+                    if (piece.pieceMoves(board,position).contains(new ChessMove(position,kingsPosition,null))) {
                         return true;
                     }
                 }

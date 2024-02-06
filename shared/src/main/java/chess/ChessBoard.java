@@ -62,7 +62,7 @@ public class ChessBoard {
                 if (squares[j][i] != null
                         && squares[j][i].getTeamColor() == color
                         && squares[j][i].getPieceType() == ChessPiece.PieceType.KING){
-                    return new ChessPosition(j,i);
+                    return new ChessPosition(j+1,i+1);
                 }
             }
         }
