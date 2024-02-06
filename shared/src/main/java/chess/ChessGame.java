@@ -90,7 +90,11 @@ public class ChessGame {
         InvalidMoveException inCheck = new InvalidMoveException("King in check");
 
         // save board state
-        var savedBoardState = board;
+        var savedBoardState = new ChessBoard(board.getBoard());
+
+        // save piece
+
+        var tempPiece = board.getPiece(endPosition);
 
         // make move
         board.addPiece(endPosition, piece);
@@ -98,7 +102,8 @@ public class ChessGame {
 
         // if the move fails the check revert the board and throw error
         if (isInCheck(piece.getTeamColor())){
-            board = savedBoardState;
+            board.addPiece(startPosition, piece);
+            board.addPiece(endPosition, tempPiece);
             throw inCheck;
         }
     }
@@ -110,18 +115,6 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        /*Receives a given move and executes it, provided it is a legal move.
-         If the move is illegal, it throws an InvalidMoveException.
-         A move is illegal if the chess piece cannot move there,
-         if the move leaves the team’s king in danger,
-         or if it’s not the corresponding team's turn*/
-        // user input
-        //makeMove
-            //check if move is valid by calling valid move ##
-                // checks for checkmate ##
-                    //if valid actually make the move in make move
-            // Team turn in make move
-
         var piece = board.getPiece(move.getStartPosition());
         var endPosition = move.getEndPosition();
         var startPosition = move.getStartPosition();
@@ -129,15 +122,20 @@ public class ChessGame {
         // instantiate exceptions
 
         // throw not valid move if the piece selected is null or cannot move to the chosen location
-        if (piece == null || validMoves(startPosition).isEmpty()){
+        if (piece == null){
+            throw new InvalidMoveException("No piece in location");
+        }
+
+        if (!validMoves(startPosition).contains(move)){
             throw new InvalidMoveException("Not a valid move for: " + piece);
         }
 
         // save board state
         var savedBoardState = board;
 
+        // Check team for correct turn
+
         // make move
-        board.addPiece(startPosition, null);
 
         // Promote pawn
         if ((endPosition.getRow() == 8 || endPosition.getRow() == 1)
@@ -146,33 +144,30 @@ public class ChessGame {
             // promote Bishop
             if (move.getPromotionPiece() == ChessPiece.PieceType.BISHOP){
                 board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.BISHOP));
+                board.addPiece(startPosition, null);
             }
 
             // promote knight
             else if (move.getPromotionPiece() == ChessPiece.PieceType.KNIGHT){
                 board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.KNIGHT));
+                board.addPiece(startPosition, null);
             }
 
             // promote rook
             else if (move.getPromotionPiece() == ChessPiece.PieceType.ROOK){
                 board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.ROOK));
+                board.addPiece(startPosition, null);
             }
 
             // promote queen
             else if (move.getPromotionPiece() == ChessPiece.PieceType.QUEEN){
                 board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.QUEEN));
+                board.addPiece(startPosition, null);
             }
 
         } else {
             board.addPiece(endPosition, piece);
-        }
-
-
-
-        // revert back if the move fails the check and throw error
-        if (isInStalemate(team)){
-            board = savedBoardState;
-            throw new InvalidMoveException("Stalemate occurred");
+            board.addPiece(startPosition, null);
         }
 
         // Change Player Turn
