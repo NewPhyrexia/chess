@@ -137,8 +137,35 @@ public class ChessGame {
         var savedBoardState = board;
 
         // make move
-        board.addPiece(endPosition, piece);
-        board.addPiece(startPosition, null);
+
+        // Promote pawn
+        if (endPosition.getRow() == 8 || endPosition.getRow() == 1
+                && piece.getPieceType() == ChessPiece.PieceType.PAWN){
+
+            // promote Bishop
+            if (move.getPromotionPiece() == ChessPiece.PieceType.BISHOP){
+                board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.BISHOP));
+            }
+
+            // promote knight
+            if (move.getPromotionPiece() == ChessPiece.PieceType.KNIGHT){
+                board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.KNIGHT));
+            }
+
+            // promote rook
+            if (move.getPromotionPiece() == ChessPiece.PieceType.ROOK){
+                board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.ROOK));
+            }
+
+            // promote queen
+            if (move.getPromotionPiece() == ChessPiece.PieceType.QUEEN){
+                board.addPiece(endPosition, new ChessPiece(piece.getTeamColor(), ChessPiece.PieceType.QUEEN));
+            }
+
+        } else{
+            board.addPiece(endPosition, piece);
+            board.addPiece(startPosition, null);
+        }
 
 
         // revert back if the move fails the check and throw error
