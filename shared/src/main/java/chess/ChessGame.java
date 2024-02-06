@@ -66,7 +66,8 @@ public class ChessGame {
         }
         // return all legal moves
         for (ChessMove move : pieceMoves){
-            var testGame = new ChessGame(board,piece.getTeamColor());
+            var testBoard = new ChessBoard(board);
+            var testGame = new ChessGame(testBoard,piece.getTeamColor());
             boolean isValid = true;
             try {
                 testGame.validMoveHelper(move, piece);
@@ -96,7 +97,7 @@ public class ChessGame {
         board.addPiece(startPosition, null);
 
         // if the move fails the check revert the board and throw error
-        if (isInCheck(team)){
+        if (isInCheck(piece.getTeamColor())){
             board = savedBoardState;
             throw inCheck;
         }
@@ -114,36 +115,24 @@ public class ChessGame {
          A move is illegal if the chess piece cannot move there,
          if the move leaves the team’s king in danger,
          or if it’s not the corresponding team's turn*/
+        // user input
+        //makeMove
+            //check if move is valid by calling valid move ##
+                // checks for checkmate ##
+                    //if valid actually make the move in make move
+            // Team turn in make move
+
         var piece = board.getPiece(move.getStartPosition());
         var endPosition = move.getEndPosition();
         var startPosition = move.getStartPosition();
 
         // instantiate exceptions
-//        InvalidMoveException offBoard = new InvalidMoveException("You'll fall off the board if you go there");
         InvalidMoveException invalidMove = new InvalidMoveException("Not a valid move");
 
-        //
+        // throw not valid move if the piece selected is null or cannot move to the chosen location
         if (piece == null || !validMoves(startPosition).isEmpty()){
             throw invalidMove;
         }
-
-        // user input
-        //makeMove
-            //check if move is valid by calling valid move
-                // checks for checkmate etc.
-            //if valid actually make the move in make move
-            // Team turn in make move
-
-
-
-
-        // Check if endPosition is on the board
-        var row = move.getEndPosition().getRow();
-        var col = move.getEndPosition().getColumn();
-
-//        if (row > 8 || row < 1 || col > 8 || col < 1){
-//            throw offBoard;
-//        }
 
         // save board state
         var savedBoardState = board;
@@ -153,18 +142,14 @@ public class ChessGame {
         board.addPiece(startPosition, null);
 
 
-
-//        // revert back if the move fails the check and throw error
-//        if (isInCheckmate(team)){
-//            board = savedBoardState;
-//            throw inCheck;
-//        }
-
         // revert back if the move fails the check and throw error
         if (isInStalemate(team)){
             board = savedBoardState;
             throw new InvalidMoveException("Stalemate occurred");
         }
+
+        // Change Player Turn
+        team = (team == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
     }
 
     /**

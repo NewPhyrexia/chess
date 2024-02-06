@@ -14,6 +14,10 @@ public class ChessBoard {
         
     }
 
+    public ChessBoard(ChessBoard copy){
+        squares = Arrays.copyOf(copy.squares,copy.squares.length);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
