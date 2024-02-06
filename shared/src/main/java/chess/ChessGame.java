@@ -112,7 +112,7 @@ public class ChessGame {
         var row = move.getEndPosition().getRow();
         var col = move.getEndPosition().getColumn();
 
-        if (row > 9 || row < 0 || col > 9 || col < 0){
+        if (row > 8 || row < 1 || col > 8 || col < 1){
             throw offBoard;
         }
 
@@ -157,14 +157,17 @@ public class ChessGame {
         // go through board and see if enemies can move to king's position
         for (int i = 0; i < 9; i++){
             for (int j = 0; j < 9; j++){
-                var piece =
-                if (){
+                var position = new ChessPosition(j,i);
+                var piece = board.getPiece(position);
+                if(piece != null && piece.getTeamColor() != teamColor) {
+                    if (!piece.pieceMoves(board,position).contains(new ChessMove(position,kingsPosition,null))) {
+                        return true;
+                    }
                 }
             }
         }
 
-//        return false;
-        throw new RuntimeException("Not implemented");
+        return false;
     }
 
     /**
