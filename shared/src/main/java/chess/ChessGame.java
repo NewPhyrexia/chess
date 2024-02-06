@@ -134,7 +134,9 @@ public class ChessGame {
         var savedBoardState = board;
 
         // Check team for correct turn
-
+        if (team != piece.getTeamColor()){
+            throw new InvalidMoveException("Not a valid turn for team: " + piece.getTeamColor());
+        }
         // make move
 
         // Promote pawn
