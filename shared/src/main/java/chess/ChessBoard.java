@@ -59,10 +59,10 @@ public class ChessBoard {
 
         for (int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++){
-                if (squares[j][i] != null
-                        && squares[j][i].getTeamColor() == color
-                        && squares[j][i].getPieceType() == ChessPiece.PieceType.KING){
-                    return new ChessPosition(j+1,i+1);
+                if (squares[i][j] != null
+                        && squares[i][j].getTeamColor() == color
+                        && squares[i][j].getPieceType() == ChessPiece.PieceType.KING){
+                    return new ChessPosition(i+1,j+1);
                 }
             }
         }

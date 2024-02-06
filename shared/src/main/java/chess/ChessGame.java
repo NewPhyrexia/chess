@@ -157,7 +157,7 @@ public class ChessGame {
         // go through board and see if enemies can move to king's position
         for (int i = 1; i < 9; i++){
             for (int j = 1; j < 9; j++){
-                var position = new ChessPosition(j,i);
+                var position = new ChessPosition(i,j);
                 var piece = board.getPiece(position);
                 if(piece != null && piece.getTeamColor() != teamColor) {
                     if (piece.pieceMoves(board,position).contains(new ChessMove(position,kingsPosition,null))) {
@@ -197,14 +197,20 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        // Returns true if the given team has no legal moves, and it is currently that team’s turn
 
-        // check current team's pieces for valid moves
+        for (int i = 1; i < 9; i++){
+            for (int j = 1; j < 9; j++){
+                var position = new ChessPosition(i,j);
+                var piece = board.getPiece(position);
+                if(piece != null && piece.getTeamColor() == teamColor) {
+                    if (!piece.pieceMoves(board,position).isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }
 
-        // return true if validMoves is null/ empty ?
-
-//        return false;
-        throw new RuntimeException("Not implemented");
+        return false;
 
     }
 
