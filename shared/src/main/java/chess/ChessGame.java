@@ -69,7 +69,7 @@ public class ChessGame {
             var testGame = new ChessGame(board,piece.getTeamColor());
             boolean isValid = true;
             try {
-                testGame.makeMove(move);
+                testGame.validMoveHelper(move, piece);
             }  catch (InvalidMoveException e){
                 isValid = false;
             } finally {
@@ -80,6 +80,26 @@ public class ChessGame {
         }
 
         return validMoves;
+    }
+
+    private void validMoveHelper(ChessMove move, ChessPiece piece){
+        var endPosition = move.getEndPosition();
+        var startPosition = move.getStartPosition();
+
+        InvalidMoveException inCheck = new InvalidMoveException("King in check");
+
+        // save board state
+        var savedBoardState = board;
+
+        // make move
+        board.addPiece(endPosition, piece);
+        board.addPiece(startPosition, null);
+
+        // if the move fails the check revert the board and throw error
+        if (isInCheck(team)){
+            board = savedBoardState;
+            throw inCheck;
+        }
     }
 
     /**
@@ -99,22 +119,31 @@ public class ChessGame {
         var startPosition = move.getStartPosition();
 
         // instantiate exceptions
-        InvalidMoveException inCheck = new InvalidMoveException("Wow really?");
-        InvalidMoveException offBoard = new InvalidMoveException("You'll fall off the board if you go there");
-        InvalidMoveException general = new InvalidMoveException("Not a valid move");
+//        InvalidMoveException offBoard = new InvalidMoveException("You'll fall off the board if you go there");
+        InvalidMoveException invalidMove = new InvalidMoveException("Not a valid move");
 
-        // check to see if "move" is in the piece types available move list
-        if (!piece.pieceMoves(board,startPosition).contains(move)){
-            throw general;
+        //
+        if (piece == null || !validMoves(startPosition).isEmpty()){
+            throw invalidMove;
         }
+
+        // user input
+        //makeMove
+            //check if move is valid by calling valid move
+                // checks for checkmate etc.
+            //if valid actually make the move in make move
+            // Team turn in make move
+
+
+
 
         // Check if endPosition is on the board
         var row = move.getEndPosition().getRow();
         var col = move.getEndPosition().getColumn();
 
-        if (row > 8 || row < 1 || col > 8 || col < 1){
-            throw offBoard;
-        }
+//        if (row > 8 || row < 1 || col > 8 || col < 1){
+//            throw offBoard;
+//        }
 
         // save board state
         var savedBoardState = board;
@@ -123,17 +152,13 @@ public class ChessGame {
         board.addPiece(endPosition, piece);
         board.addPiece(startPosition, null);
 
-        // revert back if the move fails the check and throw error
-        if (isInCheck(team)){
-            board = savedBoardState;
-            throw inCheck;
-        }
 
-        // revert back if the move fails the check and throw error
-        if (isInCheckmate(team)){
-            board = savedBoardState;
-            throw inCheck;
-        }
+
+//        // revert back if the move fails the check and throw error
+//        if (isInCheckmate(team)){
+//            board = savedBoardState;
+//            throw inCheck;
+//        }
 
         // revert back if the move fails the check and throw error
         if (isInStalemate(team)){
@@ -203,7 +228,7 @@ public class ChessGame {
                 var position = new ChessPosition(i,j);
                 var piece = board.getPiece(position);
                 if(piece != null && piece.getTeamColor() == teamColor) {
-                    if (!piece.pieceMoves(board,position).isEmpty()) {
+                    if (validMoves(position).isEmpty()) {
                         return true;
                     }
                 }
@@ -211,7 +236,6 @@ public class ChessGame {
         }
 
         return false;
-
     }
 
     /**
