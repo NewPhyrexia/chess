@@ -127,9 +127,6 @@ public class ChessGame {
             throw new InvalidMoveException("Not a valid move for: " + piece);
         }
 
-        // save board state
-        var savedBoardState = board;
-
         // Check team for correct turn
         if (team != piece.getTeamColor()){
             throw new InvalidMoveException("Not a valid turn for team: " + piece.getTeamColor());
