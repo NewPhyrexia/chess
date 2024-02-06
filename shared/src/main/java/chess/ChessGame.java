@@ -164,8 +164,9 @@ public class ChessGame {
 
         } else{
             board.addPiece(endPosition, piece);
-            board.addPiece(startPosition, null);
         }
+        board.addPiece(startPosition, null);
+
 
 
         // revert back if the move fails the check and throw error
