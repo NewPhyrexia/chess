@@ -1,4 +1,4 @@
-//package server; // not sure what this is for
+package server;
 
 import spark.*;
 
