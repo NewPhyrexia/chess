@@ -208,19 +208,7 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        for (int i = 1; i < 9; i++){
-            for (int j = 1; j < 9; j++){
-                var position = new ChessPosition(i,j);
-                var piece = board.getPiece(position);
-                if(piece != null && piece.getTeamColor() == teamColor) {
-                    if (!validMoves(position).isEmpty()) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
+        return inCheckmateCheck(teamColor);
     }
 
     /**
@@ -231,6 +219,10 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        return inCheckmateCheck(teamColor);
+    }
+
+    private boolean inCheckmateCheck(TeamColor teamColor) {
         for (int i = 1; i < 9; i++){
             for (int j = 1; j < 9; j++){
                 var position = new ChessPosition(i,j);
