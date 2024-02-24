@@ -9,8 +9,12 @@ import service.UserService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClearAppServiceTests {
-  static final ClearAppService service = new ClearAppService(new AuthDAO(), new GameDAO(), new UserDAO());
-  static final UserService UService = new UserService(new UserDAO());
+
+  static final UserDAO userDAO = new UserDAO();
+  static final AuthDAO authDAO = new AuthDAO();
+  static final GameDAO gameDAO = new GameDAO();
+  static final ClearAppService service = new ClearAppService(authDAO, gameDAO, userDAO);
+  static final UserService UService = new UserService(userDAO, authDAO);
 
   // add services for other 2 services
   @Test
@@ -21,6 +25,7 @@ public class ClearAppServiceTests {
     UService.register(new UserData("Anna", "BanANNA77", "IamtheMASTERcommander@gmail.com"));
 
     // add game
+
 
     service.deleteAllDB();
     assertEquals(0, UService.listUsers().size()); // users

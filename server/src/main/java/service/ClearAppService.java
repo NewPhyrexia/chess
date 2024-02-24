@@ -20,8 +20,8 @@ public class ClearAppService {
 
 
   public void deleteAllDB() throws DataAccessException{
+    userInterface.deleteAllUsers();
     authInterface.deleteAllAuthTokens();
     gameInterface.deleteAllGames();
-    userInterface.deleteAllUsers();
   }
 }

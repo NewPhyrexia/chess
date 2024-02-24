@@ -15,7 +15,10 @@ public class UserService {
   private UserDAOInterface userInterface;
   private GameDAOInterface gameInterface;
 
-  public UserService(UserDAOInterface userInterface) {this.userInterface = userInterface;}
+  public UserService(UserDAOInterface userInterface, AuthDAOInterface authInterface) {
+    this.userInterface = userInterface;
+    this.authInterface = authInterface;
+  }
 
   public AuthData register(UserData user) throws DataAccessException {
     // check if user exists
