@@ -11,7 +11,6 @@ public class DeleteAllServiceTests {
 
   @Test
   void deleteAllDB() throws DataAccessException {
-    service.add
 
     service.deleteAllDB();
   }
