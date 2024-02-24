@@ -15,7 +15,7 @@ public class GameDAO {
     return game;
   }
 
-  public void deleteAllAuthTokens() throws DataAccessException {
+  public void deleteAllAuthTokens() {
     allGames.clear();
   }
 }

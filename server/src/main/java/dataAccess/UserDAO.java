@@ -15,7 +15,15 @@ public class UserDAO {
     return user;
   }
 
-  public void deleteAllUsers() throws DataAccessException {
+  public UserData getUser(String username) {
+    return allUserData.get(username);
+  }
+
+  public void deleteUser(String username) {
+    allUserData.remove(username);
+  }
+
+  public void deleteAllUsers() {
     allUserData.clear();
   }
 }
