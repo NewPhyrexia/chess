@@ -17,14 +17,14 @@ public class UserService {
 
   public AuthData register(UserData user) throws DataAccessException {
     // check if user exists
-    if (userInterface.getUser(user.username()) == null) {
-      return null;
+    if (userInterface.getUser(user.username()) != null) {
+      return authInterface.createAuthToken(user.username());
     }
 
     userInterface.addUser(user);
-//    authInterface.
-
+    return authInterface.createAuthToken(user.username());
   }
+
 //  public AuthData login(UserData  user) {}
 //  public void logout(UserData user) {}
 
