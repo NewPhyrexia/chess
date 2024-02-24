@@ -1,4 +1,5 @@
 package dataAccess;
+
 import model.AuthData;
 
 import java.util.Collection;

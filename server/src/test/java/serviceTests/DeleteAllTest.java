@@ -1,18 +1,16 @@
 package serviceTests;
 
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
+import dataAccess.*;
 import model.AuthData;
 import org.junit.jupiter.api.Test;
 import service.AuthService;
+import service.ClearAppService;
 import service.GameService;
 import service.UserService;
 
 public class DeleteAllTest {
 
-  static final AuthService AService = new AuthService();
-  static final UserService UService = new UserService();
-  static final GameService GService = new GameService();
+  static final ClearAppService service = new ClearAppService(new AuthDAO(), new GameDAO(), new UserDAO());
 
   @Test
   public void deleteAllData() throws DataAccessException {
