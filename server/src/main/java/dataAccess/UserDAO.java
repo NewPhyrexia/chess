@@ -2,6 +2,7 @@ package dataAccess;
 
 import model.UserData;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 public class UserDAO implements UserDAOInterface{
@@ -13,6 +14,9 @@ public class UserDAO implements UserDAOInterface{
 
     allUserData.put(user.username(),user);
     return user;
+  }
+  public Collection<UserData> listUsers() {
+    return allUserData.values();
   }
   public UserData getUser(String username) {
     return allUserData.get(username);

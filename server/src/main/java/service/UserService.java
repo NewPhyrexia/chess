@@ -7,6 +7,8 @@ import dataAccess.UserDAOInterface;
 import model.AuthData;
 import model.UserData;
 
+import java.util.Collection;
+
 public class UserService {
 
   private AuthDAOInterface authInterface;
@@ -25,6 +27,10 @@ public class UserService {
     var token = authInterface.createAuthToken(user.username());
     authInterface.addAuthToken(token);
     return token;
+  }
+
+  public Collection<UserData> listUsers() throws DataAccessException {
+    return userInterface.listUsers();
   }
 
 //  public AuthData login(UserData  user) {}

@@ -1,9 +1,6 @@
 package serviceTests;
 
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
-import dataAccess.UserDAO;
+import dataAccess.*;
 import model.UserData;
 import org.junit.jupiter.api.Test;
 import service.ClearAppService;
@@ -23,13 +20,11 @@ public class ClearAppServiceTests {
     UService.register(new UserData("Callie", "H0tStuff1", "TurtleDuck@gmail.com"));
     UService.register(new UserData("Anna", "BanANNA77", "IamtheMASTERcommander@gmail.com"));
 
-    // add token
-
     // add game
 
     service.deleteAllDB();
-    assertEquals(0, 0); // users
-//    assertEquals(0, 0); // tokens
+    assertEquals(0, UService.listUsers().size()); // users
+    assertEquals(0, 0); // tokens
 //    assertEquals(0, 0); // games
   }
 

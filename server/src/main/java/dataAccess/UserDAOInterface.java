@@ -1,8 +1,13 @@
 package dataAccess;
 import model.UserData;
+
+import java.util.Collection;
+
 public interface UserDAOInterface {
 
   UserData addUser(UserData user) throws DataAccessException;
+
+  Collection<UserData> listUsers() throws DataAccessException;
 
   UserData getUser(String username) throws DataAccessException;
 
