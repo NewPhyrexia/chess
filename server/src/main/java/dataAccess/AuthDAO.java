@@ -2,9 +2,10 @@ package dataAccess;
 
 import model.AuthData;
 
+import java.util.Collection;
 import java.util.HashMap;
 
-public class AuthDAO {
+public class AuthDAO implements AuthDAOInterface{
   final private HashMap<String, AuthData> allAuthTokens = new HashMap<>();
 
   public AuthData addAuthToken(AuthData token) {
@@ -14,7 +15,15 @@ public class AuthDAO {
     return token;
   }
 
-  public void deleteAllAuthTokens() throws DataAccessException {
+  public AuthData getAuthToken(String token) {return allAuthTokens.get(token);}
+
+  public Collection<AuthData> listAuthTokens() {
+    return allAuthTokens.values();
+  }
+
+  public void deleteAuthToken(String token) {allAuthTokens.remove(token);}
+
+  public void deleteAllAuthTokens() {
     allAuthTokens.clear();
   }
 }
