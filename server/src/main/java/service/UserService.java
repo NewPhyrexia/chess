@@ -18,11 +18,13 @@ public class UserService {
   public AuthData register(UserData user) throws DataAccessException {
     // check if user exists
     if (userInterface.getUser(user.username()) != null) {
-      return authInterface.createAuthToken(user.username());
+      return null;
     }
 
     userInterface.addUser(user);
-    return authInterface.createAuthToken(user.username());
+    var token = authInterface.createAuthToken(user.username());
+    authInterface.addAuthToken(token);
+    return token;
   }
 
 //  public AuthData login(UserData  user) {}
