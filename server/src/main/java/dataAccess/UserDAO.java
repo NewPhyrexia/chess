@@ -14,7 +14,6 @@ public class UserDAO implements UserDAOInterface{
     allUserData.put(user.username(),user);
     return user;
   }
-
   public UserData getUser(String username) {
     return allUserData.get(username);
   }
