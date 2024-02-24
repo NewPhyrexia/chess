@@ -33,6 +33,10 @@ public class UserService {
     return userInterface.listUsers();
   }
 
+  public Collection<AuthData> listAuthTokens() throws DataAccessException {
+    return authInterface.listAuthTokens();
+  }
+
 //  public AuthData login(UserData  user) {}
 //  public void logout(UserData user) {}
 

@@ -24,7 +24,7 @@ public class ClearAppServiceTests {
 
     service.deleteAllDB();
     assertEquals(0, UService.listUsers().size()); // users
-    assertEquals(0, 0); // tokens
+    assertEquals(0, UService.listAuthTokens().size()); // tokens
 //    assertEquals(0, 0); // games
   }
 
