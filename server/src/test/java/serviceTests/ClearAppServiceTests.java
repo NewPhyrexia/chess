@@ -5,7 +5,6 @@ import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import org.junit.jupiter.api.Test;
-import service.AuthService;
 import service.ClearAppService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

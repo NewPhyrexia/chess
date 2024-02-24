@@ -1,7 +1,6 @@
 package serviceTests;
 
 import dataAccess.AuthDAO;
-import service.AuthService;
 
 public class AuthServiceTests {
 
