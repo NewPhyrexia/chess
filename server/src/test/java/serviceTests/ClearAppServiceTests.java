@@ -13,12 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClearAppServiceTests {
 
-  static final UserDAO userDAO = new UserDAO();
-  static final AuthDAO authDAO = new AuthDAO();
-  static final GameDAO gameDAO = new GameDAO();
+  static final UserDAO userDAO = UserDAO.getInstance();
+  static final AuthDAO authDAO = AuthDAO.getInstance();
+  static final GameDAO gameDAO = GameDAO.getInstance();
   static final ClearAppService service = new ClearAppService(authDAO, gameDAO, userDAO);
   static final UserService UService = new UserService(userDAO, authDAO);
-
   static final GameService GService = new GameService(gameDAO);
 
   // add services for other 2 services

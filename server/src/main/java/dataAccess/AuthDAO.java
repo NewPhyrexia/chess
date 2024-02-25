@@ -11,7 +11,7 @@ public class AuthDAO implements AuthDAOInterface{
 
   private static AuthDAO instance;
 
-  public AuthDAO getInstance() {
+  public static AuthDAO getInstance() {
     if (instance == null){
       instance = new AuthDAO();
     }

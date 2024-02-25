@@ -10,7 +10,7 @@ public class GameDAO implements GameDAOInterface{
   final private HashMap<Integer, GameData> allGames = new HashMap<>();
   private static GameDAO instance;
 
-  public GameDAO getInstance() {
+  public static GameDAO getInstance() {
     if (instance == null){
       instance = new GameDAO();
     }
