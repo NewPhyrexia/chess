@@ -9,6 +9,15 @@ import java.util.UUID;
 public class AuthDAO implements AuthDAOInterface{
   final private HashMap<String, AuthData> allAuthTokens = new HashMap<>();
 
+  private static AuthDAO instance;
+
+  public AuthDAO getInstance() {
+    if (instance == null){
+      instance = new AuthDAO();
+    }
+    return instance;
+  }
+
   public AuthData createAuthToken(String username) {
     if(username == null || username.isEmpty()){
       return null;

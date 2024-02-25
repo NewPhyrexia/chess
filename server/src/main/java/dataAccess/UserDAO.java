@@ -9,6 +9,15 @@ public class UserDAO implements UserDAOInterface{
 
   final private HashMap<String, UserData> allUserData = new HashMap<>();
 
+  private static UserDAO instance;
+
+  public UserDAO getInstance() {
+    if (instance == null){
+      instance = new UserDAO();
+    }
+    return instance;
+  }
+
   public UserData addUser(UserData user)  {
     user = new UserData(user.username(), user.password(), user.email());
 

@@ -8,7 +8,14 @@ import java.util.HashMap;
 
 public class GameDAO implements GameDAOInterface{
   final private HashMap<Integer, GameData> allGames = new HashMap<>();
+  private static GameDAO instance;
 
+  public GameDAO getInstance() {
+    if (instance == null){
+      instance = new GameDAO();
+    }
+    return instance;
+  }
   public GameData createGame(GameData game) {
     game = new GameData(game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName(), game.implementation());
 

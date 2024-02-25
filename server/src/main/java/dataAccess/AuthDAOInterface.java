@@ -5,6 +5,7 @@ import model.AuthData;
 import java.util.Collection;
 
 public interface AuthDAOInterface {
+  AuthDAO getInstance() throws DataAccessException;
 
   AuthData createAuthToken(String username) throws DataAccessException;
 
