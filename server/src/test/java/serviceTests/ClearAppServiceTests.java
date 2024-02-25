@@ -1,9 +1,12 @@
 package serviceTests;
 
+import chess.ChessGame;
 import dataAccess.*;
+import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.Test;
 import service.ClearAppService;
+import service.GameService;
 import service.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,6 +19,8 @@ public class ClearAppServiceTests {
   static final ClearAppService service = new ClearAppService(authDAO, gameDAO, userDAO);
   static final UserService UService = new UserService(userDAO, authDAO);
 
+  static final GameService GService = new GameService(gameDAO);
+
   // add services for other 2 services
   @Test
   void deleteAll() throws DataAccessException {
@@ -25,12 +30,14 @@ public class ClearAppServiceTests {
     UService.register(new UserData("Anna", "BanANNA77", "IamtheMASTERcommander@gmail.com"));
 
     // add game
-
+    GService.createGame("Token1", new GameData(1000, "Johnny", "Lebron James", "AwesomeGame", new ChessGame()));
+    GService.createGame("Token1", new GameData(2000, "Steve", "Samuel Jackson", "CoolGame", new ChessGame()));
+    GService.createGame("Token1", new GameData(3000, "Chad", "Mike Tyson", "BestGame", new ChessGame()));
 
     service.deleteAllDB();
     assertEquals(0, UService.listUsers().size()); // users
     assertEquals(0, UService.listAuthTokens().size()); // tokens
-//    assertEquals(0, 0); // games
+    assertEquals(0, GService.listGames().size()); // games
   }
 
 }
