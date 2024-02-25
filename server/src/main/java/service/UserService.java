@@ -20,16 +20,16 @@ public class UserService {
     this.authInterface = authInterface;
   }
 
-  public AuthData register(UserData user) throws DataAccessException {
+  public String register(UserData user) throws DataAccessException {
     // check if user exists
     if (userInterface.getUser(user.username()) != null) {
       return null;
     }
 
     userInterface.addUser(user);
-    var token = authInterface.createAuthToken(user.username());
-    authInterface.addAuthToken(token);
-    return token;
+    var authData = authInterface.createAuthToken(user.username());
+    authInterface.addAuthData(authData);
+    return authData.authToken();
   }
 
   public Collection<UserData> listUsers() throws DataAccessException {

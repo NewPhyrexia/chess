@@ -15,15 +15,14 @@ public class AuthDAO implements AuthDAOInterface{
     }
 
     String token = UUID.randomUUID().toString();
-    var authToken = new AuthData(token, username);
-    return authToken;
+    return new AuthData(token, username);
   }
 
-  public AuthData addAuthToken(AuthData token) {
-    token = new AuthData(token.authToken(), token.username());
+  public AuthData addAuthData(AuthData data) {
+    data = new AuthData(data.authToken(), data.username());
 
-    allAuthTokens.put(token.authToken(), token);
-    return token;
+    allAuthTokens.put(data.authToken(), data);
+    return data;
   }
   public AuthData getAuthToken(String token) {return allAuthTokens.get(token);}
 

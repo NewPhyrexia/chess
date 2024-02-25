@@ -8,7 +8,7 @@ public interface AuthDAOInterface {
 
   AuthData createAuthToken(String username) throws DataAccessException;
 
-  AuthData addAuthToken(AuthData token) throws DataAccessException;
+  AuthData addAuthData(AuthData data) throws DataAccessException;
 
   Collection<AuthData>  listAuthTokens()  throws DataAccessException;
 
