@@ -34,9 +34,9 @@ public class ClearAppServiceTests {
     GService.createGame(token3, new GameData(3000, "Chad", "Mike Tyson", "BestGame", new ChessGame()));
 
     service.deleteAllDB();
-    assertEquals(0, UService.listUsers().size()); // users
-    assertEquals(0, UService.listAuthTokens().size()); // tokens
-    assertEquals(0, GService.listGames().size()); // games
+    assertEquals(0, UService.listUsers().size());
+    assertEquals(0, UService.listAuthTokens().size());
+    assertEquals(0, GService.listGames().size());
   }
 
 }
