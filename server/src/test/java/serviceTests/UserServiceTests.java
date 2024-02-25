@@ -35,4 +35,14 @@ public class UserServiceTests {
 
     assertEquals(3, UService.listUsers().size());
   }
+
+  @Test
+  void successfulLogin() throws DataAccessException {
+    UService.login(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
+  }
+
+  @Test
+  void passwordDoesntMatch() throws DataAccessException {
+
+  }
 }

@@ -20,7 +20,6 @@ public class ClearAppServiceTests {
   static final UserService UService = new UserService(userDAO, authDAO);
   static final GameService GService = new GameService(gameDAO);
 
-  // add services for other 2 services
   @Test
   void deleteAll() throws DataAccessException {
     // add user and token

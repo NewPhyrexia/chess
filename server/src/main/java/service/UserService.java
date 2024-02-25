@@ -40,7 +40,22 @@ public class UserService {
     return authInterface.listAuthTokens();
   }
 
-//  public AuthData login(UserData  user) {}
+  public String login(UserData  user) throws DataAccessException {
+    // user not in system
+    if (userInterface.getUser(user.username()) == null) {
+      return null;
+    }
+    // provided password does not match saved password
+    if (!user.password().equals(userInterface.getUser(user.username()).password())) {
+      return null;
+    }
+      // create new authToken
+      var token = authInterface.createAuthToken(user.username());
+      authInterface.addAuthData(token);
+
+      return token.authToken();
+  }
+
 //  public void logout(UserData user) {}
 
 }
