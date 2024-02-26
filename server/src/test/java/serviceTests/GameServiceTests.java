@@ -36,11 +36,12 @@ public class GameServiceTests {
     GService.createGame(token2, new GameData(2000, "Steve", "Samuel Jackson", "CoolGame", new ChessGame()));
     GService.createGame(token3, new GameData(3000, "Chad", "Mike Tyson", "BestGame", new ChessGame()));
 
-    assertEquals(3, GService.listGames().size());
+    assertEquals(3, GService.listAllGames(token1).size());
   }
 
   @Test
   void noGamesToList() throws DataAccessException {
-    assertEquals(0, GService.listGames().size());
+    var token1 = UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
+    assertEquals(0, GService.listAllGames(token1).size());
   }
 }
