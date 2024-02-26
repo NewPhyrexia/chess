@@ -1,27 +1,18 @@
 package service;
 
-import dataAccess.AuthDAOInterface;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAOInterface;
-import dataAccess.UserDAOInterface;
+import dataAccess.*;
 
 
 public class ClearAppService {
-
-  private final AuthDAOInterface authInterface;
-  private final GameDAOInterface gameInterface;
-  private final UserDAOInterface userInterface;
-
-  public ClearAppService(AuthDAOInterface authInterface, GameDAOInterface gameInterface, UserDAOInterface userInterface) {
-    this.authInterface = authInterface;
-    this.gameInterface = gameInterface;
-    this.userInterface = userInterface;
-  }
-
+  static final UserDAOInterface userInterface= UserDAO.getInstance();
+  static final AuthDAOInterface authInterface= AuthDAO.getInstance();
+  static final GameDAOInterface gameInterface= GameDAO.getInstance();
 
   public void deleteAllDB() throws DataAccessException{
     userInterface.deleteAllUsers();
     authInterface.deleteAllAuthTokens();
     gameInterface.deleteAllGames();
   }
+
+  // Try, catch, finally?
 }

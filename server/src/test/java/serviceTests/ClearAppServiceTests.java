@@ -17,7 +17,7 @@ public class ClearAppServiceTests {
   static final UserDAOInterface userInterface= UserDAO.getInstance();
   static final AuthDAOInterface authInterface= AuthDAO.getInstance();
   static final GameDAOInterface gameInterface= GameDAO.getInstance();
-  static final ClearAppService service = new ClearAppService(authInterface, gameInterface, userInterface);
+  static final ClearAppService service = new ClearAppService();
   static final UserService UService = new UserService(userInterface, authInterface);
   static final GameService GService = new GameService(gameInterface);
 

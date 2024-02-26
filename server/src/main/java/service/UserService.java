@@ -5,6 +5,7 @@ import dataAccess.DataAccessException;
 import dataAccess.UserDAOInterface;
 import model.AuthData;
 import model.UserData;
+import reqAndRes.RegistrationRes;
 
 import java.util.Collection;
 
@@ -18,7 +19,7 @@ public class UserService {
     this.authInterface = authInterface;
   }
 
-  public String register(UserData user) throws DataAccessException {
+  public RegistrationRes register(UserData user) throws DataAccessException {
     // check if user exists
     if (userInterface.getUser(user.username()) != null) {
       return null;
@@ -27,7 +28,7 @@ public class UserService {
     userInterface.addUser(user);
     var authData = authInterface.createAuthToken(user.username());
     authInterface.addAuthData(authData);
-    return authData.authToken();
+    return new RegistrationRes(authData.authToken(), user.username(), null);
   }
 
   public Collection<UserData> listUsers() throws DataAccessException {

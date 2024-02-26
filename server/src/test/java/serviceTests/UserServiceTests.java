@@ -17,7 +17,7 @@ public class UserServiceTests {
   static final AuthDAOInterface authInterface= AuthDAO.getInstance();
   static final GameDAOInterface gameInterface= GameDAO.getInstance();
   static final UserService UService = new UserService(userInterface, authInterface);
-  static final ClearAppService service = new ClearAppService(authInterface, gameInterface, userInterface);
+  static final ClearAppService service = new ClearAppService();
 
   @BeforeEach
   void clear() throws DataAccessException {
