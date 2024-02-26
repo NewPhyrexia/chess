@@ -48,6 +48,6 @@ public class UserServiceTests {
     var token = UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
     var newToken = UService.login(new UserData("Dakota", "isCool4", "Iam@hotmail.com"));
 
-//    assertEquals(auth);
+    assertNull(newToken); // May need to update test after connecting with server
   }
 }

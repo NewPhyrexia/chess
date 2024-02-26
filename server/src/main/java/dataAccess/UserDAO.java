@@ -31,6 +31,13 @@ public class UserDAO implements UserDAOInterface{
     return allUserData.get(username);
   }
 
+  public String getPassword(String username) {
+
+    var user = allUserData.get(username);
+    return user.password();
+  }
+
+
   public void deleteUser(String username) {
     allUserData.remove(username);
   }
