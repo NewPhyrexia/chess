@@ -1,4 +1,4 @@
 package reqAndRes;
 
-public record ListGamesReq() {
+public record ListGamesReq(String authToken) {
 }

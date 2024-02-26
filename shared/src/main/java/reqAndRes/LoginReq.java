@@ -1,4 +1,4 @@
 package reqAndRes;
 
-public record LoginReq() {
+public record LoginReq(String username, String password) {
 }

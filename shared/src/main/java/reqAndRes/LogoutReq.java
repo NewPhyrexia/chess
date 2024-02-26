@@ -1,4 +1,4 @@
 package reqAndRes;
 
-public record LogoutReq() {
+public record LogoutReq(String authToken) {
 }
