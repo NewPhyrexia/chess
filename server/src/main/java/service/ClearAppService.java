@@ -8,9 +8,9 @@ import dataAccess.UserDAOInterface;
 
 public class ClearAppService {
 
-  private AuthDAOInterface authInterface;
-  private GameDAOInterface gameInterface;
-  private UserDAOInterface userInterface;
+  private final AuthDAOInterface authInterface;
+  private final GameDAOInterface gameInterface;
+  private final UserDAOInterface userInterface;
 
   public ClearAppService(AuthDAOInterface authInterface, GameDAOInterface gameInterface, UserDAOInterface userInterface) {
     this.authInterface = authInterface;

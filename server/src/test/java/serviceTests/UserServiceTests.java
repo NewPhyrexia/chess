@@ -3,7 +3,6 @@ package serviceTests;
 import dataAccess.*;
 import model.UserData;
 import org.junit.jupiter.api.Test;
-import service.ClearAppService;
 import service.UserService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,7 +60,7 @@ public class UserServiceTests {
 
   @Test
   void failedLogout() throws DataAccessException {
-    var token = "nonExistantToken";
+    var token = "nonExistentToken";
     UService.logout(token);
 
     assertNull(authInterface.getAuthToken(token), "The token should still be null");

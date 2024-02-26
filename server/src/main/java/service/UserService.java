@@ -2,7 +2,6 @@ package service;
 
 import dataAccess.AuthDAOInterface;
 import dataAccess.DataAccessException;
-import dataAccess.GameDAOInterface;
 import dataAccess.UserDAOInterface;
 import model.AuthData;
 import model.UserData;
@@ -11,9 +10,8 @@ import java.util.Collection;
 
 public class UserService {
 
-  private AuthDAOInterface authInterface;
-  private UserDAOInterface userInterface;
-  private GameDAOInterface gameInterface;
+  private final AuthDAOInterface authInterface;
+  private final UserDAOInterface userInterface;
 
   public UserService(UserDAOInterface userInterface, AuthDAOInterface authInterface) {
     this.userInterface = userInterface;
