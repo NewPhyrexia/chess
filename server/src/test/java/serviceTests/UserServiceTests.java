@@ -1,19 +1,18 @@
 package serviceTests;
 
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.UserDAO;
+import dataAccess.*;
 import model.UserData;
 import org.junit.jupiter.api.Test;
+import service.ClearAppService;
 import service.UserService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTests {
 
-  static final UserDAO userDAO = UserDAO.getInstance();
-  static final AuthDAO authDAO = AuthDAO.getInstance();
-  static final UserService UService = new UserService(userDAO, authDAO);
+  static final UserDAOInterface userInterface= UserDAO.getInstance();
+  static final AuthDAOInterface authInterface= AuthDAO.getInstance();
+  static final UserService UService = new UserService(userInterface, authInterface);
 
   @Test
   void createUser() throws DataAccessException {
@@ -38,11 +37,17 @@ public class UserServiceTests {
 
   @Test
   void successfulLogin() throws DataAccessException {
-    UService.login(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
+    var token = UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
+    var newToken = UService.login(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
+
+    assertNotEquals(token, newToken);
   }
 
   @Test
   void passwordDoesntMatch() throws DataAccessException {
+    var token = UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
+    var newToken = UService.login(new UserData("Dakota", "isCool4", "Iam@hotmail.com"));
 
+//    assertEquals(auth);
   }
 }

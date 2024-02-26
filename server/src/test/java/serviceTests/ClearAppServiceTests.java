@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClearAppServiceTests {
 
-  static final UserDAO userDAO = UserDAO.getInstance();
-  static final AuthDAO authDAO = AuthDAO.getInstance();
-  static final GameDAO gameDAO = GameDAO.getInstance();
-  static final ClearAppService service = new ClearAppService(authDAO, gameDAO, userDAO);
-  static final UserService UService = new UserService(userDAO, authDAO);
-  static final GameService GService = new GameService(gameDAO);
+  static final UserDAOInterface userInterface= UserDAO.getInstance();
+  static final AuthDAOInterface authInterface= AuthDAO.getInstance();
+  static final GameDAOInterface gameInterface= GameDAO.getInstance();
+  static final ClearAppService service = new ClearAppService(authInterface, gameInterface, userInterface);
+  static final UserService UService = new UserService(userInterface, authInterface);
+  static final GameService GService = new GameService(gameInterface);
 
   @Test
   void deleteAll() throws DataAccessException {
