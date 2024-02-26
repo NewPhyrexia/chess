@@ -6,6 +6,7 @@ import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reqAndRes.ClearAppServiceReq;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
@@ -23,7 +24,7 @@ public class GameServiceTests {
 
   @BeforeEach
   void clear() throws DataAccessException {
-    service.deleteAllDB();
+    service.deleteAllDB(new ClearAppServiceReq());
   }
 
   @Test

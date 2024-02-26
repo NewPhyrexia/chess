@@ -6,6 +6,7 @@ import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reqAndRes.ClearAppServiceReq;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
@@ -23,7 +24,7 @@ public class ClearAppServiceTests {
 
   @BeforeEach
   void clear() throws DataAccessException {
-    service.deleteAllDB();
+    service.deleteAllDB(new ClearAppServiceReq());
   }
   @Test
   void deleteAll() throws DataAccessException {
@@ -37,7 +38,7 @@ public class ClearAppServiceTests {
     GService.createGame(token2, new GameData(2000, "Steve", "Samuel Jackson", "CoolGame", new ChessGame()));
     GService.createGame(token3, new GameData(3000, "Chad", "Mike Tyson", "BestGame", new ChessGame()));
 
-    service.deleteAllDB();
+    service.deleteAllDB(new ClearAppServiceReq());
     assertEquals(0, UService.listUsers().size());
     assertEquals(0, UService.listAuthTokens().size());
     assertEquals(0, GService.listGames().size());

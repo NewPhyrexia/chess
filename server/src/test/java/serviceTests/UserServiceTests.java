@@ -5,6 +5,7 @@ import model.AuthData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reqAndRes.ClearAppServiceReq;
 import service.ClearAppService;
 import service.UserService;
 
@@ -21,7 +22,7 @@ public class UserServiceTests {
 
   @BeforeEach
   void clear() throws DataAccessException {
-    service.deleteAllDB();
+    service.deleteAllDB(new ClearAppServiceReq());
   }
   @Test
   void createUser() throws DataAccessException {
