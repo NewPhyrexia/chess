@@ -33,7 +33,7 @@ public class GameService {
   }
 
 
-  public void joinGame(String playerColor, int gameID) {
+  public record joinGame(String playerColor, int gameID) {
 
   }
 }
