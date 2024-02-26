@@ -1,10 +1,7 @@
 package service;
 
-import com.google.gson.JsonElement;
 import dataAccess.*;
-import model.AuthData;
 import model.GameData;
-import model.UserData;
 
 import java.util.Collection;
 

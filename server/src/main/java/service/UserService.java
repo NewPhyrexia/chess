@@ -4,7 +4,7 @@ import dataAccess.AuthDAOInterface;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAOInterface;
 import model.AuthData;
-import model.UserData;
+import model.RegistrationReq;
 import reqAndRes.RegistrationRes;
 
 import java.util.Collection;
@@ -19,27 +19,19 @@ public class UserService {
     this.authInterface = authInterface;
   }
 
-  public RegistrationRes register(UserData user) throws DataAccessException {
+  public RegistrationRes register(RegistrationReq req) throws DataAccessException {
     // check if user exists
+    var user = new RegistrationReq(req.username(), req.password(), req.email());
     if (userInterface.getUser(user.username()) != null) {
       return null;
     }
-
     userInterface.addUser(user);
     var authData = authInterface.createAuthToken(user.username());
     authInterface.addAuthData(authData);
     return new RegistrationRes(authData.authToken(), user.username(), null);
   }
 
-  public Collection<UserData> listUsers() throws DataAccessException {
-    return userInterface.listUsers();
-  }
-
-  public Collection<AuthData> listAuthTokens() throws DataAccessException {
-    return authInterface.listAuthTokens();
-  }
-
-  public String login(UserData  user) throws DataAccessException {
+  public String login(RegistrationReq user) throws DataAccessException {
     // user not in system
     if (userInterface.getUser(user.username()) == null) {
       return null;
@@ -59,4 +51,11 @@ public class UserService {
     authInterface.deleteAuthToken(authToken.authToken());
   }
 
+  public Collection<RegistrationReq> listUsers() throws DataAccessException {
+    return userInterface.listUsers();
+  }
+
+  public Collection<AuthData> listAuthTokens() throws DataAccessException {
+    return authInterface.listAuthTokens();
+  }
 }
