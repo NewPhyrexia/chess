@@ -5,6 +5,7 @@ import dataAccess.DataAccessException;
 import dataAccess.UserDAOInterface;
 import model.AuthData;
 import model.RegistrationReq;
+import reqAndRes.ClearAppServiceRes;
 import reqAndRes.RegistrationRes;
 
 import java.util.Collection;
@@ -20,14 +21,25 @@ public class UserService {
   }
 
   public RegistrationRes register(RegistrationReq req) throws DataAccessException {
-    // check if user exists
     var user = new RegistrationReq(req.username(), req.password(), req.email());
-    if (userInterface.getUser(user.username()) != null) {
-      return null;
+    AuthData authData = null;
+    // check if user exists
+    try {
+        if (user.username() == null || user.password() == null || user.email() == null) {
+          return new RegistrationRes(null,null,"Error: bad request");
+        }
+        if (userInterface.getUser(user.username()) != null) {
+          return new RegistrationRes(null, null, "Error: already taken");
+        }
+
+        userInterface.addUser(user);
+        authData=authInterface.createAuthToken(user.username());
+        authInterface.addAuthData(authData);
+    } catch(Exception e) {
+      if (e instanceof DataAccessException){
+        return new RegistrationRes(null, null,"Error: DataAccessException.");
+      }
     }
-    userInterface.addUser(user);
-    var authData = authInterface.createAuthToken(user.username());
-    authInterface.addAuthData(authData);
     return new RegistrationRes(authData.authToken(), user.username(), null);
   }
 
