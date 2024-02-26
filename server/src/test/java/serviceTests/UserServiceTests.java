@@ -45,9 +45,25 @@ public class UserServiceTests {
 
   @Test
   void passwordDoesntMatch() throws DataAccessException {
-    var token = UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
+    UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
     var newToken = UService.login(new UserData("Dakota", "isCool4", "Iam@hotmail.com"));
 
-    assertNull(newToken); // May need to update test after connecting with server
+    assertNull(newToken); // May need to update test after connecting with server as this may return an error
+  }
+
+  @Test
+  void logoutSuccess() throws DataAccessException{
+    var token = UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
+    UService.logout(token);
+
+    assertNull(authInterface.getAuthToken(token));
+  }
+
+  @Test
+  void failedLogout() throws DataAccessException {
+    var token = "nonExistantToken";
+    UService.logout(token);
+
+    assertNull(authInterface.getAuthToken(token), "The token should still be null");
   }
 }
