@@ -1,6 +1,7 @@
 package serviceTests;
 
 import dataAccess.*;
+import model.AuthData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,17 +62,21 @@ public class UserServiceTests {
 
   @Test
   void logoutSuccess() throws DataAccessException{
-    var token = UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
-    UService.logout(token);
+    var user = new UserData("Dakota", "1sC00l4", "Iam@hotmail.com");
+    userInterface.addUser(user);
+    var authData = authInterface.createAuthToken(user.username());
+    authInterface.addAuthData(authData);
 
-    assertNull(authInterface.getAuthToken(token));
+    UService.logout(authData);
+
+    assertNull(authInterface.getAuthToken(authData.authToken()));
   }
 
   @Test
   void failedLogout() throws DataAccessException {
-    var token = "nonExistentToken";
-    UService.logout(token);
+    AuthData authData = new AuthData("nonExistentUser", "Nobody");
+    UService.logout(authData);
 
-    assertNull(authInterface.getAuthToken(token), "The token should still be null");
+    assertNull(authInterface.getAuthToken(authData.authToken()), "The token should still be null");
   }
 }

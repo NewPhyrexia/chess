@@ -1,5 +1,6 @@
 package service;
 
+import com.google.gson.JsonElement;
 import dataAccess.*;
 import model.AuthData;
 import model.GameData;
@@ -32,5 +33,7 @@ public class GameService {
   }
 
 
-//  public AuthData joinGame(GameData game) {}
+  public void joinGame(String playerColor, int gameID) {
+
+  }
 }

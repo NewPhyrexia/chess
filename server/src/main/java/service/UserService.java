@@ -54,8 +54,8 @@ public class UserService {
       return token.authToken();
   }
 
-  public void logout(String token) throws DataAccessException{
-    authInterface.deleteAuthToken(token);
+  public void logout(AuthData authToken) throws DataAccessException{
+    authInterface.deleteAuthToken(authToken.authToken());
   }
 
 }
