@@ -4,6 +4,7 @@ import chess.ChessGame;
 import dataAccess.*;
 import model.GameData;
 import model.UserData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.ClearAppService;
 import service.GameService;
@@ -20,6 +21,10 @@ public class ClearAppServiceTests {
   static final UserService UService = new UserService(userInterface, authInterface);
   static final GameService GService = new GameService(gameInterface);
 
+  @BeforeEach
+  void clear() throws DataAccessException {
+    service.deleteAllDB();
+  }
   @Test
   void deleteAll() throws DataAccessException {
     // add user and token

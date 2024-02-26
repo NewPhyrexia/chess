@@ -2,17 +2,26 @@ package serviceTests;
 
 import dataAccess.*;
 import model.UserData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import service.ClearAppService;
 import service.UserService;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 public class UserServiceTests {
 
   static final UserDAOInterface userInterface= UserDAO.getInstance();
   static final AuthDAOInterface authInterface= AuthDAO.getInstance();
+  static final GameDAOInterface gameInterface= GameDAO.getInstance();
   static final UserService UService = new UserService(userInterface, authInterface);
+  static final ClearAppService service = new ClearAppService(authInterface, gameInterface, userInterface);
 
+  @BeforeEach
+  void clear() throws DataAccessException {
+    service.deleteAllDB();
+  }
   @Test
   void createUser() throws DataAccessException {
     UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
