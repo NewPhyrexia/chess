@@ -11,6 +11,7 @@ import service.GameService;
 import service.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class GameServiceTests {
   static final UserDAOInterface userInterface= UserDAO.getInstance();
@@ -24,6 +25,22 @@ public class GameServiceTests {
   void clear() throws DataAccessException {
     service.deleteAllDB();
   }
+
+  @Test
+  void successfulGameCreated() throws  DataAccessException {
+    var token1 = UService.register(new UserData("Dakota", "1sC00l4", "Iam@hotmail.com"));
+
+    GService.createGame(token1, new GameData(1000, "Johnny", "Lebron James", "AwesomeGame", new ChessGame()));
+    assertEquals(1, GService.listAllGames(token1).size());
+  }
+
+  @Test
+  void nonUserCantCreateGame() throws DataAccessException {
+    String token = "token";
+    GService.createGame(token, new GameData(1000, "Johnny", "Lebron James", "AwesomeGame", new ChessGame()));
+    assertNull(GService.listAllGames(token));
+  }
+
   @Test
   void listAllGames() throws DataAccessException {
     // add user and token
