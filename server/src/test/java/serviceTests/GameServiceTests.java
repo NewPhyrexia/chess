@@ -1,12 +1,13 @@
 package serviceTests;
 
 import dataAccess.*;
-import model.RegistrationReq;
+import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reqAndRes.ClearAppServiceReq;
 import reqAndRes.CreateGameReq;
 import reqAndRes.ListGamesReq;
+import reqAndRes.RegistrationReq;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
@@ -57,13 +58,13 @@ public class GameServiceTests {
     GService.createGame(new CreateGameReq(token2.authToken(), "game2"));
     GService.createGame(new CreateGameReq(token3.authToken(), "game3"));
 
-
     assertEquals(3, GService.listGames(new ListGamesReq(token1.authToken())).listOfGames().size());
   }
 
   @Test
   void noGamesToList() throws DataAccessException {
     var token1 = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
+
     assertEquals(0, GService.listGames(new ListGamesReq(token1.authToken())).listOfGames().size());
   }
 }

@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import dataAccess.*;
 import reqAndRes.ClearAppServiceReq;
+import reqAndRes.RegistrationReq;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
@@ -22,7 +23,7 @@ public class Server {
 
     // Register your endpoints and handle exceptions here.
     Spark.delete("/db", this::ClearApp);
-//    Spark.post("/user", this::Register);
+    Spark.post("/user", this::Register);
 //    Spark.post("/session", this::Login);
 //    Spark.delete("/session", this::Logout);
 //    Spark.get("/game", this::ListGames);
@@ -61,9 +62,14 @@ public class Server {
     return new Gson().toJson(result);
   }
 
-//  public Object Register(Request req, Response res) throws DataAccessException {
-//
-//  }
+  public Object Register(Request req, Response res) throws DataAccessException {
+    var reqBody = req.body();
+    var registrationReq = new Gson().fromJson(reqBody, RegistrationReq.class);
+    var result = UService.register(registrationReq);
+
+
+    return new Gson().toJson(result);
+  }
 //
 //  public Object Login(Request req, Response res) throws DataAccessException {
 //

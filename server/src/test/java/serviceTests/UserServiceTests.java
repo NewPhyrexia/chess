@@ -2,11 +2,13 @@ package serviceTests;
 
 import dataAccess.*;
 import model.AuthData;
-import model.RegistrationReq;
+import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reqAndRes.ClearAppServiceReq;
+import reqAndRes.LoginReq;
 import reqAndRes.LogoutReq;
+import reqAndRes.RegistrationReq;
 import service.ClearAppService;
 import service.UserService;
 
@@ -48,7 +50,7 @@ public class UserServiceTests {
   @Test
   void successfulLogin() throws DataAccessException {
     var token = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
-    var newToken = UService.login(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
+    var newToken = UService.login(new LoginReq("Dakota", "1sC00l4"));
 
     assertNotEquals(token, newToken);
   }
@@ -56,14 +58,14 @@ public class UserServiceTests {
   @Test
   void passwordDoesntMatch() throws DataAccessException {
     UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
-    var LoginRes = UService.login(new RegistrationReq("Dakota", "isCool4", "Iam@hotmail.com"));
+    var LoginRes = UService.login(new LoginReq("Dakota", "isCool4"));
     var newToken = LoginRes.authToken();
     assertNull(newToken);
   }
 
   @Test
   void logoutSuccess() throws DataAccessException{
-    var user = new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com");
+    var user = new UserData("Dakota", "1sC00l4", "Iam@hotmail.com");
     userInterface.addUser(user);
     var authData = authInterface.createAuthToken(user.username());
     authInterface.addAuthData(authData);

@@ -2,7 +2,8 @@ package service;
 
 import dataAccess.*;
 import model.AuthData;
-import model.RegistrationReq;
+import model.GameData;
+import model.UserData;
 import reqAndRes.*;
 
 import java.util.Collection;
@@ -16,9 +17,10 @@ public class UserService {
   public UserService() {
   }
 
-  public RegistrationRes register(RegistrationReq user) throws DataAccessException {
+  public RegistrationRes register(RegistrationReq req) throws DataAccessException {
     AuthData authData = null;
     // check if user exists
+    var user = new UserData(req.username(),req.password(),req.email());
     try {
         if (user.username() == null || user.password() == null || user.email() == null) {
           return new RegistrationRes(null,null,"Error: bad request");
@@ -38,7 +40,7 @@ public class UserService {
     return new RegistrationRes(authData.authToken(), user.username(), null);
   }
 
-  public LoginRes login(RegistrationReq user) throws DataAccessException {
+  public LoginRes login(LoginReq user) throws DataAccessException {
     AuthData authData=null;
 
     try {
@@ -75,7 +77,7 @@ public class UserService {
     return new LogoutRes(null);
   }
 
-  public Collection<RegistrationReq> listUsers() throws DataAccessException {
+  public Collection<UserData> listUsers() throws DataAccessException {
     return userInterface.listUsers();
   }
 

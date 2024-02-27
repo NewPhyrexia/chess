@@ -1,15 +1,15 @@
 package dataAccess;
 
-import model.RegistrationReq;
+import model.UserData;
 
 import java.util.Collection;
 
 public interface UserDAOInterface {
-  RegistrationReq addUser(RegistrationReq user) throws DataAccessException;
+  UserData addUser(UserData user) throws DataAccessException;
 
-  Collection<RegistrationReq> listUsers() throws DataAccessException;
+  Collection<UserData> listUsers() throws DataAccessException;
 
-  RegistrationReq getUser(String username) throws DataAccessException;
+  UserData getUser(String username) throws DataAccessException;
 
   String getPassword(String username) throws DataAccessException;
 

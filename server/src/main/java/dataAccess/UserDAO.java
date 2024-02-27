@@ -1,13 +1,13 @@
 package dataAccess;
 
-import model.RegistrationReq;
+import model.UserData;
 
 import java.util.Collection;
 import java.util.HashMap;
 
 public class UserDAO implements UserDAOInterface{
 
-  final private HashMap<String, RegistrationReq> allUserData = new HashMap<>();
+  final private HashMap<String, UserData> allUserData = new HashMap<>();
 
   private static UserDAO instance;
 
@@ -18,16 +18,16 @@ public class UserDAO implements UserDAOInterface{
     return instance;
   }
 
-  public RegistrationReq addUser(RegistrationReq user)  {
-    user = new RegistrationReq(user.username(), user.password(), user.email());
+  public UserData addUser(UserData user)  {
+    user = new UserData(user.username(), user.password(), user.email());
 
     allUserData.put(user.username(),user);
     return user;
   }
-  public Collection<RegistrationReq> listUsers() {
+  public Collection<UserData> listUsers() {
     return allUserData.values();
   }
-  public RegistrationReq getUser(String username) {
+  public UserData getUser(String username) {
     return allUserData.get(username);
   }
 
