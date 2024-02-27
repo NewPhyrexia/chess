@@ -6,6 +6,7 @@ import dataAccess.UserDAOInterface;
 import model.AuthData;
 import model.RegistrationReq;
 import reqAndRes.ClearAppServiceRes;
+import reqAndRes.LoginRes;
 import reqAndRes.RegistrationRes;
 
 import java.util.Collection;
@@ -20,8 +21,7 @@ public class UserService {
     this.authInterface = authInterface;
   }
 
-  public RegistrationRes register(RegistrationReq req) throws DataAccessException {
-    var user = new RegistrationReq(req.username(), req.password(), req.email());
+  public RegistrationRes register(RegistrationReq user) throws DataAccessException {
     AuthData authData = null;
     // check if user exists
     try {
@@ -43,20 +43,27 @@ public class UserService {
     return new RegistrationRes(authData.authToken(), user.username(), null);
   }
 
-  public String login(RegistrationReq user) throws DataAccessException {
-    // user not in system
-    if (userInterface.getUser(user.username()) == null) {
-      return null;
-    }
-    // provided password does not match saved password
-    if (!user.password().equals(userInterface.getUser(user.username()).password())) {
-      return null;
-    }
-      // create new authToken
-      var token = authInterface.createAuthToken(user.username());
-      authInterface.addAuthData(token);
+  public LoginRes login(RegistrationReq user) throws DataAccessException {
+    AuthData authData=null;
 
-      return token.authToken();
+    try {
+      // user not in system
+      if (userInterface.getUser(user.username()) == null) {
+        return null;
+      }
+      // provided password does not match saved password
+      if (!user.password().equals(userInterface.getUser(user.username()).password())) {
+        return null;
+      }
+      // create new authToken
+      authData=authInterface.createAuthToken(user.username());
+      authInterface.addAuthData(authData);
+    } catch (Exception e) {
+      if (e instanceof DataAccessException) {
+        return new LoginRes(null, null, "Error: DataAccessException.");
+      }
+    }
+    return new LoginRes(authData.authToken(), user.username(), null);
   }
 
   public void logout(AuthData authToken) throws DataAccessException{
