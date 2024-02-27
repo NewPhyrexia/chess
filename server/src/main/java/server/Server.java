@@ -56,7 +56,7 @@ public class Server {
       res.status(200);
     }
     else {
-      res.status(500  );
+      res.status(500);
     }
     res.type("application/json");
     return new Gson().toJson(result);
@@ -66,8 +66,19 @@ public class Server {
     var reqBody = req.body();
     var registrationReq = new Gson().fromJson(reqBody, RegistrationReq.class);
     var result = UService.register(registrationReq);
-
-
+    if (result.message() == null){
+      res.status(200);
+    }
+    else if (result.message().equals("Error: bad request.")) {
+      res.status(400);
+    }
+    else if (result.message().equals("Error: already taken.")) {
+      res.status(403);
+    }
+    else {
+      res.status(500);
+    }
+    res.type("application/json");
     return new Gson().toJson(result);
   }
 //
