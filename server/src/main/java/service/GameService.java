@@ -13,7 +13,7 @@ public class GameService {
   private final HelperService helperService = new HelperService(authInterface);
 
 
-  public GameService(GameDAOInterface gameInterface) {this.gameInterface = gameInterface;}
+  public GameService() {}
   int gameID = 0;
   public CreateGameRes createGame(CreateGameReq req) throws DataAccessException {
     try {

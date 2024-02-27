@@ -9,13 +9,11 @@ import java.util.Collection;
 
 public class UserService {
 
-  private final AuthDAOInterface authInterface;
-  private final UserDAOInterface userInterface;
+  private final AuthDAOInterface authInterface = AuthDAO.getInstance();
+  private final UserDAOInterface userInterface = UserDAO.getInstance();
 
 
-  public UserService(UserDAOInterface userInterface, AuthDAOInterface authInterface) {
-    this.userInterface = userInterface;
-    this.authInterface = authInterface;
+  public UserService() {
   }
 
   public RegistrationRes register(RegistrationReq user) throws DataAccessException {

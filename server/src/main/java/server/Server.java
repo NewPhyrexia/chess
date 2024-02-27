@@ -1,9 +1,19 @@
 package server;
 
-import dataAccess.DataAccessException;
+import com.google.gson.Gson;
+import dataAccess.*;
+import reqAndRes.ClearAppServiceReq;
+import service.ClearAppService;
+import service.GameService;
+import service.UserService;
 import spark.*;
 
 public class Server {
+
+  private final ClearAppService CAService = new ClearAppService();
+  private final UserService UService = new UserService();
+  private final GameService GService = new GameService();
+
 
   public int run(int desiredPort) {
     Spark.port(desiredPort);
@@ -38,7 +48,17 @@ public class Server {
   }
 
   public Object ClearApp(Request req, Response res) throws DataAccessException {
-
+    String reqBody = req.body();
+    var clearAppReq = new Gson().fromJson(reqBody, ClearAppServiceReq.class);
+    var result = CAService.deleteAllDB(clearAppReq);
+    if (result.message() == null){
+      res.status(200);
+    }
+    else {
+      res.status(500  );
+    }
+    res.type("application/json");
+    return new Gson().toJson(result);
   }
 
 //  public Object Register(Request req, Response res) throws DataAccessException {

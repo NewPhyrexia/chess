@@ -1,4 +1,5 @@
 import chess.*;
+import dataAccess.AuthDAOInterface;
 import server.Server;
 
 public class ServerMain {
@@ -8,8 +9,8 @@ public class ServerMain {
             if (args.length >= 1) {
                 port = Integer.parseInt(args[0]);
             }
-            var server = new Server(/* add data access here*/);
-            port = server.port();
+            var server = new Server().run(port);
+//            port = server.port();
             System.out.printf("Server started on port %d%n", port);
             return;
         } catch (Throwable ex) {
