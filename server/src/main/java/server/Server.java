@@ -2,8 +2,7 @@ package server;
 
 import com.google.gson.Gson;
 import dataAccess.*;
-import reqAndRes.ClearAppServiceReq;
-import reqAndRes.RegistrationReq;
+import reqAndRes.*;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
@@ -24,11 +23,11 @@ public class Server {
     // Register your endpoints and handle exceptions here.
     Spark.delete("/db", this::ClearApp);
     Spark.post("/user", this::Register);
-//    Spark.post("/session", this::Login);
-//    Spark.delete("/session", this::Logout);
-//    Spark.get("/game", this::ListGames);
-//    Spark.post("/game", this::CreateGame);
-//    Spark.put("/game", this::JoinGame);
+    Spark.post("/session", this::Login);
+    Spark.delete("/session", this::Logout);
+    Spark.get("/game", this::ListGames);
+    Spark.post("/game", this::CreateGame);
+    Spark.put("/game", this::JoinGame);
     Spark.exception(DataAccessException.class, this::exceptionHandler);
 
     Spark.awaitInitialization();
@@ -81,24 +80,98 @@ public class Server {
     res.type("application/json");
     return new Gson().toJson(result);
   }
-//
-//  public Object Login(Request req, Response res) throws DataAccessException {
-//
-//  }
-//
-//  public Object Logout(Request req, Response res) throws DataAccessException {
-//
-//  }
-//
-//  public Object ListGames(Request req, Response res) throws DataAccessException {
-//
-//  }
-//
-//  public Object CreateGame(Request req, Response res) throws DataAccessException {
-//
-//  }
-//
-//  public Object JoinGame(Request req, Response res) throws DataAccessException {
-//
-//  }
+
+  public Object Login(Request req, Response res) throws DataAccessException {
+    var reqBody = req.body();
+    var loginReq = new Gson().fromJson(reqBody, LoginReq.class);
+    var result = UService.login(loginReq);
+    if (result.message() == null){
+      res.status(200);
+    }
+    else if (result.message().equals("Error: unauthorized.")) {
+      res.status(401);
+    }
+    else {
+      res.status(500);
+    }
+    res.type("application/json");
+    return new Gson().toJson(result);
+  }
+
+  public Object Logout(Request req, Response res) throws DataAccessException {
+    var reqHeaders = req.headers("authorization");
+    var logoutReq = new LogoutReq(reqHeaders);
+    var result = UService.logout(logoutReq);
+    if (result.message() == null){
+      res.status(200);
+    }
+    else if (result.message().equals("Error: unauthorized.")) {
+      res.status(401);
+    }
+    else {
+      res.status(500);
+    }
+    res.type("application/json");
+    return new Gson().toJson(result);
+  }
+
+  public Object ListGames(Request req, Response res) throws DataAccessException {
+    var reqHeaders = req.headers("authorization");
+    var listGamesReq = new ListGamesReq(reqHeaders);
+    var result = GService.listGames(listGamesReq);
+    if (result.message() == null){
+      res.status(200);
+    }
+    else if (result.message().equals("Error: unauthorized.")) {
+      res.status(401);
+    }
+    else {
+      res.status(500);
+    }
+    res.type("application/json");
+    return new Gson().toJson(result);
+  }
+
+  public Object CreateGame(Request req, Response res) throws DataAccessException {
+    var reqHeaders = req.headers("authorization");
+    var reqBody = req.body();
+    var createGameReq = new CreateGameReq(reqHeaders, new Gson().fromJson(reqBody, CreateGameReq.class).gameName());
+    var result = GService.createGame(createGameReq);
+    if (result.message() == null){
+      res.status(200);
+    }
+    else if (result.message().equals("Error: bad request.")) {
+      res.status(400);
+    }
+    else if (result.message().equals("Error: unauthorized.")) {
+      res.status(401);
+    }
+    else {
+      res.status(500);
+    }
+    res.type("application/json");
+    return new Gson().toJson(result);
+  }
+
+  public Object JoinGame(Request req, Response res) throws DataAccessException {
+    var reqHeaders = req.headers("authorization");
+    var reqBody = req.body();
+    var gson = new Gson().fromJson(reqBody, JoinGameReq.class);
+    var joinGameReq = new JoinGameReq(reqHeaders, gson.teamColor(), gson.gameID());
+    var result = GameService.joinGame(joinGameReq);
+    if (result.message() == null){
+      res.status(200);
+    }
+    else if (result.message().equals("Error: bad request.")) {
+      res.status(400);
+    }
+    else if (result.message().equals("Error: unauthorized.")) {
+      res.status(401);
+    }
+    else {
+      res.status(500);
+    }
+    res.type("application/json");
+    return new Gson().toJson(result);
+  }
 }
