@@ -17,7 +17,7 @@ public class UserServiceTests {
 
   static final UserDAOInterface userInterface= UserDAO.getInstance();
   static final AuthDAOInterface authInterface= AuthDAO.getInstance();
-  static final UserService UService = new UserService(userInterface, authInterface);
+  static final UserService UService = new UserService(userInterface,authInterface);
   static final ClearAppService service = new ClearAppService();
 
   @BeforeEach

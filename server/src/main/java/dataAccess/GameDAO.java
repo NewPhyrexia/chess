@@ -8,10 +8,10 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class GameDAO implements GameDAOInterface{
-  final private HashMap<Integer, ChessGame> allGames = new HashMap<>();
+  final private HashMap<Integer, GameData> allGames = new HashMap<>();
   private static GameDAO instance;
 
-  private static int gameID = 0;
+  public static int tempGameID = 0; // for pre server testing only
 
   public static GameDAO getInstance() {
     if (instance == null){
@@ -22,17 +22,17 @@ public class GameDAO implements GameDAOInterface{
   public int createGame(String gameName) {
     var game = new ChessGame();
     game.getBoard().resetBoard();
-
-    allGames.put(gameID, game);
-    gameID++;
+    int gameID = tempGameID;
+    allGames.put(gameID, new GameData(gameID, null, null, gameName, game));
+    tempGameID++;
     return gameID;
   }
 
-  public ChessGame getGame(int gameID) {
+  public GameData getGame(int gameID) {
     return allGames.get(gameID);
   }
 
-  public Collection<ChessGame> listGames() {
+  public Collection<GameData> listGames() {
     return allGames.values();
   }
 

@@ -7,6 +7,7 @@ import model.RegistrationReq;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reqAndRes.ClearAppServiceReq;
+import reqAndRes.CreateGameReq;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
@@ -34,9 +35,9 @@ public class ClearAppServiceTests {
     var token3 = UService.register(new RegistrationReq("Anna", "BanANNA77", "IamtheMASTERcommander@gmail.com"));
 
     // add game
-    GService.createGame(token1.authToken(), new GameData(1000, "Johnny", "Lebron James", "AwesomeGame", new ChessGame()));
-    GService.createGame(token2.authToken(), new GameData(2000, "Steve", "Samuel Jackson", "CoolGame", new ChessGame()));
-    GService.createGame(token3.authToken(), new GameData(3000, "Chad", "Mike Tyson", "BestGame", new ChessGame()));
+    GService.createGame(new CreateGameReq(token1.authToken(), "game1"));
+    GService.createGame(new CreateGameReq(token2.authToken(), "game2"));
+    GService.createGame(new CreateGameReq(token3.authToken(), "game3"));
 
     service.deleteAllDB(new ClearAppServiceReq());
     assertEquals(0, UService.listUsers().size());

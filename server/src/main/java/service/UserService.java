@@ -1,8 +1,6 @@
 package service;
 
-import dataAccess.AuthDAOInterface;
-import dataAccess.DataAccessException;
-import dataAccess.UserDAOInterface;
+import dataAccess.*;
 import model.AuthData;
 import model.RegistrationReq;
 import reqAndRes.*;
@@ -13,6 +11,7 @@ public class UserService {
 
   private final AuthDAOInterface authInterface;
   private final UserDAOInterface userInterface;
+
 
   public UserService(UserDAOInterface userInterface, AuthDAOInterface authInterface) {
     this.userInterface = userInterface;

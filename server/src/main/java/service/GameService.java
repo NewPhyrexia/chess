@@ -14,11 +14,19 @@ public class GameService {
 
 
   public GameService(GameDAOInterface gameInterface) {this.gameInterface = gameInterface;}
+  int gameID = 0;
   public CreateGameRes createGame(CreateGameReq req) throws DataAccessException {
-    if (helperService.AuthTokenCheck(req.authToken())) {
-      var gameID = gameInterface.createGame(req.gameName());
-      return gameID;
-    } else return new CreateGameRes();
+    try {
+        if (!helperService.AuthTokenCheck(req.authToken())) {
+          return new CreateGameRes(0,"Error: unauthorized");
+        }
+        gameID = gameInterface.createGame(req.gameName());
+    } catch(Exception e) {
+      if (e instanceof DataAccessException){
+        return new CreateGameRes( 0,"Error: DataAccessException.");
+      }
+    }
+    return new CreateGameRes(gameID,null);
   }
 
   public ListGamesRes listGames(ListGamesReq req) throws DataAccessException {

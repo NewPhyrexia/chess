@@ -9,9 +9,9 @@ public interface GameDAOInterface {
 
   int createGame(String gameName) throws DataAccessException;
 
-  ChessGame getGame(int gameID) throws DataAccessException;
+  GameData getGame(int gameID) throws DataAccessException;
 
-  Collection<ChessGame>  listGames() throws DataAccessException;
+  Collection<GameData>  listGames() throws DataAccessException;
   void deleteGame(int gameID) throws DataAccessException;
 
   void deleteAllGames()  throws DataAccessException;
