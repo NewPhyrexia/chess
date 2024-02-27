@@ -62,20 +62,20 @@ public class GameService {
         }
         // check for existing users in game
         var username = authInterface.getAuthToken(req.authToken()).username();
-        if (req.teamColor().equalsIgnoreCase("black")) {
+        if (req.playerColor().equalsIgnoreCase("black")) {
           var blackUsername=gameInterface.getGame(req.gameID()).blackUsername();
           if (blackUsername != null
-                  && blackUsername.equals(username)) {
+                  && !blackUsername.equals(username)) {
             return new JoinGameRes("Error: already taken");
           }
-        } else if (req.teamColor().equalsIgnoreCase("white")) {
+        } else if (req.playerColor().equalsIgnoreCase("white")) {
           var whiteUsername=gameInterface.getGame(req.gameID()).whiteUsername();
           if (whiteUsername != null
-                  && whiteUsername.equals(username)) {
+                  && !whiteUsername.equals(username)) {
             return new JoinGameRes("Error: already taken");
           }
         }
-        gameInterface.updateGame(req.teamColor(), req.gameID(), username);
+        gameInterface.updateGame(req.playerColor(), req.gameID(), username);
     } catch (Exception e) {
       if (e instanceof DataAccessException) {
         return new JoinGameRes("Error: DataAccessException.");

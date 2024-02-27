@@ -157,7 +157,7 @@ public class Server {
     var reqHeaders = req.headers("authorization");
     var reqBody = req.body();
     var gson = new Gson().fromJson(reqBody, JoinGameReq.class);
-    var joinGameReq = new JoinGameReq(reqHeaders, gson.teamColor(), gson.gameID());
+    var joinGameReq = new JoinGameReq(reqHeaders, gson.playerColor(), gson.gameID());
     var result = GService.joinGame(joinGameReq);
     if (result.message() == null){
       res.status(200);
@@ -167,6 +167,9 @@ public class Server {
     }
     else if (result.message().equals("Error: unauthorized")) {
       res.status(401);
+    }
+    else if (result.message().equals("Error: already taken")) {
+      res.status(403);
     }
     else {
       res.status(500);
