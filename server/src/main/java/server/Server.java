@@ -158,7 +158,7 @@ public class Server {
     var reqBody = req.body();
     var gson = new Gson().fromJson(reqBody, JoinGameReq.class);
     var joinGameReq = new JoinGameReq(reqHeaders, gson.teamColor(), gson.gameID());
-    var result = GameService.joinGame(joinGameReq);
+    var result = GService.joinGame(joinGameReq);
     if (result.message() == null){
       res.status(200);
     }

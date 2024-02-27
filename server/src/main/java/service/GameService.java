@@ -45,8 +45,17 @@ public class GameService {
     return new ListGamesRes(gameInterface.listGames(), null);
   }
 
-  public record joinGame(String playerColor, int gameID) {
+  public JoinGameRes joinGame(JoinGameReq req) {
+    try {
+      // checks
 
+      // meat of function
+    } catch (Exception e) {
+      if (e instanceof DataAccessException) {
+        return new JoinGameRes("Error: DataAccessException.");
+      }
+    }
+    return new JoinGameRes(null);
   }
 
   public Collection<GameData> listAllGames() throws DataAccessException { // specific method for testing clearApp
