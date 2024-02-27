@@ -1,9 +1,7 @@
 package dataAccess;
 
-import chess.ChessGame;
 import model.GameData;
 
-import java.util.Collection;
 
 public interface GameDAOInterface {
 

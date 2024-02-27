@@ -34,10 +34,6 @@ public class Server {
     return Spark.port();
   }
 
-  public int port() {
-    return Spark.port();
-  }
-
   public void stop() {
     Spark.stop();
     Spark.awaitStop();
@@ -153,7 +149,7 @@ public class Server {
     return new Gson().toJson(result);
   }
 
-  public Object JoinGame(Request req, Response res) throws DataAccessException {
+  public Object JoinGame(Request req, Response res) throws DataAccessException{
     var reqHeaders = req.headers("authorization");
     var reqBody = req.body();
     var gson = new Gson().fromJson(reqBody, JoinGameReq.class);

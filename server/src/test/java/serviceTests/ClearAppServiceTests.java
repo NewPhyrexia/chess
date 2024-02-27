@@ -1,7 +1,6 @@
 package serviceTests;
 
 import dataAccess.*;
-import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reqAndRes.ClearAppServiceReq;
@@ -14,10 +13,6 @@ import service.UserService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClearAppServiceTests {
-
-  static final UserDAOInterface userInterface= UserDAO.getInstance();
-  static final AuthDAOInterface authInterface= AuthDAO.getInstance();
-  static final GameDAOInterface gameInterface= GameDAO.getInstance();
   static final ClearAppService service = new ClearAppService();
   static final UserService UService = new UserService();
   static final GameService GService = new GameService();

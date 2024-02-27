@@ -4,7 +4,6 @@ import dataAccess.*;
 import model.GameData;
 import reqAndRes.*;
 
-import java.util.Collection;
 
 public class GameService {
 
@@ -46,7 +45,7 @@ public class GameService {
     return new ListGamesRes(gameInterface.listGames(), null);
   }
 
-  public JoinGameRes joinGame(JoinGameReq req) {
+  public JoinGameRes joinGame(JoinGameReq req) throws DataAccessException {
     try {
       // checks
         // check auth
@@ -85,7 +84,5 @@ public class GameService {
   public GameData[] listAllGames() throws DataAccessException { // specific method for testing clearApp
     return gameInterface.listGames();
   }
-
-
 
 }
