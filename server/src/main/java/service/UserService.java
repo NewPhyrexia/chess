@@ -5,9 +5,7 @@ import dataAccess.DataAccessException;
 import dataAccess.UserDAOInterface;
 import model.AuthData;
 import model.RegistrationReq;
-import reqAndRes.ClearAppServiceRes;
-import reqAndRes.LoginRes;
-import reqAndRes.RegistrationRes;
+import reqAndRes.*;
 
 import java.util.Collection;
 
@@ -49,11 +47,11 @@ public class UserService {
     try {
       // user not in system
       if (userInterface.getUser(user.username()) == null) {
-        return null;
+        return new LoginRes(null,null,"Error: unauthorized");
       }
       // provided password does not match saved password
       if (!user.password().equals(userInterface.getUser(user.username()).password())) {
-        return null;
+        return new LoginRes(null,null,"Error: unauthorized");
       }
       // create new authToken
       authData=authInterface.createAuthToken(user.username());
@@ -66,8 +64,18 @@ public class UserService {
     return new LoginRes(authData.authToken(), user.username(), null);
   }
 
-  public void logout(AuthData authToken) throws DataAccessException{
-    authInterface.deleteAuthToken(authToken.authToken());
+  public LogoutRes logout(LogoutReq authToken) throws DataAccessException{
+    try {
+      if (authToken == null || authInterface.getAuthToken(authToken.authToken()) == null){
+        return new LogoutRes("Error: unauthorized");
+      }
+      authInterface.deleteAuthToken(authToken.authToken());
+    } catch (Exception e) {
+      if (e instanceof DataAccessException) {
+        return new LogoutRes("Error: DataAccessException.");
+      }
+    }
+    return new LogoutRes(null);
   }
 
   public Collection<RegistrationReq> listUsers() throws DataAccessException {

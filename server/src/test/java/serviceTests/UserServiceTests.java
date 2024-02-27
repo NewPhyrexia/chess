@@ -6,6 +6,7 @@ import model.RegistrationReq;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reqAndRes.ClearAppServiceReq;
+import reqAndRes.LogoutReq;
 import service.ClearAppService;
 import service.UserService;
 
@@ -55,8 +56,8 @@ public class UserServiceTests {
   @Test
   void passwordDoesntMatch() throws DataAccessException {
     UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
-    var newToken = UService.login(new RegistrationReq("Dakota", "isCool4", "Iam@hotmail.com"));
-
+    var LoginRes = UService.login(new RegistrationReq("Dakota", "isCool4", "Iam@hotmail.com"));
+    var newToken = LoginRes.authToken();
     assertNull(newToken); // May need to update test after connecting with server as this may return an error
   }
 
@@ -67,7 +68,7 @@ public class UserServiceTests {
     var authData = authInterface.createAuthToken(user.username());
     authInterface.addAuthData(authData);
 
-    UService.logout(authData);
+    UService.logout(new LogoutReq(authData.authToken()));
 
     assertNull(authInterface.getAuthToken(authData.authToken()));
   }
@@ -75,7 +76,7 @@ public class UserServiceTests {
   @Test
   void failedLogout() throws DataAccessException {
     AuthData authData = new AuthData("nonExistentUser", "Nobody");
-    UService.logout(authData);
+    UService.logout(new LogoutReq(authData.authToken()));
 
     assertNull(authInterface.getAuthToken(authData.authToken()), "The token should still be null");
   }
