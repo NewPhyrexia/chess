@@ -8,8 +8,8 @@ public class ServerMain {
             if (args.length >= 1) {
                 port = Integer.parseInt(args[0]);
             }
-            var server = new Server();
-            port = server.port(/* add data access here*/);
+            var server = new Server(/* add data access here*/);
+            port = server.port();
             System.out.printf("Server started on port %d%n", port);
             return;
         } catch (Throwable ex) {
