@@ -28,6 +28,17 @@ public class GameDAO implements GameDAOInterface{
     return gameID;
   }
 
+  public void updateGame(String teamColor, int gameID, String username) {
+    var gameData = getGame(gameID);
+    if (teamColor.equalsIgnoreCase("black")){
+      var updatedGameData = new GameData(gameID, null, username, gameData.gameName(),gameData.implementation());
+      allGames.put(gameID, updatedGameData);
+    } else if (teamColor.equalsIgnoreCase("white")){
+      var updatedGameData = new GameData(gameID, username, null, gameData.gameName(),gameData.implementation());
+      allGames.put(gameID, updatedGameData);
+    }
+  }
+
   public GameData getGame(int gameID) {
     return allGames.get(gameID);
   }
