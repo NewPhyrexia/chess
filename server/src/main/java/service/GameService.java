@@ -13,6 +13,13 @@ public class GameService {
 
 
   public GameService() {}
+
+  /**
+   * Creates a gameID
+   * @param req
+   * @return CreateGamesRes
+   * @throws DataAccessException
+   */
   public CreateGameRes createGame(CreateGameReq req) throws DataAccessException {
     int gameID = 0;
 
@@ -29,6 +36,12 @@ public class GameService {
     return new CreateGameRes(gameID,null);
   }
 
+  /**
+   * Creates an array of current games
+   * @param req
+   * @return ListGamesRes
+   * @throws DataAccessException
+   */
   public ListGamesRes listGames(ListGamesReq req) throws DataAccessException {
 
     try {
@@ -45,6 +58,12 @@ public class GameService {
     return new ListGamesRes(gameInterface.listGames(), null);
   }
 
+  /**
+   * Allows user to join a game as the white player, black player, or an observer
+   * @param req
+   * @return JoinGameRes
+   * @throws DataAccessException
+   */
   public JoinGameRes joinGame(JoinGameReq req) throws DataAccessException {
     try {
       // checks
@@ -81,7 +100,12 @@ public class GameService {
     return new JoinGameRes(null);
   }
 
-  public GameData[] listAllGames() throws DataAccessException { // specific method for testing clearApp
+  /**
+   * specific method for testing clearApp
+   * @return GameData[]
+   * @throws DataAccessException
+   */
+  public GameData[] listAllGames() throws DataAccessException {
     return gameInterface.listGames();
   }
 

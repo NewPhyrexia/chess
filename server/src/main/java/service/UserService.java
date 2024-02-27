@@ -12,13 +12,14 @@ public class UserService {
   private final AuthDAOInterface authInterface = AuthDAO.getInstance();
   private final UserDAOInterface userInterface = UserDAO.getInstance();
 
-
-  public UserService() {
-  }
-
+  /**
+   * registers a new user into the db and assigns an authToken
+   * @param req
+   * @return RegistrationRes
+   * @throws DataAccessException
+   */
   public RegistrationRes register(RegistrationReq req) throws DataAccessException {
     AuthData authData = null;
-    // check if user exists
     var user = new UserData(req.username(),req.password(),req.email());
     try {
         if (user.username() == null || user.password() == null || user.email() == null) {
@@ -39,9 +40,15 @@ public class UserService {
     return new RegistrationRes(authData.authToken(), user.username(), null);
   }
 
-  public LoginRes login(LoginReq user) throws DataAccessException {
+  /**
+   * logs in a valid user
+   * @param req
+   * @return LoginRes
+   * @throws DataAccessException
+   */
+  public LoginRes login(LoginReq req) throws DataAccessException {
     AuthData authData=null;
-
+    var user = req;
     try {
       // user not in system
       if (userInterface.getUser(user.username()) == null) {
@@ -62,7 +69,14 @@ public class UserService {
     return new LoginRes(authData.authToken(), user.username(), null);
   }
 
-  public LogoutRes logout(LogoutReq authToken) throws DataAccessException{
+  /**
+   * removes user associated with the authToken from db
+   * @param req
+   * @return LogoutRes
+   * @throws DataAccessException
+   */
+  public LogoutRes logout(LogoutReq req) throws DataAccessException{
+    var authToken = req;
     try {
       if (authToken == null || authInterface.getAuthToken(authToken.authToken()) == null){
         return new LogoutRes("Error: unauthorized");

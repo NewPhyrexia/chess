@@ -10,6 +10,12 @@ public class ClearAppService {
   static final AuthDAOInterface authInterface= AuthDAO.getInstance();
   static final GameDAOInterface gameInterface= GameDAO.getInstance();
 
+  /**
+   * Deletes all entries in the User, Game, and Auth databases
+   * @param request
+   * @return
+   * @throws DataAccessException
+   */
   public ClearAppServiceRes deleteAllDB(ClearAppServiceReq request) throws DataAccessException{
     try {
       userInterface.deleteAllUsers();
