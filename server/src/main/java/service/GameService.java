@@ -53,7 +53,7 @@ public class GameService {
         if (!helperService.AuthTokenCheck(req.authToken())) {
           return new JoinGameRes("Error: unauthorized");
         }
-        // check if gameID is not 0
+        // check if gameID is 0
         if (req.gameID() == 0) {
           return new JoinGameRes("Error: bad request");
         }
@@ -64,14 +64,12 @@ public class GameService {
         var username = authInterface.getAuthToken(req.authToken()).username();
         if (req.playerColor().equalsIgnoreCase("black")) {
           var blackUsername=gameInterface.getGame(req.gameID()).blackUsername();
-          if (blackUsername != null
-                  && !blackUsername.equals(username)) {
+          if (blackUsername != null) {
             return new JoinGameRes("Error: already taken");
           }
         } else if (req.playerColor().equalsIgnoreCase("white")) {
           var whiteUsername=gameInterface.getGame(req.gameID()).whiteUsername();
-          if (whiteUsername != null
-                  && !whiteUsername.equals(username)) {
+          if (whiteUsername != null) {
             return new JoinGameRes("Error: already taken");
           }
         }
@@ -84,7 +82,7 @@ public class GameService {
     return new JoinGameRes(null);
   }
 
-  public Collection<GameData> listAllGames() throws DataAccessException { // specific method for testing clearApp
+  public GameData[] listAllGames() throws DataAccessException { // specific method for testing clearApp
     return gameInterface.listGames();
   }
 

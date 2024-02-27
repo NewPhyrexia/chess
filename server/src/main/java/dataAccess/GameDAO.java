@@ -28,13 +28,13 @@ public class GameDAO implements GameDAOInterface{
     return gameID;
   }
 
-  public void updateGame(String teamColor, int gameID, String username) {
+  public void updateGame(String playerColor, int gameID, String username) {
     var gameData = getGame(gameID);
-    if (teamColor.equalsIgnoreCase("black")){
-      var updatedGameData = new GameData(gameID, null, username, gameData.gameName(),gameData.implementation());
+    if (playerColor.equalsIgnoreCase("black")){
+      var updatedGameData = new GameData(gameID, gameData.whiteUsername(), username, gameData.gameName(),gameData.implementation());
       allGames.put(gameID, updatedGameData);
-    } else if (teamColor.equalsIgnoreCase("white")){
-      var updatedGameData = new GameData(gameID, username, null, gameData.gameName(),gameData.implementation());
+    } else if (playerColor.equalsIgnoreCase("white")){
+      var updatedGameData = new GameData(gameID, username, gameData.blackUsername(), gameData.gameName(),gameData.implementation());
       allGames.put(gameID, updatedGameData);
     }
   }
@@ -43,8 +43,8 @@ public class GameDAO implements GameDAOInterface{
     return allGames.get(gameID);
   }
 
-  public Collection<GameData> listGames() {
-    return allGames.values();
+  public GameData[] listGames() {
+    return allGames.values().toArray(new GameData[0]);
   }
 
   public void deleteGame(int gameID) {

@@ -4,5 +4,5 @@ import model.GameData;
 
 import java.util.Collection;
 
-public record ListGamesRes(Collection<GameData> listOfGames, String message) {
+public record ListGamesRes(GameData[] games, String message) {
 }
