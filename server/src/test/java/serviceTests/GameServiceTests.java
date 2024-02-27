@@ -7,6 +7,7 @@ import model.RegistrationReq;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reqAndRes.ClearAppServiceReq;
+import reqAndRes.ListGamesReq;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
@@ -32,14 +33,16 @@ public class GameServiceTests {
     var token1 = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
 
     GService.createGame(token1.authToken(), new GameData(1000, "Johnny", "Lebron James", "AwesomeGame", new ChessGame()));
-    assertEquals(1, GService.listAllGames(token1.authToken()).size());
+    assertEquals(1, GService.listGames(new ListGamesReq(token1.authToken())).listOfGames().size());
   }
 
   @Test
   void nonUserCantCreateGame() throws DataAccessException {
     String token = "token";
     GService.createGame(token, new GameData(1000, "Johnny", "Lebron James", "AwesomeGame", new ChessGame()));
-    assertNull(GService.listAllGames(token));
+
+    var res = GService.listGames(new ListGamesReq(token));
+    assertNull(res.listOfGames());
   }
 
   @Test
@@ -54,12 +57,12 @@ public class GameServiceTests {
     GService.createGame(token2.authToken(), new GameData(2000, "Steve", "Samuel Jackson", "CoolGame", new ChessGame()));
     GService.createGame(token3.authToken(), new GameData(3000, "Chad", "Mike Tyson", "BestGame", new ChessGame()));
 
-    assertEquals(3, GService.listAllGames(token1.authToken()).size());
+    assertEquals(3, GService.listGames(new ListGamesReq(token1.authToken())).listOfGames().size());
   }
 
   @Test
   void noGamesToList() throws DataAccessException {
     var token1 = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
-    assertEquals(0, GService.listAllGames(token1.authToken()).size());
+    assertEquals(0, GService.listGames(new ListGamesReq(token1.authToken())).listOfGames().size());
   }
 }

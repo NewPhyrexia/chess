@@ -58,7 +58,7 @@ public class UserServiceTests {
     UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
     var LoginRes = UService.login(new RegistrationReq("Dakota", "isCool4", "Iam@hotmail.com"));
     var newToken = LoginRes.authToken();
-    assertNull(newToken); // May need to update test after connecting with server as this may return an error
+    assertNull(newToken);
   }
 
   @Test

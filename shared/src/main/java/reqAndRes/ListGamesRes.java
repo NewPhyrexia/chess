@@ -2,5 +2,7 @@ package reqAndRes;
 
 import model.GameData;
 
-public record ListGamesRes(GameData[] listOfGames, String message) {
+import java.util.Collection;
+
+public record ListGamesRes(Collection<GameData> listOfGames, String message) {
 }

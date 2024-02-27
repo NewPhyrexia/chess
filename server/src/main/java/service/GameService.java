@@ -2,6 +2,9 @@ package service;
 
 import dataAccess.*;
 import model.GameData;
+import reqAndRes.ListGamesReq;
+import reqAndRes.ListGamesRes;
+import reqAndRes.LogoutRes;
 
 import java.util.Collection;
 
@@ -19,18 +22,30 @@ public class GameService {
     } else return 0;
   }
 
-  public Collection<GameData> listAllGames(String token) throws DataAccessException {
-    if (!helperService.AuthTokenCheck(token)) {
-      return null;
-    } else return gameInterface.listGames();
-  }
+  public ListGamesRes listGames(ListGamesReq req) throws DataAccessException {
 
-  public Collection<GameData> listGames() throws DataAccessException { // specific method for testing clearApp
-    return gameInterface.listGames();
-  }
+    try {
+      if (helperService.AuthTokenCheck(req.authToken())) {
+        return new ListGamesRes(gameInterface.listGames(), null);
+      } else
+        return new ListGamesRes(null,"Error: unauthorized");
 
+    } catch (Exception e) {
+      if (e instanceof DataAccessException) {
+        return new ListGamesRes(null,"Error: DataAccessException.");
+      }
+    }
+    return new ListGamesRes(gameInterface.listGames(), null);
+  }
 
   public record joinGame(String playerColor, int gameID) {
 
   }
+
+  public Collection<GameData> listAllGames() throws DataAccessException { // specific method for testing clearApp
+    return gameInterface.listGames();
+  }
+
+
+
 }
