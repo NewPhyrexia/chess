@@ -2,9 +2,7 @@ package service;
 
 import dataAccess.*;
 import model.GameData;
-import reqAndRes.ListGamesReq;
-import reqAndRes.ListGamesRes;
-import reqAndRes.LogoutRes;
+import reqAndRes.*;
 
 import java.util.Collection;
 
@@ -14,12 +12,13 @@ public class GameService {
   private GameDAOInterface gameInterface = GameDAO.getInstance();
   private final HelperService helperService = new HelperService(authInterface);
 
+
   public GameService(GameDAOInterface gameInterface) {this.gameInterface = gameInterface;}
-  public int createGame(String token, GameData gameData) throws DataAccessException {
-    if (helperService.AuthTokenCheck(token)) {
-      var game = gameInterface.createGame(gameData);
-      return game.gameID();
-    } else return 0;
+  public CreateGameRes createGame(CreateGameReq req) throws DataAccessException {
+    if (helperService.AuthTokenCheck(req.authToken())) {
+      var gameID = gameInterface.createGame(req.gameName());
+      return gameID;
+    } else return new CreateGameRes();
   }
 
   public ListGamesRes listGames(ListGamesReq req) throws DataAccessException {

@@ -1,14 +1,17 @@
 package dataAccess;
 
 
+import chess.ChessGame;
 import model.GameData;
 
 import java.util.Collection;
 import java.util.HashMap;
 
 public class GameDAO implements GameDAOInterface{
-  final private HashMap<Integer, GameData> allGames = new HashMap<>();
+  final private HashMap<Integer, ChessGame> allGames = new HashMap<>();
   private static GameDAO instance;
+
+  private static int gameID = 0;
 
   public static GameDAO getInstance() {
     if (instance == null){
@@ -16,18 +19,20 @@ public class GameDAO implements GameDAOInterface{
     }
     return instance;
   }
-  public GameData createGame(GameData game) {
-    game = new GameData(game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName(), game.implementation());
+  public int createGame(String gameName) {
+    var game = new ChessGame();
+    game.getBoard().resetBoard();
 
-    allGames.put(game.gameID(), game);
-    return game;
+    allGames.put(gameID, game);
+    gameID++;
+    return gameID;
   }
 
-  public GameData getGame(int gameID) {
+  public ChessGame getGame(int gameID) {
     return allGames.get(gameID);
   }
 
-  public Collection<GameData> listGames() {
+  public Collection<ChessGame> listGames() {
     return allGames.values();
   }
 
