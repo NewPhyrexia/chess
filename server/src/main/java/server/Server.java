@@ -68,10 +68,10 @@ public class Server {
     if (result.message() == null){
       res.status(200);
     }
-    else if (result.message().equals("Error: bad request.")) {
+    else if (result.message().equals("Error: bad request")) {
       res.status(400);
     }
-    else if (result.message().equals("Error: already taken.")) {
+    else if (result.message().equals("Error: already taken")) {
       res.status(403);
     }
     else {
@@ -88,7 +88,7 @@ public class Server {
     if (result.message() == null){
       res.status(200);
     }
-    else if (result.message().equals("Error: unauthorized.")) {
+    else if (result.message().equals("Error: unauthorized")) {
       res.status(401);
     }
     else {
@@ -105,7 +105,7 @@ public class Server {
     if (result.message() == null){
       res.status(200);
     }
-    else if (result.message().equals("Error: unauthorized.")) {
+    else if (result.message().equals("Error: unauthorized")) {
       res.status(401);
     }
     else {
@@ -122,7 +122,7 @@ public class Server {
     if (result.message() == null){
       res.status(200);
     }
-    else if (result.message().equals("Error: unauthorized.")) {
+    else if (result.message().equals("Error: unauthorized")) {
       res.status(401);
     }
     else {
@@ -140,10 +140,10 @@ public class Server {
     if (result.message() == null){
       res.status(200);
     }
-    else if (result.message().equals("Error: bad request.")) {
+    else if (result.message().equals("Error: bad request")) {
       res.status(400);
     }
-    else if (result.message().equals("Error: unauthorized.")) {
+    else if (result.message().equals("Error: unauthorized")) {
       res.status(401);
     }
     else {
@@ -162,10 +162,10 @@ public class Server {
     if (result.message() == null){
       res.status(200);
     }
-    else if (result.message().equals("Error: bad request.")) {
+    else if (result.message().equals("Error: bad request")) {
       res.status(400);
     }
-    else if (result.message().equals("Error: unauthorized.")) {
+    else if (result.message().equals("Error: unauthorized")) {
       res.status(401);
     }
     else {
