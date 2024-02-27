@@ -1,4 +1,4 @@
-package reqAndRes;
+package req;
 
 public record ClearAppServiceReq() {
 }

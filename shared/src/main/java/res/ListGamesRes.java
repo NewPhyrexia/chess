@@ -1,4 +1,4 @@
-package reqAndRes;
+package res;
 
 import model.GameData;
 

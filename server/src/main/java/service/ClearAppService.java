@@ -1,8 +1,8 @@
 package service;
 
 import dataAccess.*;
-import reqAndRes.ClearAppServiceReq;
-import reqAndRes.ClearAppServiceRes;
+import req.ClearAppServiceReq;
+import res.ClearAppServiceRes;
 
 
 public class ClearAppService {

@@ -1,4 +1,4 @@
-package reqAndRes;
+package res;
 
 public record LogoutRes(String message) {
 }

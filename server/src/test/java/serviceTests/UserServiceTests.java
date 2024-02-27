@@ -5,10 +5,10 @@ import model.AuthData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reqAndRes.ClearAppServiceReq;
-import reqAndRes.LoginReq;
-import reqAndRes.LogoutReq;
-import reqAndRes.RegistrationReq;
+import req.ClearAppServiceReq;
+import req.LoginReq;
+import req.LogoutReq;
+import req.RegistrationReq;
 import service.ClearAppService;
 import service.UserService;
 

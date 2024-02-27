@@ -3,14 +3,16 @@ package serviceTests;
 import dataAccess.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reqAndRes.ClearAppServiceReq;
-import reqAndRes.CreateGameReq;
-import reqAndRes.RegistrationReq;
+import req.ClearAppServiceReq;
+import req.CreateGameReq;
+import req.ListGamesReq;
+import req.RegistrationReq;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ClearAppServiceTests {
   static final ClearAppService service = new ClearAppService();
@@ -36,7 +38,7 @@ public class ClearAppServiceTests {
     service.deleteAllDB(new ClearAppServiceReq());
     assertEquals(0, UService.listUsers().size());
     assertEquals(0, UService.listAuthTokens().size());
-    assertEquals(0, GService.listAllGames().length);
+    assertNull(GService.listGames(new ListGamesReq(token1.authToken())).games());
   }
 
 }

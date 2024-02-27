@@ -2,14 +2,17 @@ package service;
 
 import dataAccess.*;
 import model.GameData;
-import reqAndRes.*;
+import req.*;
+import res.CreateGameRes;
+import res.JoinGameRes;
+import res.ListGamesRes;
 
 
 public class GameService {
 
   private final AuthDAOInterface authInterface = AuthDAO.getInstance();
   private GameDAOInterface gameInterface = GameDAO.getInstance();
-  private final HelperService helperService = new HelperService(authInterface);
+  private final helperService helperService = new helperService(authInterface);
 
 
   public GameService() {}

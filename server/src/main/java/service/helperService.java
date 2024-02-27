@@ -2,12 +2,12 @@ package service;
 
 import dataAccess.*;
 
-public class HelperService {
+public class helperService {
 
 
   private AuthDAOInterface authInterface;
 
-  public HelperService(AuthDAOInterface authInterface) {
+  public helperService(AuthDAOInterface authInterface) {
     this.authInterface = authInterface;
   }
 

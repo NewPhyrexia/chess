@@ -3,7 +3,10 @@ package service;
 import dataAccess.*;
 import model.AuthData;
 import model.UserData;
-import reqAndRes.*;
+import req.*;
+import res.LoginRes;
+import res.LogoutRes;
+import res.RegistrationRes;
 
 import java.util.Collection;
 

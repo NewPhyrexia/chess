@@ -12,7 +12,5 @@ public interface GameDAOInterface {
   GameData getGame(int gameID) throws DataAccessException;
 
   GameData[]  listGames() throws DataAccessException;
-  void deleteGame(int gameID) throws DataAccessException;
-
   void deleteAllGames()  throws DataAccessException;
 }
