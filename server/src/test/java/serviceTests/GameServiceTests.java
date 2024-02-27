@@ -4,21 +4,14 @@ import dataAccess.*;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reqAndRes.ClearAppServiceReq;
-import reqAndRes.CreateGameReq;
-import reqAndRes.ListGamesReq;
-import reqAndRes.RegistrationReq;
+import reqAndRes.*;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameServiceTests {
-  static final UserDAOInterface userInterface= UserDAO.getInstance();
-  static final AuthDAOInterface authInterface= AuthDAO.getInstance();
-  static final GameDAOInterface gameInterface= GameDAO.getInstance();
   static final ClearAppService service = new ClearAppService();
   static final UserService UService = new UserService();
   static final GameService GService = new GameService();
@@ -26,7 +19,7 @@ public class GameServiceTests {
   @BeforeEach
   void clear() throws DataAccessException {
     service.deleteAllDB(new ClearAppServiceReq());
-    GameDAO.tempGameID = 0; // for pre server testing only
+    GameDAO.tempGameID = 1; // for pre server testing only
   }
 
   @Test
@@ -66,5 +59,23 @@ public class GameServiceTests {
     var token1 = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
 
     assertEquals(0, GService.listGames(new ListGamesReq(token1.authToken())).listOfGames().size());
+  }
+
+  @Test
+  void joinGameSuccess() throws DataAccessException{
+    var token1 = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
+    var createGameRes = GService.createGame(new CreateGameReq(token1.authToken(), "game1"));
+    GService.joinGame(new JoinGameReq(token1.authToken(),"WHITE", createGameRes.gameID()));
+
+    assertEquals(token1.username(), GameDAO.getInstance().getGame(createGameRes.gameID()).whiteUsername());
+  }
+
+  @Test
+  void joinGameFailure() throws DataAccessException {
+    var token1 = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
+    var createGameRes = GService.createGame(new CreateGameReq(token1.authToken(), "game1"));
+    GService.joinGame(new JoinGameReq("invalid","WHITE", createGameRes.gameID()));
+
+    assertNotEquals(token1.username(), GameDAO.getInstance().getGame(createGameRes.gameID()).whiteUsername());
   }
 }

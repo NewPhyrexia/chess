@@ -11,7 +11,7 @@ public class GameDAO implements GameDAOInterface{
   final private HashMap<Integer, GameData> allGames = new HashMap<>();
   private static GameDAO instance;
 
-  public static int tempGameID = 0; // for pre server testing only
+  public static int tempGameID = 1; // for pre server testing only
 
   public static GameDAO getInstance() {
     if (instance == null){
