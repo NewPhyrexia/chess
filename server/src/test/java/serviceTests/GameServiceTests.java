@@ -27,7 +27,7 @@ public class GameServiceTests {
     var token1 = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
 
     GService.createGame(new CreateGameReq(token1.authToken(), "game1"));
-//    assertEquals(1, GService.listGames(new ListGamesReq(token1.authToken())).listOfGames().size());
+    assertEquals(1, GService.listGames(new ListGamesReq(token1.authToken())).games().length);
   }
 
   @Test
@@ -36,7 +36,7 @@ public class GameServiceTests {
     GService.createGame(new CreateGameReq(token, "game1"));
 
     var res = GService.listGames(new ListGamesReq(token));
-//    assertNull(res.listOfGames());
+    assertNull(res.games());
   }
 
   @Test
@@ -51,14 +51,14 @@ public class GameServiceTests {
     GService.createGame(new CreateGameReq(token2.authToken(), "game2"));
     GService.createGame(new CreateGameReq(token3.authToken(), "game3"));
 
-//    assertEquals(3, GService.listGames(new ListGamesReq(token1.authToken())).listOfGames().size());
+    assertEquals(3, GService.listGames(new ListGamesReq(token1.authToken())).games().length);
   }
 
   @Test
   void noGamesToList() throws DataAccessException {
     var token1 = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
 
-//    assertEquals(0, GService.listGames(new ListGamesReq(token1.authToken())).listOfGames().size());
+    assertEquals(0, GService.listGames(new ListGamesReq(token1.authToken())).games().length);
   }
 
   @Test

@@ -41,7 +41,7 @@ public class ClearAppServiceTests {
     service.deleteAllDB(new ClearAppServiceReq());
     assertEquals(0, UService.listUsers().size());
     assertEquals(0, UService.listAuthTokens().size());
-//    assertEquals(0, GService.listAllGames().size());
+    assertEquals(0, GService.listAllGames().length);
   }
 
 }
