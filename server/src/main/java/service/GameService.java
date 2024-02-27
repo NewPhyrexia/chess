@@ -14,16 +14,17 @@ public class GameService {
 
 
   public GameService() {}
-  int gameID = 0;
   public CreateGameRes createGame(CreateGameReq req) throws DataAccessException {
+    int gameID = 0;
+
     try {
         if (!helperService.AuthTokenCheck(req.authToken())) {
-          return new CreateGameRes(0,"Error: unauthorized");
+          return new CreateGameRes(null,"Error: unauthorized");
         }
         gameID = gameInterface.createGame(req.gameName());
     } catch(Exception e) {
       if (e instanceof DataAccessException){
-        return new CreateGameRes( 0,"Error: DataAccessException.");
+        return new CreateGameRes( null,"Error: DataAccessException.");
       }
     }
     return new CreateGameRes(gameID,null);
@@ -56,19 +57,19 @@ public class GameService {
         if (req.gameID() == 0) {
           return new JoinGameRes("Error: bad request");
         }
-        if (gameInterface.getGame(gameID) == null) {
+        if (gameInterface.getGame(req.gameID()) == null) {
           return new JoinGameRes("Error: game does not exist");
         }
         // check for existing users in game
         var username = authInterface.getAuthToken(req.authToken()).username();
         if (req.teamColor().equalsIgnoreCase("black")) {
-          var blackUsername=gameInterface.getGame(gameID).blackUsername();
+          var blackUsername=gameInterface.getGame(req.gameID()).blackUsername();
           if (blackUsername != null
                   && blackUsername.equals(username)) {
             return new JoinGameRes("Error: already taken");
           }
         } else if (req.teamColor().equalsIgnoreCase("white")) {
-          var whiteUsername=gameInterface.getGame(gameID).whiteUsername();
+          var whiteUsername=gameInterface.getGame(req.gameID()).whiteUsername();
           if (whiteUsername != null
                   && whiteUsername.equals(username)) {
             return new JoinGameRes("Error: already taken");
