@@ -11,7 +11,7 @@ public class HelperService {
     this.authInterface = authInterface;
   }
 
-  public boolean AuthTokenCheck(String token) throws DataAccessException {
+  public boolean authTokenCheck(String token) throws DataAccessException {
     return authInterface.getAuthToken(token) != null;
   }
 }

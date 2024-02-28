@@ -26,7 +26,7 @@ public class GameService {
     int gameID = 0;
 
     try {
-        if (!helperService.AuthTokenCheck(req.authToken())) {
+        if (!helperService.authTokenCheck(req.authToken())) {
           return new CreateGameRes(null,"Error: unauthorized");
         }
         gameID = gameInterface.createGame(req.gameName());
@@ -47,7 +47,7 @@ public class GameService {
   public ListGamesRes listGames(ListGamesReq req) throws DataAccessException {
 
     try {
-      if (helperService.AuthTokenCheck(req.authToken())) {
+      if (helperService.authTokenCheck(req.authToken())) {
         return new ListGamesRes(gameInterface.listGames(), null);
       } else
         return new ListGamesRes(null,"Error: unauthorized");
@@ -70,7 +70,7 @@ public class GameService {
     try {
       // checks
         // check auth
-        if (!helperService.AuthTokenCheck(req.authToken())) {
+        if (!helperService.authTokenCheck(req.authToken())) {
           return new JoinGameRes("Error: unauthorized");
         }
         // check if gameID is 0
