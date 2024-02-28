@@ -115,7 +115,7 @@ public class ChessPiece {
         // loop up/right
         int row = r;
         int col = c;
-        if(row + 1 < 9 && col + 1 < 9) { // checking for edge
+        while(row + 1 < 9 && col + 1 < 9) { // checking for edge
             // update variables for looping to function properly
             row++;
             col++;
@@ -124,18 +124,13 @@ public class ChessPiece {
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop down/right
         row = r;
         col = c;
-        if(row - 1 > 0 && col + 1 < 9) { // checking for edge
+        while(row - 1 > 0 && col + 1 < 9) { // checking for edge
             // update variables for looping to function properly
             row--;
             col++;
@@ -144,18 +139,14 @@ public class ChessPiece {
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
+            // movement checks
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop down/left
         row = r;
         col = c;
-        if (row - 1 > 0 && col - 1 > 0) { // checking for edge
+        while(row - 1 > 0 && col - 1 > 0) { // checking for edge
             // update variables for looping to function properly
             row--;
             col--;
@@ -164,18 +155,13 @@ public class ChessPiece {
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop up/left
         row = r;
         col = c;
-        if (row + 1 < 9 && col - 1 > 0) { // checking for edge
+        while(row + 1 < 9 && col - 1 > 0) { // checking for edge
             // update variables for looping to function properly
             row++;
             col--;
@@ -184,18 +170,13 @@ public class ChessPiece {
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop up
         row = r;
         col = c;
-        if (row + 1 < 9 ) { // checking for edge
+        while(row + 1 < 9 ) { // checking for edge
             // update variables for looping to function properly
             row++;
 
@@ -203,17 +184,12 @@ public class ChessPiece {
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop down
         row = r;
-        if (row - 1 > 0) { // checking for edge
+        while(row - 1 > 0) { // checking for edge
             // update variables for looping to function properly
             row--;
 
@@ -221,17 +197,13 @@ public class ChessPiece {
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
+            // movement checks
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop left
         col = c;
-        if (col - 1 > 0) { // checking for edge
+        while(col - 1 > 0) { // checking for edge
             // update variables for looping to function properly
             col--;
 
@@ -239,17 +211,12 @@ public class ChessPiece {
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop right
         col = c;
-        if (col + 1 < 9) { // checking for edge
+        while(col + 1 < 9) { // checking for edge
             // update variables for looping to function properly
             col++;
 
@@ -257,12 +224,7 @@ public class ChessPiece {
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         return validMoves;
@@ -415,7 +377,6 @@ public class ChessPiece {
         return getVertHorMoves(board, myPosition);
     }
 
-
     private Collection<ChessMove> helperKnight(ChessBoard board, ChessPosition myPosition){
         // Stops at edge, stops before allies, stops on top of enemy
         int row = myPosition.getRow();
@@ -438,7 +399,6 @@ public class ChessPiece {
             if (col + 1 < 9){
                 ChessPosition endPosition = new ChessPosition(row+2,col+1);
                 ChessPiece newPiece = board.getPiece(endPosition);
-
                 // movement check
                 if (newPiece == null || newPiece.pieceColor != pieceColor) {
                     validMoves.add(new ChessMove(myPosition, endPosition, null));
@@ -453,7 +413,6 @@ public class ChessPiece {
             if (col - 1 > 0){
                 ChessPosition endPosition = new ChessPosition(row-2,col-1);
                 ChessPiece newPiece = board.getPiece(endPosition);
-
                 // movement check
                 if (newPiece == null || newPiece.pieceColor != pieceColor) {
                     validMoves.add(new ChessMove(myPosition, endPosition, null));
@@ -463,7 +422,6 @@ public class ChessPiece {
             if (col + 1 < 9){
                 ChessPosition endPosition = new ChessPosition(row-2,col+1);
                 ChessPiece newPiece = board.getPiece(endPosition);
-
                 // movement check
                 if (newPiece == null || newPiece.pieceColor != pieceColor) {
                     validMoves.add(new ChessMove(myPosition, endPosition, null));
@@ -477,7 +435,6 @@ public class ChessPiece {
             if (row + 1 < 9) {
                 ChessPosition endPosition = new ChessPosition(row+1,col-2);
                 ChessPiece newPiece = board.getPiece(endPosition);
-
                 // movement check
                 if (newPiece == null || newPiece.pieceColor != pieceColor) {
                     validMoves.add(new ChessMove(myPosition, endPosition, null));
@@ -487,7 +444,6 @@ public class ChessPiece {
             if (row - 1 > 0) {
                 ChessPosition endPosition = new ChessPosition(row-1,col-2);
                 ChessPiece newPiece = board.getPiece(endPosition);
-
                 // movement check
                 if (newPiece == null || newPiece.pieceColor != pieceColor) {
                     validMoves.add(new ChessMove(myPosition, endPosition, null));
@@ -501,7 +457,6 @@ public class ChessPiece {
             if (row + 1 < 9) {
                 ChessPosition endPosition = new ChessPosition(row+1,col+2);
                 ChessPiece newPiece = board.getPiece(endPosition);
-
                 // movement check
                 if (newPiece == null || newPiece.pieceColor != pieceColor) {
                     validMoves.add(new ChessMove(myPosition, endPosition, null));
@@ -511,14 +466,12 @@ public class ChessPiece {
             if (row - 1 > 0) {
                 ChessPosition endPosition = new ChessPosition(row-1,col+2);
                 ChessPiece newPiece = board.getPiece(endPosition);
-
                 // movement check
                 if (newPiece == null || newPiece.pieceColor != pieceColor) {
                     validMoves.add(new ChessMove(myPosition, endPosition, null));
                 }
             }
         }
-
         return validMoves;
     }
 
@@ -545,7 +498,6 @@ public class ChessPiece {
         while (row + 1 < 9 ) { // checking for edge
             // update variables for looping to function properly
             row++;
-
             ChessPosition endPosition = new ChessPosition(row,col);
             ChessPiece newPiece = board.getPiece(endPosition);
 
@@ -567,7 +519,6 @@ public class ChessPiece {
         while (row - 1 > 0) { // checking for edge
             // update variables for looping to function properly
             row--;
-
             ChessPosition endPosition = new ChessPosition(row,c);
             ChessPiece newPiece = board.getPiece(endPosition);
 
@@ -589,7 +540,6 @@ public class ChessPiece {
         while (col - 1 > 0) { // checking for edge
             // update variables for looping to function properly
             col--;
-
             ChessPosition endPosition = new ChessPosition(r,col);
             ChessPiece newPiece = board.getPiece(endPosition);
 
@@ -611,7 +561,6 @@ public class ChessPiece {
         while (col + 1 < 9) { // checking for edge
             // update variables for looping to function properly
             col++;
-
             ChessPosition endPosition = new ChessPosition(r,col);
             ChessPiece newPiece = board.getPiece(endPosition);
 
@@ -644,21 +593,11 @@ public class ChessPiece {
             // update variables for looping to function properly
             row++;
             col++;
-
             ChessPosition endPosition = new ChessPosition(row,col);
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-                break;
-            }
-            else { // ally is blocking way, break loop
-                break;
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop down/right
@@ -668,21 +607,11 @@ public class ChessPiece {
             // update variables for looping to function properly
             row--;
             col++;
-
             ChessPosition endPosition = new ChessPosition(row,col);
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-                break;
-            }
-            else { // ally is blocking way, break loop
-                break;
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop down/left
@@ -692,21 +621,11 @@ public class ChessPiece {
             // update variables for looping to function properly
             row--;
             col--;
-
             ChessPosition endPosition = new ChessPosition(row,col);
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-                break;
-            }
-            else { // ally is blocking way, break loop
-                break;
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
 
         // loop up/left
@@ -716,23 +635,26 @@ public class ChessPiece {
             // update variables for looping to function properly
             row++;
             col--;
-
             ChessPosition endPosition = new ChessPosition(row,col);
             ChessPiece newPiece = board.getPiece(endPosition);
 
             // movement checks
-            if (newPiece == null) { // if the space is empty save position and continue loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-            }
-            else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
-                validMoves.add(new ChessMove(myPosition, endPosition, null));
-                break;
-            }
-            else { // ally is blocking way, break loop
-                break;
-            }
+            if (movementCheck(board, myPosition, validMoves, endPosition, newPiece)) break;
         }
-
         return validMoves;
+    }
+
+    private boolean movementCheck(ChessBoard board, ChessPosition myPosition, ArrayList<ChessMove> validMoves, ChessPosition endPosition, ChessPiece newPiece) {
+        if (newPiece == null) { // if the space is empty save position and continue loop
+            validMoves.add(new ChessMove(myPosition, endPosition, null));
+          return board.getPiece(myPosition).type == PieceType.KING;
+        }
+        else if (newPiece.pieceColor != pieceColor) { // capture enemy break loop
+            validMoves.add(new ChessMove(myPosition, endPosition, null));
+            return true;
+        }
+        else { // ally is blocking way, break loop
+            return true;
+        }
     }
 }

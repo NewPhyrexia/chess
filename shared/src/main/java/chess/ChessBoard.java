@@ -21,10 +21,6 @@ public class ChessBoard {
         }
     }
 
-//    public ChessBoard(ChessPiece[][] board){
-//        this.board= Arrays.copyOf(copy.squares,copy.squares.length);
-//    }
-
     public ChessPiece[][] getBoard(){
         return squares;
     }
