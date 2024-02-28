@@ -46,9 +46,6 @@ public class GameDAO implements GameDAOInterface{
     return allGames.values().toArray(new GameData[0]);
   }
 
-  public void deleteGame(int gameID) {
-    allGames.remove(gameID);
-  }
   public void deleteAllGames() {
     allGames.clear();
   }

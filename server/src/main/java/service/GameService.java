@@ -1,7 +1,6 @@
 package service;
 
 import dataAccess.*;
-import model.GameData;
 import req.*;
 import res.CreateGameRes;
 import res.JoinGameRes;
@@ -12,7 +11,7 @@ public class GameService {
 
   private final AuthDAOInterface authInterface = AuthDAO.getInstance();
   private GameDAOInterface gameInterface = GameDAO.getInstance();
-  private final helperService helperService = new helperService(authInterface);
+  private final HelperService helperService = new HelperService(authInterface);
 
 
   public GameService() {}
@@ -102,14 +101,4 @@ public class GameService {
     }
     return new JoinGameRes(null);
   }
-
-  /**
-   * specific method for testing clearApp
-   * @return GameData[]
-   * @throws DataAccessException
-   */
-  public GameData[] listAllGames() throws DataAccessException {
-    return gameInterface.listGames();
-  }
-
 }
