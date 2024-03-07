@@ -33,12 +33,22 @@ public class SqlGameDAO {
 
   public void updateGame(String playerColor, int id, String username) throws DataAccessException {
     var gameData = getGame(id);
-    if (playerColor.equalsIgnoreCase("black")){
-      var updatedGameData = new GameData(id, gameData.whiteUsername(), username, gameData.gameName(),gameData.implementation());
-      allGames.put(id, updatedGameData);
-    } else if (playerColor.equalsIgnoreCase("white")){
-      var updatedGameData = new GameData(id, username, gameData.blackUsername(), gameData.gameName(),gameData.implementation());
-      allGames.put(id, updatedGameData);
+    try(var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("UPDATE games SET game WHERE id = ?")) {
+        preparedStatement.setInt(1, id);
+        if (playerColor.equalsIgnoreCase("black")) {
+          var updatedGameData=new GameData(id, gameData.whiteUsername(), username, gameData.gameName(), gameData.implementation());
+          var game=new Gson().toJson(updatedGameData);
+          preparedStatement.setString(2, game);
+        } else if (playerColor.equalsIgnoreCase("white")) {
+          var updatedGameData=new GameData(id, username, gameData.blackUsername(), gameData.gameName(), gameData.implementation());
+          var game=new Gson().toJson(updatedGameData);
+          preparedStatement.setString(2, game);
+        }
+        preparedStatement.executeUpdate();
+      }
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
     }
   }
 
@@ -60,7 +70,7 @@ public class SqlGameDAO {
 
   public GameData[] listGames() throws DataAccessException {
     HashMap<Integer, GameData> allGames = new HashMap<>();
-    try(var conn = DatabaseManager.getConnection();) {
+    try(var conn = DatabaseManager.getConnection()) {
       var statement = "SELECT id, game FROM games";
       try (var ps = conn.prepareStatement(statement)) {
         try (var rs = ps.executeQuery()) {

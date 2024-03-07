@@ -39,6 +39,8 @@ public class SqlUserDAO implements UserDAOInterface{
       throw new DataAccessException(ex.toString());
     }
 
+    // Encrypt password
+
     return new UserData(user.username(), user.password(), user.email());
   }
 
@@ -70,6 +72,9 @@ public class SqlUserDAO implements UserDAOInterface{
         var rs=preparedStatement.executeQuery();
         if (rs.next()) {
           password=rs.getString("password");
+
+          // decrypt password
+
           email=rs.getString("email");
         }
         return new UserData(username, password, email);
