@@ -34,7 +34,7 @@ public class SqlAuthDAO {
 
   public AuthData addAuthData(AuthData auth) throws DataAccessException {
     var conn = DatabaseManager.getConnection();
-    try (var preparedStatement = conn.prepareStatement("INSERT INTO auths (token, username) VALUES (?, ?)", RETURN_GENERATED_KEYS)) {
+    try (var preparedStatement = conn.prepareStatement("INSERT INTO auths (token, username) VALUES (?, ?)")) {
       preparedStatement.setString(1, auth.authToken());
       preparedStatement.setString(2, auth.username());
 
@@ -100,10 +100,9 @@ public class SqlAuthDAO {
   private final String[] createStatements = {
           """
           CREATE TABLE IF NOT EXISTS auths (
-          `id` int NOT NULL AUTO_INCREMENT,
           `token` varchar(256) NOT NULL,
           `username` varchar(256) NOT NULL,
-          PRIMARY KEY (`id`),
+          PRIMARY KEY (`token`),
           INDEX(token),
           INDEX(username),
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
