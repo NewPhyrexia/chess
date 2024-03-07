@@ -31,29 +31,30 @@ public class SqlGameDAO {
     return gameID;
   }
 
-  public void updateGame(String playerColor, int gameID, String username) throws DataAccessException {
-    var gameData = getGame(gameID);
+  public void updateGame(String playerColor, int id, String username) throws DataAccessException {
+    var gameData = getGame(id);
     if (playerColor.equalsIgnoreCase("black")){
-      var updatedGameData = new GameData(gameID, gameData.whiteUsername(), username, gameData.gameName(),gameData.implementation());
-      allGames.put(gameID, updatedGameData);
+      var updatedGameData = new GameData(id, gameData.whiteUsername(), username, gameData.gameName(),gameData.implementation());
+      allGames.put(id, updatedGameData);
     } else if (playerColor.equalsIgnoreCase("white")){
-      var updatedGameData = new GameData(gameID, username, gameData.blackUsername(), gameData.gameName(),gameData.implementation());
-      allGames.put(gameID, updatedGameData);
+      var updatedGameData = new GameData(id, username, gameData.blackUsername(), gameData.gameName(),gameData.implementation());
+      allGames.put(id, updatedGameData);
     }
   }
 
-  public GameData getGame(int id) throws DataAccessException {
-    String username=null;
-    var conn = DatabaseManager.getConnection();
-    try(var preparedStatement = conn.prepareStatement("SELECT game FROM games WHERE id =?")) {
-      preparedStatement.setInt(0, id);
-      var rs = preparedStatement.executeQuery();
-      if (rs.next()) {
-        return readGame(rs);
+  public GameData getGame(int id) throws DataAccessException {  // PROBABLY NEEDS RETURN GENERATED KEYS?
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("SELECT game FROM games WHERE id =?")) {
+        preparedStatement.setInt(1, id);
+        var rs=preparedStatement.executeQuery();
+        if (rs.next()) {
+          return readGame(rs);
+        }
       }
+
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
     return null;
   }
 
@@ -72,16 +73,17 @@ public class SqlGameDAO {
       return allGames.values().toArray(new GameData[0]);
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
   }
 
   public void deleteAllGames() throws DataAccessException {
-    var conn = DatabaseManager.getConnection();
-    try (var preparedStatement = conn.prepareStatement("TRUNCATE TABLE auths")) {
-      preparedStatement.executeUpdate();
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("TRUNCATE TABLE auths")) {
+        preparedStatement.executeUpdate();
+      }
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
   }
 
   private GameData readGame(ResultSet rs) throws SQLException{

@@ -33,15 +33,16 @@ public class SqlAuthDAO {
   }
 
   public AuthData addAuthData(AuthData auth) throws DataAccessException {
-    var conn = DatabaseManager.getConnection();
-    try (var preparedStatement = conn.prepareStatement("INSERT INTO auths (token, username) VALUES (?, ?)")) {
-      preparedStatement.setString(1, auth.authToken());
-      preparedStatement.setString(2, auth.username());
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("INSERT INTO auths (token, username) VALUES (?, ?)")) {
+        preparedStatement.setString(1, auth.authToken());
+        preparedStatement.setString(2, auth.username());
 
-      preparedStatement.executeUpdate();
-    } catch (SQLException ex) {
+        preparedStatement.executeUpdate();
+      }
+    }catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
 
     return new AuthData(auth.authToken(),auth.username());
   }
@@ -63,38 +64,41 @@ public class SqlAuthDAO {
 
   public Collection<AuthData> listAuthTokens() throws DataAccessException {
     HashMap<String, AuthData> allAuthData = new HashMap<>();
-    var conn = DatabaseManager.getConnection();
-    try(var preparedStatement = conn.prepareStatement("SELECT token, username FROM auths")) {
-      var rs = preparedStatement.executeQuery();
-      while ( rs.next()) {
-        var token = rs.getString("token");
-        var username = rs.getString("username");
-        var user =  new AuthData(token, username);
-        allAuthData.put(username, user);
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("SELECT token, username FROM auths")) {
+        var rs=preparedStatement.executeQuery();
+        while (rs.next()) {
+          var token=rs.getString("token");
+          var username=rs.getString("username");
+          var user=new AuthData(token, username);
+          allAuthData.put(username, user);
+        }
+        return allAuthData.values();
       }
-      return allAuthData.values();
-    } catch (SQLException ex) {
+    }catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
   }
 
   public void deleteAuthToken(String token) throws DataAccessException {
-    var conn = DatabaseManager.getConnection();
-    try(var preparedStatement = conn.prepareStatement("DELETE FROM auths WHERE token =?")) {
-      preparedStatement.setString(1, token);
-      var rs = preparedStatement.executeUpdate();
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("DELETE FROM auths WHERE token =?")) {
+        preparedStatement.setString(1, token);
+        var rs=preparedStatement.executeUpdate();
+      }
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
     }
   }
 
   public void deleteAllAuthTokens() throws DataAccessException {
-    var conn = DatabaseManager.getConnection();
-    try (var preparedStatement = conn.prepareStatement("TRUNCATE TABLE auths")) {
-      preparedStatement.executeUpdate();
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("TRUNCATE TABLE auths")) {
+        preparedStatement.executeUpdate();
+      }
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
   }
 
   private final String[] createStatements = {

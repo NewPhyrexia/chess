@@ -27,62 +27,66 @@ public class SqlUserDAO implements UserDAOInterface{
   }
 
   public UserData addUser(UserData user) throws DataAccessException {
-    var conn = DatabaseManager.getConnection();
-    try (var preparedStatement = conn.prepareStatement("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", RETURN_GENERATED_KEYS)) {
-      preparedStatement.setString(1, user.username());
-      preparedStatement.setString(2, user.password());
-      preparedStatement.setString(3, user.email());
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", RETURN_GENERATED_KEYS)) {
+        preparedStatement.setString(1, user.username());
+        preparedStatement.setString(2, user.password());
+        preparedStatement.setString(3, user.email());
 
-      preparedStatement.executeUpdate();
+        preparedStatement.executeUpdate();
+      }
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
 
     return new UserData(user.username(), user.password(), user.email());
   }
 
   public Collection<UserData> listUsers() throws DataAccessException {
     HashMap<String, UserData> allUserData = new HashMap<>();
-    var conn = DatabaseManager.getConnection();
-      try(var preparedStatement = conn.prepareStatement("SELECT username, password, email FROM users")) {
-      var rs = preparedStatement.executeQuery();
-      while ( rs.next()) {
-        var username = rs.getString("username");
-        var password = rs.getString("password");
-        var email = rs.getString("email");
-        var user =  new UserData(username, password, email);
-        allUserData.put(username, user);
-      }
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("SELECT username, password, email FROM users")) {
+        var rs=preparedStatement.executeQuery();
+        while (rs.next()) {
+          var username=rs.getString("username");
+          var password=rs.getString("password");
+          var email=rs.getString("email");
+          var user=new UserData(username, password, email);
+          allUserData.put(username, user);
+        }
         return allUserData.values();
+      }
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
   }
 
   public UserData getUser(String username) throws DataAccessException{
     String password=null;
     String email=null;
-    var conn = DatabaseManager.getConnection();
-    try(var preparedStatement = conn.prepareStatement("SELECT username, password, email FROM users WHERE username =?")) {
-      preparedStatement.setString(1, username);
-      var rs = preparedStatement.executeQuery();
-      if (rs.next()) {
-        password = rs.getString("password");
-        email = rs.getString("email");
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("SELECT username, password, email FROM users WHERE username =?")) {
+        preparedStatement.setString(1, username);
+        var rs=preparedStatement.executeQuery();
+        if (rs.next()) {
+          password=rs.getString("password");
+          email=rs.getString("email");
+        }
+        return new UserData(username, password, email);
       }
-      return new UserData(username, password, email);
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
   }
 
   public void deleteAllUsers() throws DataAccessException{
-    var conn = DatabaseManager.getConnection();
-    try (var preparedStatement = conn.prepareStatement("TRUNCATE TABLE users")) {
-      preparedStatement.executeUpdate();
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("TRUNCATE TABLE users")) {
+        preparedStatement.executeUpdate();
+      }
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
   }
 
   private final String[] createStatements = {
