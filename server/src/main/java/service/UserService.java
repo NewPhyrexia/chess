@@ -12,8 +12,8 @@ import java.util.Collection;
 
 public class UserService {
 
-  private final AuthDAOInterface authInterface = AuthDAO.getInstance();
-  private final UserDAOInterface userInterface = UserDAO.getInstance();
+  private final AuthDAOInterface authInterface = SqlAuthDAO.getInstance();
+  private final UserDAOInterface userInterface = SqlUserDAO.getInstance();
 
   /**
    * registers a new user into the db and assigns an authToken

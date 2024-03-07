@@ -6,9 +6,9 @@ import res.ClearAppServiceRes;
 
 
 public class ClearAppService {
-  static final UserDAOInterface userInterface= UserDAO.getInstance();
-  static final AuthDAOInterface authInterface= AuthDAO.getInstance();
-  static final GameDAOInterface gameInterface= GameDAO.getInstance();
+  static final UserDAOInterface userInterface= SqlUserDAO.getInstance();
+  static final AuthDAOInterface authInterface= SqlAuthDAO.getInstance();
+  static final GameDAOInterface gameInterface= SqlGameDAO.getInstance();
 
   /**
    * Deletes all entries in the User, Game, and Auth databases

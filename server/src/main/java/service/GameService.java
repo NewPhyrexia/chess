@@ -9,8 +9,8 @@ import res.ListGamesRes;
 
 public class GameService {
 
-  private final AuthDAOInterface authInterface = AuthDAO.getInstance();
-  private GameDAOInterface gameInterface = GameDAO.getInstance();
+  private final AuthDAOInterface authInterface = SqlAuthDAO.getInstance();
+  private GameDAOInterface gameInterface = SqlGameDAO.getInstance();
   private final HelperService helperService = new HelperService(authInterface);
 
 

@@ -11,13 +11,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
-public class SqlGameDAO {
+public class SqlGameDAO implements GameDAOInterface{
   private static SqlGameDAO instance;
 
-  public SqlGameDAO() throws DataAccessException {
-    configureDatabase();
+  public SqlGameDAO() {
+    try {
+      configureDatabase();
+    } catch (DataAccessException ex) {
+      System.out.println("Error: could not configure");
+    }
   }
-  public static SqlGameDAO getInstance() throws DataAccessException {
+  public static SqlGameDAO getInstance() {
     if (instance == null){
       instance = new SqlGameDAO();
     }
@@ -101,7 +105,7 @@ public class SqlGameDAO {
 
   public void deleteAllGames() throws DataAccessException {
     try (var conn = DatabaseManager.getConnection()) {
-      try (var preparedStatement=conn.prepareStatement("TRUNCATE TABLE auths")) {
+      try (var preparedStatement=conn.prepareStatement("TRUNCATE TABLE games")) {
         preparedStatement.executeUpdate();
       }
     } catch (SQLException ex) {
@@ -119,7 +123,7 @@ public class SqlGameDAO {
           CREATE TABLE IF NOT EXISTS games (
           `id` int NOT NULL AUTO_INCREMENT,
           `game` TEXT DEFAULT NULL,
-          PRIMARY KEY (`id`),
+          PRIMARY KEY (`id`)
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
           """
   };

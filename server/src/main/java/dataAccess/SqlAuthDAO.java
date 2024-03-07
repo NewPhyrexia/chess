@@ -10,13 +10,17 @@ import java.util.UUID;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
-public class SqlAuthDAO {
+public class SqlAuthDAO implements AuthDAOInterface{
   private static SqlAuthDAO instance;
 
-  public SqlAuthDAO() throws DataAccessException {
-    configureDatabase();
+  public SqlAuthDAO() {
+    try {
+      configureDatabase();
+    } catch (DataAccessException ex) {
+      System.out.println("Error: could not configure");
+    }
   }
-  public static SqlAuthDAO getInstance() throws DataAccessException {
+  public static SqlAuthDAO getInstance() {
     if (instance == null){
       instance = new SqlAuthDAO();
     }
@@ -54,8 +58,8 @@ public class SqlAuthDAO {
         var rs=preparedStatement.executeQuery();
         if (rs.next()) {
           username=rs.getString("username");
-        }
-        return new AuthData(token, username);
+          return new AuthData(token, username);
+        } else { return null;}
       }
     }catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
@@ -108,12 +112,12 @@ public class SqlAuthDAO {
           `username` varchar(256) NOT NULL,
           PRIMARY KEY (`token`),
           INDEX(token),
-          INDEX(username),
+          INDEX(username)
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
           """
   };
 
-  private void configureDatabase() throws DataAccessException{
+  private void configureDatabase() throws DataAccessException {
     DatabaseManager.createDatabase();
     try (var conn = DatabaseManager.getConnection()) {
       for (var statement : createStatements) {

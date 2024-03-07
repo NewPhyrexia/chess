@@ -15,11 +15,15 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 public class SqlUserDAO implements UserDAOInterface{
 
   private static SqlUserDAO instance;
-  public SqlUserDAO() throws DataAccessException {
-    configureDatabase();
+  public SqlUserDAO() {
+    try {
+      configureDatabase();
+    } catch (DataAccessException ex) {
+      System.out.println("Error: could not configure");
+    }
   }
 
-  public static SqlUserDAO getInstance() throws DataAccessException {
+  public static SqlUserDAO getInstance() {
     if (instance == null){
       instance = new SqlUserDAO();
     }
@@ -107,7 +111,7 @@ public class SqlUserDAO implements UserDAOInterface{
           """
   };
 
-  private void configureDatabase() throws DataAccessException{
+  private void configureDatabase() throws DataAccessException {
     DatabaseManager.createDatabase();
     try (var conn = DatabaseManager.getConnection()) {
       for (var statement : createStatements) {
