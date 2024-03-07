@@ -6,6 +6,9 @@ import model.UserData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
@@ -25,7 +28,7 @@ public class SqlUserDAO implements UserDAOInterface{
 
   public UserData addUser(UserData user) throws DataAccessException {
     var conn = DatabaseManager.getConnection();
-    try (var preparedStatement = conn.prepareStatement("INSERT INTO user (username, password, email) VALUES (?, ?, ?)", RETURN_GENERATED_KEYS)) {
+    try (var preparedStatement = conn.prepareStatement("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", RETURN_GENERATED_KEYS)) {
       preparedStatement.setString(1, user.username());
       preparedStatement.setString(2, user.password());
       preparedStatement.setString(3, user.email());
@@ -33,9 +36,53 @@ public class SqlUserDAO implements UserDAOInterface{
       preparedStatement.executeUpdate();
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    }
+    } // do I need to close a database?
 
     return new UserData(user.username(), user.password(), user.email());
+  }
+
+  public Collection<UserData> listUsers() throws DataAccessException {
+    HashMap<String, UserData> allUserData = new HashMap<>();
+    var conn = DatabaseManager.getConnection();
+      try(var preparedStatement = conn.prepareStatement("SELECT username, password, email FROM users")) {
+      var rs = preparedStatement.executeQuery();
+      while ( rs.next()) {
+        var username = rs.getString("username");
+        var password = rs.getString("password");
+        var email = rs.getString("email");
+        var user =  new UserData(username, password, email);
+        allUserData.put(username, user);
+      }
+        return allUserData.values();
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
+    } // do I need to close a database?
+  }
+
+  public UserData getUser(String username) throws DataAccessException{
+    String password=null;
+    String email=null;
+    var conn = DatabaseManager.getConnection();
+    try(var preparedStatement = conn.prepareStatement("SELECT username, password, email FROM users WHERE username =?")) {
+      preparedStatement.setString(1, username);
+      var rs = preparedStatement.executeQuery();
+      if (rs.next()) {
+        password = rs.getString("password");
+        email = rs.getString("email");
+      }
+      return new UserData(username, password, email);
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
+    } // do I need to close a database?
+  }
+
+  public void deleteAllUsers() throws DataAccessException{
+    var conn = DatabaseManager.getConnection();
+    try (var preparedStatement = conn.prepareStatement("TRUNCATE TABLE users")) {
+      preparedStatement.executeUpdate();
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
+    } // do I need to close a database?
   }
 
   private UserData readUser(ResultSet rs) throws SQLException{
@@ -45,7 +92,7 @@ public class SqlUserDAO implements UserDAOInterface{
 
   private final String[] createStatements = {
           """
-          CREATE TABLE IF NOT EXISTS user (
+          CREATE TABLE IF NOT EXISTS users (
           `id` int NOT NULL AUTO_INCREMENT,
           `username` varchar(256) NOT NULL,
           `password` varchar(256) NOT NULL,
@@ -67,7 +114,7 @@ public class SqlUserDAO implements UserDAOInterface{
         }
       }
     } catch (SQLException ex) {
-      throw new DataAccessException(500, String.format("Unable to configure database %s", ex.getMessage()));
+      throw new DataAccessException(String.format("Unable to configure database %s", ex.getMessage()));
     }
   }
 }
