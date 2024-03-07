@@ -1,6 +1,7 @@
 package dataAccess;
 
 import model.AuthData;
+import model.UserData;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -36,7 +37,18 @@ public class SqlAuthDAO {
     return data;
   }
   public AuthData getAuthToken(String token) throws DataAccessException {
-    return allAuthTokens.get(token);
+    String username=null;
+    var conn = DatabaseManager.getConnection();
+    try(var preparedStatement = conn.prepareStatement("SELECT token, username FROM auths WHERE token =?")) {
+      preparedStatement.setString(1, token);
+      var rs = preparedStatement.executeQuery();
+      if (rs.next()) {
+        username = rs.getString("username");
+      }
+      return new AuthData(token, username);
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
+    } // do I need to close a database?
   }
 
   public Collection<AuthData> listAuthTokens() throws DataAccessException {
@@ -48,20 +60,23 @@ public class SqlAuthDAO {
   }
 
   public void deleteAllAuthTokens() throws DataAccessException {
-    allAuthTokens.clear();
+    var conn = DatabaseManager.getConnection();
+    try (var preparedStatement = conn.prepareStatement("TRUNCATE TABLE auths")) {
+      preparedStatement.executeUpdate();
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
+    } // do I need to close a database?
   }
 
-  private final String[] createStatements = {  // NEEDS TO BE CHANGED FOR THIS CLASS
+  private final String[] createStatements = {
           """
-          CREATE TABLE IF NOT EXISTS users (
+          CREATE TABLE IF NOT EXISTS auths (
           `id` int NOT NULL AUTO_INCREMENT,
+          `token` varchar(256) NOT NULL,
           `username` varchar(256) NOT NULL,
-          `password` varchar(256) NOT NULL,
-          `email` varchar(256) NOT NULL,
           PRIMARY KEY (`id`),
+          INDEX(token),
           INDEX(username),
-          INDEX(password),
-          INDEX(email)
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
           """
   };
