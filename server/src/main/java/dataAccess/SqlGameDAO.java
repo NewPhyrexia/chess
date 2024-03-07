@@ -64,7 +64,7 @@ public class SqlGameDAO {
       try (var ps = conn.prepareStatement(statement)) {
         try (var rs = ps.executeQuery()) {
           while (rs.next()) {
-            var id = rs.getInt('id');
+            var id = rs.getInt("id");
             allGames.put(id, readGame(rs));
           }
         }
@@ -89,7 +89,7 @@ public class SqlGameDAO {
     return new Gson().fromJson(json, GameData.class);
   }
 
-  private final String[] createStatements = { // NEED TO FINISH THIS
+  private final String[] createStatements = {
           """
           CREATE TABLE IF NOT EXISTS games (
           `id` int NOT NULL AUTO_INCREMENT,
@@ -99,7 +99,7 @@ public class SqlGameDAO {
           """
   };
 
-  private void configureDatabase() throws DataAccessException{
+  private void configureDatabase() throws DataAccessException {
     DatabaseManager.createDatabase();
     try (var conn = DatabaseManager.getConnection()) {
       for (var statement : createStatements) {

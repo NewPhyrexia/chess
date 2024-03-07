@@ -47,17 +47,18 @@ public class SqlAuthDAO {
   }
   public AuthData getAuthToken(String token) throws DataAccessException {
     String username=null;
-    var conn = DatabaseManager.getConnection();
-    try(var preparedStatement = conn.prepareStatement("SELECT token, username FROM auths WHERE token =?")) {
-      preparedStatement.setString(1, token);
-      var rs = preparedStatement.executeQuery();
-      if (rs.next()) {
-        username = rs.getString("username");
+    try (var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("SELECT token, username FROM auths WHERE token =?")) {
+        preparedStatement.setString(1, token);
+        var rs=preparedStatement.executeQuery();
+        if (rs.next()) {
+          username=rs.getString("username");
+        }
+        return new AuthData(token, username);
       }
-      return new AuthData(token, username);
-    } catch (SQLException ex) {
+    }catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
-    } // do I need to close a database?
+    }
   }
 
   public Collection<AuthData> listAuthTokens() throws DataAccessException {
