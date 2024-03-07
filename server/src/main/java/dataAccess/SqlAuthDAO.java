@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+
 public class SqlAuthDAO {
   private static SqlAuthDAO instance;
 
@@ -30,11 +32,18 @@ public class SqlAuthDAO {
     return new AuthData(token, username);
   }
 
-  public AuthData addAuthData(AuthData data) throws DataAccessException {
-    data = new AuthData(data.authToken(), data.username());
+  public AuthData addAuthData(AuthData auth) throws DataAccessException {
+    var conn = DatabaseManager.getConnection();
+    try (var preparedStatement = conn.prepareStatement("INSERT INTO auths (token, username) VALUES (?, ?)", RETURN_GENERATED_KEYS)) {
+      preparedStatement.setString(1, auth.authToken());
+      preparedStatement.setString(2, auth.username());
 
-    allAuthTokens.put(data.authToken(), data);
-    return data;
+      preparedStatement.executeUpdate();
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
+    } // do I need to close a database?
+
+    return new AuthData(auth.authToken(),auth.username());
   }
   public AuthData getAuthToken(String token) throws DataAccessException {
     String username=null;
