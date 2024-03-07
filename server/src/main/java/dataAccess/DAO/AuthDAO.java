@@ -1,12 +1,13 @@
-package dataAccess;
+package dataAccess.DAO;
 
+import dataAccess.interfaces.AuthDAOInterface;
 import model.AuthData;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class AuthDAO implements AuthDAOInterface{
+public class AuthDAO implements AuthDAOInterface {
   final private HashMap<String, AuthData> allAuthTokens = new HashMap<>();
 
   private static AuthDAO instance;

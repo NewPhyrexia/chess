@@ -1,6 +1,7 @@
 package serviceTests;
 
 import dataAccess.*;
+import dataAccess.DAO.GameDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import req.*;
@@ -66,7 +67,7 @@ public class GameServiceTests {
     var createGameRes = GService.createGame(new CreateGameReq(token1.authToken(), "game1"));
     GService.joinGame(new JoinGameReq(token1.authToken(),"WHITE", createGameRes.gameID()));
 
-    assertEquals(token1.username(), GameDAO.getInstance().getGame(createGameRes.gameID()).whiteUsername());
+    assertEquals(token1.username(), SqlGameDAO.getInstance().getGame(createGameRes.gameID()).whiteUsername());
   }
 
   @Test
@@ -75,6 +76,6 @@ public class GameServiceTests {
     var createGameRes = GService.createGame(new CreateGameReq(token1.authToken(), "game1"));
     GService.joinGame(new JoinGameReq("invalid","WHITE", createGameRes.gameID()));
 
-    assertNotEquals(token1.username(), GameDAO.getInstance().getGame(createGameRes.gameID()).whiteUsername());
+    assertNotEquals(token1.username(), SqlGameDAO.getInstance().getGame(createGameRes.gameID()).whiteUsername());
   }
 }

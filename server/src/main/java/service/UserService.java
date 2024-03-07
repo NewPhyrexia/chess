@@ -1,6 +1,8 @@
 package service;
 
 import dataAccess.*;
+import dataAccess.interfaces.AuthDAOInterface;
+import dataAccess.interfaces.UserDAOInterface;
 import model.AuthData;
 import model.UserData;
 import req.*;

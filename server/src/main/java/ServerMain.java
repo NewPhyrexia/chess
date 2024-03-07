@@ -1,5 +1,3 @@
-import chess.*;
-import dataAccess.AuthDAOInterface;
 import server.Server;
 
 public class ServerMain {

@@ -1,11 +1,12 @@
-package dataAccess;
+package dataAccess.DAO;
 
+import dataAccess.interfaces.UserDAOInterface;
 import model.UserData;
 
 import java.util.Collection;
 import java.util.HashMap;
 
-public class UserDAO implements UserDAOInterface{
+public class UserDAO implements UserDAOInterface {
 
   final private HashMap<String, UserData> allUserData = new HashMap<>();
 

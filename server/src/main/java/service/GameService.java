@@ -1,6 +1,8 @@
 package service;
 
 import dataAccess.*;
+import dataAccess.interfaces.AuthDAOInterface;
+import dataAccess.interfaces.GameDAOInterface;
 import req.*;
 import res.CreateGameRes;
 import res.JoinGameRes;

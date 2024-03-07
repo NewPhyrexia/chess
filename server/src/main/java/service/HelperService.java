@@ -1,6 +1,7 @@
 package service;
 
 import dataAccess.*;
+import dataAccess.interfaces.AuthDAOInterface;
 
 public class HelperService {
 

@@ -1,12 +1,13 @@
-package dataAccess;
+package dataAccess.DAO;
 
 
 import chess.ChessGame;
+import dataAccess.interfaces.GameDAOInterface;
 import model.GameData;
 
 import java.util.HashMap;
 
-public class GameDAO implements GameDAOInterface{
+public class GameDAO implements GameDAOInterface {
   final private HashMap<Integer, GameData> allGames = new HashMap<>();
   private static GameDAO instance;
 

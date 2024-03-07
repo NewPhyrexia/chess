@@ -1,6 +1,10 @@
 package serviceTests;
 
 import dataAccess.*;
+import dataAccess.DAO.AuthDAO;
+import dataAccess.DAO.UserDAO;
+import dataAccess.interfaces.AuthDAOInterface;
+import dataAccess.interfaces.UserDAOInterface;
 import model.AuthData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTests {
 
-  static final UserDAOInterface userInterface= UserDAO.getInstance();
-  static final AuthDAOInterface authInterface= AuthDAO.getInstance();
+  static final UserDAOInterface userInterface= SqlUserDAO.getInstance();
+  static final AuthDAOInterface authInterface= SqlAuthDAO.getInstance();
   static final UserService UService = new UserService();
   static final ClearAppService service = new ClearAppService();
 

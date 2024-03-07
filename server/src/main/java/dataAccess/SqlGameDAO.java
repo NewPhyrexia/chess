@@ -2,16 +2,15 @@ package dataAccess;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
-import model.AuthData;
+import dataAccess.interfaces.GameDAOInterface;
 import model.GameData;
-import model.UserData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
-public class SqlGameDAO implements GameDAOInterface{
+public class SqlGameDAO implements GameDAOInterface {
   private static SqlGameDAO instance;
 
   public SqlGameDAO() {

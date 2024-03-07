@@ -1,6 +1,9 @@
 package service;
 
 import dataAccess.*;
+import dataAccess.interfaces.AuthDAOInterface;
+import dataAccess.interfaces.GameDAOInterface;
+import dataAccess.interfaces.UserDAOInterface;
 import req.ClearAppServiceReq;
 import res.ClearAppServiceRes;
 

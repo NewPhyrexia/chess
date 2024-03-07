@@ -1,18 +1,16 @@
 package dataAccess;
 
-import com.google.gson.Gson;
+import dataAccess.interfaces.UserDAOInterface;
 import model.UserData;
 
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
-public class SqlUserDAO implements UserDAOInterface{
+public class SqlUserDAO implements UserDAOInterface {
 
   private static SqlUserDAO instance;
   public SqlUserDAO() {
