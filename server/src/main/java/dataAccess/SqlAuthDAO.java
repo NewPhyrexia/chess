@@ -61,7 +61,20 @@ public class SqlAuthDAO {
   }
 
   public Collection<AuthData> listAuthTokens() throws DataAccessException {
-    return allAuthTokens.values();
+    HashMap<String, AuthData> allAuthData = new HashMap<>();
+    var conn = DatabaseManager.getConnection();
+    try(var preparedStatement = conn.prepareStatement("SELECT token, username FROM auths")) {
+      var rs = preparedStatement.executeQuery();
+      while ( rs.next()) {
+        var token = rs.getString("token");
+        var username = rs.getString("username");
+        var user =  new AuthData(token, username);
+        allAuthData.put(username, user);
+      }
+      return allAuthData.values();
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
+    } // do I need to close a database?
   }
 
   public void deleteAuthToken(String token) throws DataAccessException {
