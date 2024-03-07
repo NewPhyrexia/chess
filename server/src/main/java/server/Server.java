@@ -28,7 +28,6 @@ public class Server {
     Spark.get("/game", this::listGames);
     Spark.post("/game", this::createGame);
     Spark.put("/game", this::joinGame);
-    Spark.exception(DataAccessException.class, this::exceptionHandler);
 
     Spark.awaitInitialization();
     return Spark.port();
@@ -37,10 +36,6 @@ public class Server {
   public void stop() {
     Spark.stop();
     Spark.awaitStop();
-  }
-
-  private void exceptionHandler(DataAccessException ex, Request req, Response res) {
-    res.status(ex.statusCode());
   }
 
   public Object clearApp(Request req, Response res) throws DataAccessException {
