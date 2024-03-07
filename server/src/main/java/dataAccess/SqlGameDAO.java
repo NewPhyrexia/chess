@@ -8,6 +8,7 @@ import model.UserData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 
 public class SqlGameDAO {
@@ -23,12 +24,24 @@ public class SqlGameDAO {
     return instance;
   }
   public int createGame(String gameName) throws DataAccessException {
-    var game = new ChessGame();
-    game.getBoard().resetBoard();
-    int gameID = tempGameID;
-    allGames.put(gameID, new GameData(gameID, null, null, gameName, game));
-    tempGameID++;
-    return gameID;
+    var newGame = new ChessGame();
+    newGame.getBoard().resetBoard();
+    try(var conn = DatabaseManager.getConnection()) {
+      try (var preparedStatement=conn.prepareStatement("INSERT INTO games (game) VALUES (?)", Statement.RETURN_GENERATED_KEYS)) {
+        var game = new Gson().toJson(new GameData(0, null, null, gameName, newGame));
+        preparedStatement.setString(1, game);
+        preparedStatement.executeUpdate();
+
+        // returns id
+        var rs = preparedStatement.getGeneratedKeys();
+        if (rs.next()) {
+          return rs.getInt(1);
+        }
+      }
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
+    }
+    return 0;
   }
 
   public void updateGame(String playerColor, int id, String username) throws DataAccessException {
