@@ -82,7 +82,7 @@ public class SqlUserDAO implements UserDAOInterface{
           email=rs.getString("email");
           return new UserData(username, password, email);
         }
-        return null;
+        else {return null;}
       }
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
