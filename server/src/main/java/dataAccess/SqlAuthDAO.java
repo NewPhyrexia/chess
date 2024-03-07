@@ -78,7 +78,13 @@ public class SqlAuthDAO {
   }
 
   public void deleteAuthToken(String token) throws DataAccessException {
-    allAuthTokens.remove(token);
+    var conn = DatabaseManager.getConnection();
+    try(var preparedStatement = conn.prepareStatement("DELETE FROM auths WHERE token =?")) {
+      preparedStatement.setString(1, token);
+      var rs = preparedStatement.executeUpdate();
+    } catch (SQLException ex) {
+      throw new DataAccessException(ex.toString());
+    }
   }
 
   public void deleteAllAuthTokens() throws DataAccessException {
