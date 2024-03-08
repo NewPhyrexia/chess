@@ -21,6 +21,7 @@ public class SqlUserDAOTests {
 
   @Test
   void addUser() {
+
     assertDoesNotThrow(() -> userDAO.addUser(new UserData("testName", "testPassword", "testEmail")));
   }
 
