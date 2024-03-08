@@ -1,12 +1,16 @@
 package dataAccessTests;
 
-import org.junit.jupiter.api.Assertions;
+import dataAccess.SqlGameDAO;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class SqlGameDAOTests {
 
+  static final SqlGameDAO gameDAO = new SqlGameDAO();
+
   @Test
   void createGame() {
+
   }
 
   @Test

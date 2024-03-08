@@ -2,6 +2,7 @@ package dataAccess;
 
 import dataAccess.interfaces.UserDAOInterface;
 import model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 import java.sql.SQLException;
@@ -31,7 +32,11 @@ public class SqlUserDAO implements UserDAOInterface {
   public UserData addUser(UserData user) throws DataAccessException {
     try (var conn = DatabaseManager.getConnection()) {
       try (var preparedStatement=conn.prepareStatement("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", RETURN_GENERATED_KEYS)) {
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        String hashedPassword = encoder.encode(user.password());
+
         preparedStatement.setString(1, user.username());
+//        preparedStatement.setString(2, hashedPassword);
         preparedStatement.setString(2, user.password());
         preparedStatement.setString(3, user.email());
 
@@ -40,8 +45,6 @@ public class SqlUserDAO implements UserDAOInterface {
     } catch (SQLException ex) {
       throw new DataAccessException(ex.toString());
     }
-
-    // Encrypt password
 
     return new UserData(user.username(), user.password(), user.email());
   }
