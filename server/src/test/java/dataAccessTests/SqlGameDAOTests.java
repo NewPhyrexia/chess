@@ -1,31 +1,88 @@
 package dataAccessTests;
 
+import dataAccess.DataAccessException;
 import dataAccess.SqlGameDAO;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class SqlGameDAOTests {
 
   static final SqlGameDAO gameDAO = new SqlGameDAO();
 
-  @Test
-  void createGame() {
-
+  @BeforeEach
+  void clear() throws DataAccessException {
+    gameDAO.deleteAllGames();
   }
 
   @Test
-  void updateGame() {
+  void createGame() throws DataAccessException {
+    var id = gameDAO.createGame("testGame");
+    assertEquals(1,id);
   }
 
   @Test
-  void getGame() {
+  void failCreateGame() throws DataAccessException {
+    var id = gameDAO.createGame("testGame");
+    assertNotEquals(2,id);
   }
 
   @Test
-  void listGames() {
+  void updateGame() throws DataAccessException{
+    var id = gameDAO.createGame("testGame");
+    gameDAO.updateGame("white", id, "testUsername");
+    var game = gameDAO.getGame(id);
+    assertEquals("testUsername", game.whiteUsername());
   }
 
   @Test
-  void deleteAllGames() {
+  void failUpdateGame() throws DataAccessException{
+    var id = gameDAO.createGame("testGame");
+    gameDAO.updateGame("white", id, "testUsername");
+    var game = gameDAO.getGame(id);
+    assertNotEquals("negTestUsername", game.whiteUsername());
+  }
+
+  @Test
+  void getGame() throws DataAccessException{
+    var id = gameDAO.createGame("testGame");
+    gameDAO.updateGame("white", id, "testUsername");
+    assertEquals("testGame", gameDAO.getGame(id).gameName());
+  }
+
+  @Test
+  void failGetGame() throws DataAccessException{
+    var id = gameDAO.createGame("testGame");
+    gameDAO.updateGame("white", id, "testUsername");
+    assertNotEquals("negTestGame", gameDAO.getGame(id).gameName());
+  }
+
+  @Test
+  void listGames() throws DataAccessException{
+    gameDAO.createGame("testGame");
+    gameDAO.createGame("testGame1");
+    var games = gameDAO.listGames();
+
+    assertEquals(2, games.length);
+  }
+
+  @Test
+  void failListGames() throws DataAccessException{
+    gameDAO.createGame("testGame");
+    var games = gameDAO.listGames();
+
+    assertNotEquals(2, games.length);
+  }
+
+  @Test
+  void deleteAllGames() throws DataAccessException{
+    gameDAO.createGame("testGame");
+    gameDAO.createGame("testGame1");
+
+    gameDAO.deleteAllGames();
+    var games = gameDAO.listGames();
+
+    assertEquals(0, games.length);
   }
 }

@@ -45,10 +45,9 @@ public class SqlUserDAOTests {
   @Test
   void failListUsers() throws DataAccessException {
     userDAO.addUser(new UserData("testName", "testPassword", "testEmail"));
-    userDAO.addUser(new UserData("testName1", "testPassword1", "testEmail1"));
     var users = userDAO.listUsers();
 
-    assertNotEquals(3, users.size());
+    assertNotEquals(2, users.size());
   }
 
   @Test
