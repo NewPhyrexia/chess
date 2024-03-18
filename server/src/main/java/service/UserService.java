@@ -5,6 +5,7 @@ import dataAccess.interfaces.AuthDAOInterface;
 import dataAccess.interfaces.UserDAOInterface;
 import model.AuthData;
 import model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import req.*;
 import res.LoginRes;
 import res.LogoutRes;
@@ -59,7 +60,13 @@ public class UserService {
       if (userInterface.getUser(user.username()) == null) {
         return new LoginRes(null,null,"Error: unauthorized");
       }
+
+      // hash password
+//      BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//      String hashedPassword = encoder.encode(user.password());
+
       // provided password does not match saved password
+//      if (!hashedPassword.equals(userInterface.getUser(user.username()).password())) {
       if (!user.password().equals(userInterface.getUser(user.username()).password())) {
         return new LoginRes(null,null,"Error: unauthorized");
       }
