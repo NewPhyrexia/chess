@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import dataAccess.DataAccessException;
+import exception.ResponseException;
+import model.GameData;
+import req.*;
 
 import java.io.*;
 import java.net.*;
@@ -17,43 +20,45 @@ public class ServerFacade {
 
   public ServerFacade(String url) {serverUrl = url;}
 
-  public void clearApp() throws DataAccessException {
+  public void clearApp() throws ResponseException {
     var path = "/db";
     this.makeRequest("DELETE",path, null, null);
   }
 
-  public register() throws DataAccessException {
+  public void register(RegistrationReq request) throws ResponseException {
     var path = "/user";
-    return this.makeRequest("POST",path, , );
+    this.makeRequest("POST",path, , );
   }
 
-  public login() throws DataAccessException {
+  public void login(LoginReq request) throws ResponseException {
     var path = "/session";
-    return this.makeRequest("POST",path, , );
+    this.makeRequest("POST",path, , );
   }
 
-  public void logout() throws DataAccessException {
+  public void logout(LogoutReq request) throws ResponseException {
     var path = "/session";
     this.makeRequest("DELETE",path, null, null);
   }
 
-  public GameData[] listGames() throws DataAccessException {
+  public GameData[] listGames(ListGamesReq request) throws ResponseException {
     var path = "/game";
-    return this.makeRequest("GET",path, , );
+    record listGamesRes(GameData[] games) {}
+    var response = this.makeRequest("GET",path, null, listGamesRes.class);
+    return response.games();
   }
 
-  public createGame() throws DataAccessException {
+  public int createGame(CreateGameReq request) throws ResponseException {
     var path = "/game";
     return this.makeRequest("POST",path, , );
   }
 
-  public joinGame() throws DataAccessException {
+  public void joinGame(JoinGameReq request) throws ResponseException {
     var path = "/game";
-    return this.makeRequest("PUT",path, , );
+    this.makeRequest("PUT",path, , );
   }
 
 
-  private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws DataAccessException {
+  private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
     try {
       URL url = (new URI(serverUrl + path)).toURL();
       HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -65,7 +70,7 @@ public class ServerFacade {
       throwIfNotSuccessful(http);
       return readBody(http, responseClass);
     } catch (Exception ex) {
-      throw new DataAccessException(ex.getMessage());
+      throw new ResponseException(500, ex.getMessage());
     }
   }
 
@@ -79,10 +84,10 @@ public class ServerFacade {
     }
   }
 
-  private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, DataAccessException {
+  private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
     var status = http.getResponseCode();
     if (!isSuccessful(status)) {
-      throw new DataAccessException("failure: " + status);
+      throw new ResponseException(status, "failure: " + status);
     }
   }
 
