@@ -12,7 +12,7 @@ public class Repl {
 
   public void run() {
     System.out.println("Welcome to Chess.");
-//    System.out.println("Welcome to Chess."); // add client.help() here
+    System.out.print(client.help());
 
     Scanner scanner = new Scanner(System.in);
     var result = "";
