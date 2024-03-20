@@ -6,6 +6,10 @@ import ui.EscapeSequences.*;
 
 public class Repl {
 
+  private final ChessMatchClient client;
+
+  public Repl(String serverUrl) {client = new ChessMatchClient(serverUrl);}
+
   public void run() {
     System.out.println("Welcome to Chess.");
 //    System.out.println("Welcome to Chess."); // add client.help() here
