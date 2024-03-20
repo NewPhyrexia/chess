@@ -1,12 +1,17 @@
 package clientTests;
 
 import org.junit.jupiter.api.*;
+import req.RegistrationReq;
 import server.Server;
+import web.server.ServerFacade;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ServerFacadeTests {
 
   private static Server server;
+  static ServerFacade facade;
 
   @BeforeAll
   public static void init() {
@@ -23,7 +28,13 @@ public class ServerFacadeTests {
 
   @Test
   public void clearAll() {
-    Assertions.assertTrue(true);
+    assertTrue(true);
   }
+
+//  @Test
+//  void register() throws Exception {
+//    var authData = facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+//    assertTrue(authData.authToken().length() > 10);
+//  }
 
 }

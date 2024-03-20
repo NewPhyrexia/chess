@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import exception.ResponseException;
 import model.GameData;
 import req.*;
+import res.RegistrationRes;
 
 import java.io.*;
 import java.net.*;
@@ -24,9 +25,9 @@ public class ServerFacade {
     this.makeRequest("DELETE",path, null, null);
   }
 
-  public void register(RegistrationReq request) throws ResponseException {
+  public String register(RegistrationReq request) throws ResponseException {
     var path = "/user";
-    this.makeRequest("POST",path, , );
+    return this.makeRequest("POST", path, request, RegistrationRes.class).authToken();
   }
 
 //  public void login(LoginReq request) throws ResponseException {
@@ -36,7 +37,7 @@ public class ServerFacade {
 
   public void logout(LogoutReq request) throws ResponseException {
     var path = "/session";
-    this.makeRequest("DELETE",path, null, null);
+    this.makeRequest("DELETE", path, null, null);
   }
 
   public GameData[] listGames(ListGamesReq request) throws ResponseException {

@@ -2,6 +2,7 @@ package ui;
 
 import dataAccess.DataAccessException;
 import exception.ResponseException;
+import req.RegistrationReq;
 import web.server.ServerFacade;
 import java.util.Arrays;
 
@@ -13,7 +14,9 @@ public class ChessMatchClient {
 
   private final String serverUrl;
 
-//  private NotificationHandler notificationHandeler; // websocket
+  private String authToken;
+
+//  private NotificationHandler notificationHandler; // websocket
 //  private WebSocketFacade ws; // websocket
   private State state = State.LOGGED_OUT;
 
@@ -47,8 +50,9 @@ public class ChessMatchClient {
   public String register(String... params) throws ResponseException {
     if (params.length >= 3) {
       state = State.LOGGED_IN;
-      visitorName = String.join("-", params);
-      // websocket here
+//      visitorName = String.join("-", params);
+//      // websocket here
+      authToken = server.register(new RegistrationReq(params[0],params[1], params[2]));
       return String.format("You are registered as %s", params[0]);
     }
     throw new ResponseException(400, "Expected: <username> <password> <email>");
