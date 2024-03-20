@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import dataAccess.DataAccessException;
 import exception.ResponseException;
 import model.GameData;
 import req.*;
@@ -30,10 +29,10 @@ public class ServerFacade {
     this.makeRequest("POST",path, , );
   }
 
-  public void login(LoginReq request) throws ResponseException {
-    var path = "/session";
-    this.makeRequest("POST",path, , );
-  }
+//  public void login(LoginReq request) throws ResponseException {
+//    var path = "/session";
+//    this.makeRequest("POST",path, , );
+//  }
 
   public void logout(LogoutReq request) throws ResponseException {
     var path = "/session";
@@ -47,15 +46,15 @@ public class ServerFacade {
     return response.games();
   }
 
-  public int createGame(CreateGameReq request) throws ResponseException {
-    var path = "/game";
-    return this.makeRequest("POST",path, , );
-  }
-
-  public void joinGame(JoinGameReq request) throws ResponseException {
-    var path = "/game";
-    this.makeRequest("PUT",path, , );
-  }
+//  public int createGame(CreateGameReq request) throws ResponseException {
+//    var path = "/game";
+//    return this.makeRequest("POST",path, , );
+//  }
+//
+//  public void joinGame(JoinGameReq request) throws ResponseException {
+//    var path = "/game";
+//    this.makeRequest("PUT",path, , );
+//  }
 
 
   private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {

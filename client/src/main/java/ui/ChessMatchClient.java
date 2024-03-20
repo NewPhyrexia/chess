@@ -30,14 +30,14 @@ public class ChessMatchClient {
       var params = Arrays.copyOfRange(tokens, 1, tokens.length);
       return switch (cmd) {
         case "register" -> register(params);
-//        case "login" -> login(params);
-//        case "logout" -> logout(params);
-//        case "createGame" -> createGame(params);
-//        case "listGames" -> listGames(params);
-//        case "joinGame" -> joinGame(params);
-//        case "joinAsObserver" -> joinAsObserver(params);
+        case "login" -> login(params);
+        case "logout" -> logout();
+        case "createGame" -> createGame(params);
+        case "listGames" -> listGames();
+        case "joinGame" -> joinGame(params);
+        case "joinAsObserver" -> joinAsObserver(params);
+        // other methods for websocket
         default -> help();
-        // other methods
       };
     } catch (ResponseException ex) {
       return ex.getMessage();
@@ -45,24 +45,65 @@ public class ChessMatchClient {
   }
 
   public String register(String... params) throws ResponseException {
-    if (params.length >= 1) {
+    if (params.length >= 3) {
       state = State.LOGGED_IN;
       visitorName = String.join("-", params);
       // websocket here
-      return String.format("You are logged in as %s", visitorName);
+      return String.format("You are registered as %s", params[0]);
     }
     throw new ResponseException(400, "Expected: <username> <password> <email>");
+  }
+
+  public String login(String... params) {
+    return null;
+  }
+
+  public String logout() {
+    return null;
+  }
+
+  public String createGame(String... params) {
+    return null;
+  }
+
+  public String listGames() {
+    return null;
+  }
+
+  public String joinGame(String... params) {
+    return null;
+  }
+
+  public String joinAsObserver(String... params) {
+    return null;
   }
 
   public String help() {
     if (state == State.LOGGED_OUT) {
       return """
               - register <username> <password> <email>
+              - login <username> <password>
               - quit
+              - help
               """;
     }
+//    else if (state == State.JOINED_GAME) { //websocket place holder
+//      return """
+//              -
+//              """;
+//    } else if (state == State.JOINED_AS_OBSERVER) {
+//      return """
+//              -
+//              """;
+//    }
     return """
-            - other methods
+            - createGame <gameName>
+            - listGames
+            - join <gameID> [WHITE|BLACK|<empty>]
+            - observer <gameID>
+            - logout
+            - quit
+            - help
             """;
   }
 
