@@ -1,7 +1,7 @@
 package ui;
 
 import java.util.Scanner;
-import ui.EscapeSequences.*;
+import static ui.EscapeSequences.*;
 
 
 public class Repl {
@@ -15,14 +15,14 @@ public class Repl {
 //    System.out.println("Welcome to Chess."); // add client.help() here
 
     Scanner scanner = new Scanner(System.in);
-    var results = "";
-    while (!results.equals("quit")) {
+    var result = "";
+    while (!result.equals("quit")) {
       printPrompt();
       String line = scanner.nextLine();
 
       try {
         result = client.eval(line);
-        System.out.print(BLUE + results); // need to change to match my EscapeSeq
+        System.out.print(SET_TEXT_COLOR_BLUE + result); // need to change to match my EscapeSeq
       } catch (Throwable e) {
         System.out.print(e.getMessage());
       }
@@ -36,8 +36,6 @@ public class Repl {
 //  }
 
   private void printPrompt()  {
-    System.out.print("\n" + RESET + ">>> " + GREEN);
+    System.out.print("\n" + "\u001b" + "0m" + ">>> " + SET_TEXT_COLOR_GREEN);
   }
-
-
 }

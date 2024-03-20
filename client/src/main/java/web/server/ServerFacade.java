@@ -13,7 +13,7 @@ public class ServerFacade {
 
   public ServerFacade(String url) {serverUrl = url;}
 
-  // add server endpoints here
+  // add 7 server endpoints here
 
   private static void writeBody(Object request, HttpURLConnection http) throws IOException {
     if (request != null) {
