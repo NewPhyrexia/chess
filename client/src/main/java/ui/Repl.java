@@ -22,7 +22,7 @@ public class Repl {
 
       try {
         result = client.eval(line);
-        System.out.print(SET_TEXT_COLOR_BLUE + result); // need to change to match my EscapeSeq
+        System.out.print(SET_TEXT_COLOR_BLUE + result);
       } catch (Throwable e) {
         System.out.print(e.getMessage());
       }
