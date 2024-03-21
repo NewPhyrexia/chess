@@ -21,9 +21,9 @@ public class ServerFacade {
 
   public ServerFacade(String url) {serverUrl = url;}
 
-  public void clearApp(ClearAppServiceReq request) throws ResponseException {
+  public void clearApp() throws ResponseException {
     var path = "/db";
-    this.makeRequest("DELETE",path, request, ClearAppServiceRes.class);
+    this.makeRequest("DELETE",path, null, ClearAppServiceRes.class);
   }
 
   public RegistrationRes register(RegistrationReq request) throws ResponseException {

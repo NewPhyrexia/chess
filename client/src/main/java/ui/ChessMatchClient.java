@@ -49,7 +49,7 @@ public class ChessMatchClient {
 
   public String clearApp() throws ResponseException {
     if (true) {
-      server.clearApp(new ClearAppServiceReq());
+      server.clearApp();
       return "db cleared";
     }
     throw new ResponseException(400, "failed to clear db");

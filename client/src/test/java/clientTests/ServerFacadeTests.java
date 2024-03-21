@@ -1,5 +1,7 @@
 package clientTests;
 
+import dataAccess.DataAccessException;
+import exception.ResponseException;
 import org.junit.jupiter.api.*;
 import req.RegistrationReq;
 import server.Server;
@@ -14,11 +16,12 @@ public class ServerFacadeTests {
   static ServerFacade facade;
 
   @BeforeAll
-  public static void init() {
+  public static void init() throws ResponseException {
     server = new Server();
     var port = server.run(0);
     System.out.println("Started test HTTP server on " + port);
     facade = new ServerFacade("http://localhost:" + port);
+    facade.clearApp();
   }
 
   @AfterAll
@@ -28,14 +31,25 @@ public class ServerFacadeTests {
 
 
   @Test
-  public void clearAll() {
-    assertTrue(true);
+  public void clearAll() throws ResponseException {
+    var userData = facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    facade.clearApp();
+    userData = facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    assertEquals("player1", userData.username());
   }
 
   @Test
-  void register() throws Exception {
+  void register() throws ResponseException {
     var userData = facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
     assertEquals("player1", userData.username());
+  }
+
+  @Test
+  void negRegister() throws ResponseException {
+    var userData = facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    assertThrows(ResponseException.class, () -> {
+      facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    });
   }
 
 }
