@@ -40,21 +40,21 @@ public class ServerFacade {
     return res;
   }
 
-  public void logout() throws ResponseException {
+  public LogoutRes logout() throws ResponseException {
     var path = "/session";
-    this.makeRequest("DELETE", path, new LogoutReq(authToken), LoginRes.class);
+    var res = this.makeRequest("DELETE", path, new LogoutReq(authToken), LogoutRes.class);
+    authToken = null;
+    return res;
   }
 
   public CreateGameRes createGame(CreateGameReq req) throws ResponseException {
     var path = "/game";
-    var game = this.makeRequest("POST", path,  new CreateGameReq(authToken, req.gameName()), CreateGameRes.class);
-    return game;
+    return this.makeRequest("POST", path,  new CreateGameReq(authToken, req.gameName()), CreateGameRes.class);
   }
 
   public ListGamesRes listGames() throws ResponseException {
     var path = "/game";
-    var list = this.makeRequest("GET", path, new ListGamesReq(authToken), ListGamesRes.class);
-    return list;
+    return this.makeRequest("GET", path, new ListGamesReq(authToken), ListGamesRes.class);
   }
 
   public void joinGame(JoinGameReq request) throws ResponseException {

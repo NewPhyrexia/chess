@@ -77,7 +77,21 @@ public class ServerFacadeTests {
     });
   }
 
-  //logout
+  @Test
+  void logout() throws ResponseException {
+    var authToken = facade.register(new RegistrationReq("player1", "password", "p1@email.com")).authToken();
+    var newAuthToken = facade.login(new LoginReq("player1","password"));
+    var logoutRes = facade.logout();
+    assertNull(logoutRes.message());
+  }
+
+  @Test
+  void negLogout() throws ResponseException {
+    var authToken = facade.register(new RegistrationReq("player1", "password", "p1@email.com")).authToken();
+    var newAuthToken = facade.login(new LoginReq("player1","password"));
+    var logoutRes = facade.logout();
+    assertNotNull(authToken);  // not sure what a good test for this case would be.
+  }
 
   @Test
   void createGame() throws ResponseException {
