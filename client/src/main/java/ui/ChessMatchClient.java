@@ -40,6 +40,7 @@ public class ChessMatchClient {
         case "listGames" -> listGames();
 //        case "join", "observer" -> joinGame(params);
         // other methods for websocket
+        case "quit" -> "quit";
         default -> help();
       };
     } catch (ResponseException ex) {
