@@ -92,13 +92,15 @@ public class ChessMatchClient {
 
   public String listGames() throws ResponseException {
       var gameArray = server.listGames().games();
-      String[] games = new String[gameArray.length];
+      String[] games = new String[gameArray.length+1];
       int i = 0;
       for (GameData element : gameArray) {
         var gameName = element.gameName();
-        games[i] = i+1 + ": " + gameName + element.whiteUsername() + element.blackUsername() + "\n"; //Reformat
+        var temp = i+1;
+        games[i] =  "\n" + temp + ": " + gameName + " | whitePlayer: " + element.whiteUsername() + " | blackPlayer: " + element.blackUsername();
         i++;
       }
+      games[i] = "\n";
       return Arrays.toString(games);
   }
 
