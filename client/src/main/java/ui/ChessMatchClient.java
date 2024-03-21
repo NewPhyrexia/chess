@@ -2,6 +2,7 @@ package ui;
 
 import dataAccess.DataAccessException;
 import exception.ResponseException;
+import model.GameData;
 import req.*;
 import web.server.ServerFacade;
 import java.util.Arrays;
@@ -39,7 +40,8 @@ public class ChessMatchClient {
         case "logout" -> logout();
         case "creategame" -> createGame(params);
         case "listgames" -> listGames();
-        case "join", "observer" -> joinGame(params);
+        case "join" -> joinGame(params);
+        case "observer" -> joinGameAsObserver(params);
         // other methods for websocket
         case "quit" -> "quit";
         default -> help();
@@ -89,8 +91,15 @@ public class ChessMatchClient {
   }
 
   public String listGames() throws ResponseException {
-      var games = server.listGames().games();
-      return Arrays.toString(games); // change to list games by id and game name
+      var gameArray = server.listGames().games();
+      String[] games = new String[gameArray.length];
+      int i = 0;
+      for (GameData element : gameArray) {
+        var gameName = element.gameName();
+        games[i] = i+1 + ": " + gameName + element.whiteUsername() + element.blackUsername() + "\n"; //Reformat
+        i++;
+      }
+      return Arrays.toString(games);
   }
 
   public String joinGame(String... params) throws ResponseException {
@@ -99,7 +108,14 @@ public class ChessMatchClient {
       server.joinGame(new JoinGameReq(null, color, Integer.parseInt(params[0])));
     } else if (params.length == 2 && color.isEmpty()) { //observer
       server.joinGame(new JoinGameReq(null, null, Integer.parseInt(params[0])));
-    } else {throw new ResponseException(400, "Expected: <gameID> [white|black|<empty>]");}
+    } else {throw new ResponseException(400, "Expected: <gameID> [white|black]");}
+    return printChessBoard();
+  }
+
+  public String joinGameAsObserver(String... params) throws ResponseException {
+    if (params.length == 1) {
+      server.joinGame(new JoinGameReq(null, null, Integer.parseInt(params[0])));
+    } else {throw new ResponseException(400, "Expected: <gameID>");}
     return printChessBoard();
   }
 
@@ -150,7 +166,7 @@ public class ChessMatchClient {
     return """
             - createGame <gameName>
             - listGames
-            - join <gameID> [white|black|<empty>]
+            - join <gameID> [white|black]
             - observer <gameID>
             - logout
             - help
