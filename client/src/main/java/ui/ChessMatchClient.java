@@ -2,6 +2,7 @@ package ui;
 
 import dataAccess.DataAccessException;
 import exception.ResponseException;
+import req.CreateGameReq;
 import req.LoginReq;
 import req.LogoutReq;
 import req.RegistrationReq;
@@ -17,6 +18,8 @@ public class ChessMatchClient {
   private final String serverUrl;
 
   private String authToken;
+
+  private int gameID;
 
 //  private NotificationHandler notificationHandler; // websocket
 //  private WebSocketFacade ws; // websocket
@@ -77,7 +80,11 @@ public class ChessMatchClient {
   }
 
   public String createGame(String... params) throws ResponseException {
-    return null;
+    if (params.length >= 1) {
+      gameID = server.createGame(new CreateGameReq(authToken, params[0]));
+      return String.format("You created game %s with id: %d ", params[0], gameID);
+    }
+    throw new ResponseException(400, "Expected: <gameName>");
   }
 
   public String listGames() throws ResponseException {
