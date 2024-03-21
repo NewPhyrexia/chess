@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import exception.ResponseException;
 import model.GameData;
 import req.*;
+import res.LoginRes;
 import res.RegistrationRes;
 
 import java.io.*;
@@ -30,10 +31,10 @@ public class ServerFacade {
     return this.makeRequest("POST", path, request, RegistrationRes.class).authToken();
   }
 
-//  public void login(LoginReq request) throws ResponseException {
-//    var path = "/session";
-//    this.makeRequest("POST",path, , );
-//  }
+  public String login(LoginReq request) throws ResponseException {
+    var path = "/session";
+    return this.makeRequest("POST",path, request, LoginRes.class).authToken();
+  }
 
   public void logout(LogoutReq request) throws ResponseException {
     var path = "/session";
