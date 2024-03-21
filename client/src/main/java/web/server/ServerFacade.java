@@ -10,8 +10,7 @@ import java.net.HttpURLConnection;
 import exception.ResponseException;
 import model.GameData;
 import req.*;
-import res.LoginRes;
-import res.RegistrationRes;
+import res.*;
 
 import java.io.*;
 import java.net.*;
@@ -41,22 +40,21 @@ public class ServerFacade {
     this.makeRequest("DELETE", path, request, null);
   }
 
+  public int createGame(CreateGameReq request) throws ResponseException {
+    var path = "/game";
+    return this.makeRequest("POST",path, request, CreateGameRes.class).gameID();
+  }
+
   public GameData[] listGames(ListGamesReq request) throws ResponseException {
     var path = "/game";
-    record listGamesRes(GameData[] games) {}
-    var response = this.makeRequest("GET",path, null, listGamesRes.class);
+    var response = this.makeRequest("GET",path, null, ListGamesRes.class);
     return response.games();
   }
 
-//  public int createGame(CreateGameReq request) throws ResponseException {
-//    var path = "/game";
-//    return this.makeRequest("POST",path, , );
-//  }
-//
-//  public void joinGame(JoinGameReq request) throws ResponseException {
-//    var path = "/game";
-//    this.makeRequest("PUT",path, , );
-//  }
+  public void joinGame(JoinGameReq request) throws ResponseException { // Is this method done?
+    var path = "/game";
+    this.makeRequest("PUT",path, request, JoinGameRes.class);
+  }
 
 
   private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
