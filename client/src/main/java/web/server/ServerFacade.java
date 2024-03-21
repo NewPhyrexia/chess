@@ -38,7 +38,7 @@ public class ServerFacade {
 
   public void logout(LogoutReq request) throws ResponseException {
     var path = "/session";
-    this.makeRequest("DELETE", path, null, null);
+    this.makeRequest("DELETE", path, request, null);
   }
 
   public GameData[] listGames(ListGamesReq request) throws ResponseException {

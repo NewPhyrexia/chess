@@ -3,6 +3,7 @@ package ui;
 import dataAccess.DataAccessException;
 import exception.ResponseException;
 import req.LoginReq;
+import req.LogoutReq;
 import req.RegistrationReq;
 import web.server.ServerFacade;
 import java.util.Arrays;
@@ -50,7 +51,7 @@ public class ChessMatchClient {
 
   public String register(String... params) throws ResponseException {
     if (params.length >= 3) {
-      authToken = server.register(new RegistrationReq(params[0],params[1], params[2]));
+      authToken = server.register(new RegistrationReq(params[0],params[1], params[2])); // I dont need this auth token?
       return String.format("You are registered as %s", params[0]);
     }
     throw new ResponseException(400, "Expected: <username> <password> <email>");
@@ -68,7 +69,11 @@ public class ChessMatchClient {
   }
 
   public String logout() throws ResponseException {
-    return null;
+    if (!authToken.isEmpty()) {
+      server.logout(new LogoutReq(authToken));
+      return "You have logged out";
+    }
+    throw new ResponseException(400, "Could not log out"); // Not sure what error to put here
   }
 
   public String createGame(String... params) throws ResponseException {
