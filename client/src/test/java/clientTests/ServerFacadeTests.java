@@ -4,6 +4,7 @@ import dataAccess.DataAccessException;
 import exception.ResponseException;
 import org.junit.jupiter.api.*;
 import req.CreateGameReq;
+import req.JoinGameReq;
 import req.LoginReq;
 import req.RegistrationReq;
 import server.Server;
@@ -79,8 +80,8 @@ public class ServerFacadeTests {
 
   @Test
   void logout() throws ResponseException {
-    var authToken = facade.register(new RegistrationReq("player1", "password", "p1@email.com")).authToken();
-    var newAuthToken = facade.login(new LoginReq("player1","password"));
+    facade.register(new RegistrationReq("player1", "password", "p1@email.com")).authToken();
+    facade.login(new LoginReq("player1","password"));
     var logoutRes = facade.logout();
     assertNull(logoutRes.message());
   }
@@ -88,8 +89,8 @@ public class ServerFacadeTests {
   @Test
   void negLogout() throws ResponseException {
     var authToken = facade.register(new RegistrationReq("player1", "password", "p1@email.com")).authToken();
-    var newAuthToken = facade.login(new LoginReq("player1","password"));
-    var logoutRes = facade.logout();
+    facade.login(new LoginReq("player1","password"));
+    facade.logout();
     assertNotNull(authToken);  // not sure what a good test for this case would be.
   }
 
@@ -124,5 +125,33 @@ public class ServerFacadeTests {
     facade.createGame(new CreateGameReq(null, "gameName"));
 
     assertNotEquals(2, facade.listGames().games().length);
+  }
+
+  @Test
+  void joinGameAsPlayer() throws ResponseException {
+    facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    var gameID = facade.createGame(new CreateGameReq(null, "gameName")).gameID();
+    var res = facade.joinGame(new JoinGameReq(null, "BLACK", gameID));
+
+    assertNull(res.message());
+  }
+
+  @Test
+  void joinGameAsObserver() throws ResponseException {
+    facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    var gameID = facade.createGame(new CreateGameReq(null, "gameName")).gameID();
+    var res = facade.joinGame(new JoinGameReq(null, null, gameID));
+
+    assertNull(res.message());
+  }
+
+  @Test
+  void negJoinGame() throws ResponseException {
+    facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    var gameID = facade.createGame(new CreateGameReq(null, "gameName")).gameID();
+
+    assertThrows(ResponseException.class, () -> {
+      facade.joinGame(new JoinGameReq(null, "cool", gameID));
+    });
   }
 }

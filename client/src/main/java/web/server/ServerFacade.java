@@ -57,9 +57,9 @@ public class ServerFacade {
     return this.makeRequest("GET", path, new ListGamesReq(authToken), ListGamesRes.class);
   }
 
-  public void joinGame(JoinGameReq request) throws ResponseException {
+  public JoinGameRes joinGame(JoinGameReq request) throws ResponseException {
     var path = "/game";
-    this.makeRequest("PUT", path, new JoinGameReq(request.authToken(),request.playerColor(),request.gameID()), JoinGameRes.class);
+    return this.makeRequest("PUT", path, new JoinGameReq(authToken,request.playerColor(),request.gameID()), JoinGameRes.class);
   }
 
 
