@@ -47,17 +47,19 @@ public class ServerFacade {
 
   public CreateGameRes createGame(CreateGameReq req) throws ResponseException {
     var path = "/game";
-    return this.makeRequest("POST",path, new CreateGameReq(authToken, req.gameName()), CreateGameRes.class);
+    var game = this.makeRequest("POST", path,  new CreateGameReq(authToken, req.gameName()), CreateGameRes.class);
+    return game;
   }
 
   public ListGamesRes listGames() throws ResponseException {
     var path = "/game";
-    return this.makeRequest("GET",path, new ListGamesReq(authToken), ListGamesRes.class);
+    var list = this.makeRequest("GET", path, new ListGamesReq(authToken), ListGamesRes.class);
+    return list;
   }
 
   public void joinGame(JoinGameReq request) throws ResponseException {
     var path = "/game";
-    this.makeRequest("PUT",path, new JoinGameReq(request.authToken(),request.playerColor(),request.gameID()), JoinGameRes.class);
+    this.makeRequest("PUT", path, new JoinGameReq(request.authToken(),request.playerColor(),request.gameID()), JoinGameRes.class);
   }
 
 
@@ -66,9 +68,15 @@ public class ServerFacade {
       URL url = (new URI(serverUrl + path)).toURL();
       HttpURLConnection http = (HttpURLConnection) url.openConnection();
       http.setRequestMethod(method);
-      http.setDoOutput(true);
 
-      writeBody(request, http);
+      if (authToken != null) {
+        http.addRequestProperty("Authorization", authToken);
+      }
+
+      if (!method.equals("GET")) {
+        http.setDoOutput(true);
+        writeBody(request, http);
+      }
       http.connect();
       throwIfNotSuccessful(http);
       return readBody(http, responseClass);

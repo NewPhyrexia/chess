@@ -86,4 +86,12 @@ public class ServerFacadeTests {
 
     assertEquals(1, facade.listGames().games().length);
   }
+
+  @Test
+  void negCreateGame() throws ResponseException {
+    facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    facade.createGame(new CreateGameReq(null, "gameName"));
+
+    assertNotEquals(2, facade.listGames().games().length);
+  }
 }
