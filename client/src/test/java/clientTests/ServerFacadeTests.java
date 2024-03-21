@@ -3,6 +3,7 @@ package clientTests;
 import dataAccess.DataAccessException;
 import exception.ResponseException;
 import org.junit.jupiter.api.*;
+import req.CreateGameReq;
 import req.LoginReq;
 import req.RegistrationReq;
 import server.Server;
@@ -39,18 +40,21 @@ public class ServerFacadeTests {
     var userData = facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
     facade.clearApp();
     userData = facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+
     assertEquals("player1", userData.username());
   }
 
   @Test
   void register() throws ResponseException {
     var userData = facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+
     assertEquals("player1", userData.username());
   }
 
   @Test
   void negRegister() throws ResponseException {
     var userData = facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+
     assertThrows(ResponseException.class, () -> {
       facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
     });
@@ -60,14 +64,26 @@ public class ServerFacadeTests {
   void login() throws ResponseException {
     var authToken = facade.register(new RegistrationReq("player1", "password", "p1@email.com")).authToken();
     var newAuthToken = facade.login(new LoginReq("player1","password"));
+
     assertNotEquals(authToken, newAuthToken);
   }
 
   @Test
   void negLogin() throws ResponseException {
     facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+
     assertThrows(ResponseException.class, () -> {
       facade.login(new LoginReq("player2", "password"));
     });
+  }
+
+  //logout
+
+  @Test
+  void createGame() throws ResponseException {
+    facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    facade.createGame(new CreateGameReq(null, "gameName"));
+
+    assertEquals(1, facade.listGames().games().length);
   }
 }

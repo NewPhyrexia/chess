@@ -28,38 +28,36 @@ public class ServerFacade {
 
   public RegistrationRes register(RegistrationReq request) throws ResponseException {
     var path = "/user";
-    RegistrationRes res = this.makeRequest("POST", path, request, RegistrationRes.class);
+    var res = this.makeRequest("POST", path, request, RegistrationRes.class);
     authToken = res.authToken();
     return res;
   }
 
   public LoginRes login(LoginReq request) throws ResponseException {
     var path = "/session";
-    LoginRes res = this.makeRequest("POST",path, request, LoginRes.class);
+    var res = this.makeRequest("POST",path, request, LoginRes.class);
     authToken = res.authToken();
     return res;
   }
 
   public void logout() throws ResponseException {
     var path = "/session";
-    this.makeRequest("DELETE", path, new LogoutReq(authToken), null);
+    this.makeRequest("DELETE", path, new LogoutReq(authToken), LoginRes.class);
   }
 
-  public int createGame(String... params) throws ResponseException {
+  public CreateGameRes createGame(CreateGameReq req) throws ResponseException {
     var path = "/game";
-    CreateGameRes res = this.makeRequest("POST",path, new CreateGameReq(authToken, params[0]), CreateGameRes.class);
-    return res.gameID();
+    return this.makeRequest("POST",path, new CreateGameReq(authToken, req.gameName()), CreateGameRes.class);
   }
 
-  public GameData[] listGames(ListGamesReq request) throws ResponseException {
+  public ListGamesRes listGames() throws ResponseException {
     var path = "/game";
-    var response = this.makeRequest("GET",path, null, ListGamesRes.class);
-    return response.games();
+    return this.makeRequest("GET",path, new ListGamesReq(authToken), ListGamesRes.class);
   }
 
-  public void joinGame(JoinGameReq request) throws ResponseException { // Is this method done?
+  public void joinGame(JoinGameReq request) throws ResponseException {
     var path = "/game";
-    this.makeRequest("PUT",path, request, JoinGameRes.class);
+    this.makeRequest("PUT",path, new JoinGameReq(request.authToken(),request.playerColor(),request.gameID()), JoinGameRes.class);
   }
 
 
