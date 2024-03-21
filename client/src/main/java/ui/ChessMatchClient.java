@@ -97,18 +97,36 @@ public class ChessMatchClient {
     var color = params[1].replace("[", "").replace("]", "");
     if (params.length == 2 && (color.equalsIgnoreCase("white")|| color.equalsIgnoreCase("black"))) { // player
       server.joinGame(new JoinGameReq(null, color, Integer.parseInt(params[0])));
-      return printGame();
     } else if (params.length == 2 && color.isEmpty()) { //observer
       server.joinGame(new JoinGameReq(null, null, Integer.parseInt(params[0])));
-      return printGame();
-    }
-    throw new ResponseException(400, "Expected: <gameID> [white|black|<empty>]");
+    } else {throw new ResponseException(400, "Expected: <gameID> [white|black|<empty>]");}
+    return printChessBoard();
   }
 
-  private String printGame() {
+  private String printChessBoard() {
     return """
-            Game Here
-            """;
+                   a b c d e f g h 
+                8 |r|n|b|q|k|b|n|r| 8
+                7 |p|p|p|p|p|p|p|p| 7
+                6 | | | | | | | | | 6
+                5 | | | | | | | | | 5
+                4 | | | | | | | | | 4
+                3 | | | | | | | | | 3
+                2 |P|P|P|P|P|P|P|P| 2
+                1 |R|N|B|Q|K|B|N|R| 1
+                   a b c d e f g h
+                   
+                   h g f e d c b a
+                1 |R|N|B|K|Q|B|N|R| 1
+                2 |P|P|P|P|P|P|P|P| 2
+                3 | | | | | | | | | 3
+                4 | | | | | | | | | 4
+                5 | | | | | | | | | 5
+                6 | | | | | | | | | 6
+                7 |p|p|p|p|p|p|p|p| 7
+                8 |r|n|b|k|q|b|n|r| 8
+                   h g f e d c b a
+                """;
   }
 
   public String help() {
