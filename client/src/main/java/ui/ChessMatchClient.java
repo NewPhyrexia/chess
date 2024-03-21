@@ -36,7 +36,7 @@ public class ChessMatchClient {
         case "register" -> register(params);
         case "login" -> login(params);
         case "logout" -> logout();
-//        case "createGame" -> createGame(params);
+        case "createGame" -> createGame(params);
 //        case "listGames" -> listGames();
 //        case "join", "observer" -> joinGame(params);
         // other methods for websocket
@@ -75,13 +75,13 @@ public class ChessMatchClient {
       return "You have logged out";
   }
 
-//  public String createGame(String... params) throws ResponseException {
-//    if (params.length >= 1) {
-//      gameID = server.createGame(new CreateGameReq(authToken, params[0]));
-//      return String.format("You created game %s with id: %d ", params[0], gameID);
-//    }
-//    throw new ResponseException(400, "Expected: <gameName>");
-//  }
+  public String createGame(String... params) throws ResponseException {
+    if (params.length >= 1) {
+      gameID = server.createGame(params);
+      return String.format("You created game %s with id: %d ", params[0], gameID);
+    }
+    throw new ResponseException(400, "Expected: <gameName>");
+  }
 //
 //  public String listGames() throws ResponseException {
 //    if (!authToken.isEmpty()) {

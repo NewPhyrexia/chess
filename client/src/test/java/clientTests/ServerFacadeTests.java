@@ -22,7 +22,6 @@ public class ServerFacadeTests {
     var port = server.run(0);
     System.out.println("Started test HTTP server on " + port);
     facade = new ServerFacade("http://localhost:" + port);
-    facade.clearApp();
   }
 
   @AfterAll
@@ -30,6 +29,10 @@ public class ServerFacadeTests {
     server.stop();
   }
 
+  @BeforeEach
+  void clear() throws ResponseException {
+    facade.clearApp();
+  }
 
   @Test
   public void clearAll() throws ResponseException {
