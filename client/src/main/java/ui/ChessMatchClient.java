@@ -2,10 +2,7 @@ package ui;
 
 import dataAccess.DataAccessException;
 import exception.ResponseException;
-import req.CreateGameReq;
-import req.LoginReq;
-import req.LogoutReq;
-import req.RegistrationReq;
+import req.*;
 import web.server.ServerFacade;
 import java.util.Arrays;
 
@@ -42,8 +39,7 @@ public class ChessMatchClient {
         case "logout" -> logout();
         case "createGame" -> createGame(params);
         case "listGames" -> listGames();
-        case "joinGame" -> joinGame(params);
-        case "joinAsObserver" -> joinAsObserver(params);
+        case "join", "observer" -> joinGame(params);
         // other methods for websocket
         default -> help();
       };
@@ -88,15 +84,20 @@ public class ChessMatchClient {
   }
 
   public String listGames() throws ResponseException {
-    return null;
+    if (!authToken.isEmpty()) {
+      var games = server.listGames(new ListGamesReq(authToken));
+      return ""; // how do I list all the games in the return?
+    }
+    throw new ResponseException(400, "Not a valid user to list games");
   }
 
   public String joinGame(String... params) throws ResponseException {
-    return null;
-  }
-
-  public String joinAsObserver(String... params) throws ResponseException {
-    return null;
+    if (params.length >= 2 && !params[1].isEmpty()) { // player
+      server.joinGame(new JoinGameReq(authToken, params[1], Integer.parseInt(params[0])));
+    } else if (params.length >= 2) { //observer
+      server.joinGame(new JoinGameReq(authToken, null, Integer.parseInt(params[0])));
+    }
+    throw new ResponseException(400, "Expected: <gameID> [WHITE|BLACK|<empty>]");
   }
 
   public String help() {
