@@ -48,11 +48,8 @@ public class ChessMatchClient {
   }
 
   public String clearApp() throws ResponseException {
-    if (true) {
-      server.clearApp();
-      return "db cleared";
-    }
-    throw new ResponseException(400, "failed to clear db");
+    server.clearApp();
+    return "db cleared";
   }
   public String register(String... params) throws ResponseException {
     if (params.length >= 3) {

@@ -53,8 +53,8 @@ public class UserServiceTests {
 
   @Test
   void successfulLogin() throws DataAccessException {
-    var token = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com"));
-    var newToken = UService.login(new LoginReq("Dakota", "1sC00l4"));
+    var token = UService.register(new RegistrationReq("Dakota", "1sC00l4", "Iam@hotmail.com")).authToken();
+    var newToken = UService.login(new LoginReq("Dakota", "1sC00l4")).authToken();
 
     assertNotEquals(token, newToken);
   }

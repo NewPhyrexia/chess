@@ -3,6 +3,7 @@ package clientTests;
 import dataAccess.DataAccessException;
 import exception.ResponseException;
 import org.junit.jupiter.api.*;
+import req.LoginReq;
 import req.RegistrationReq;
 import server.Server;
 import web.server.ServerFacade;
@@ -52,4 +53,18 @@ public class ServerFacadeTests {
     });
   }
 
+  @Test
+  void login() throws ResponseException {
+    var authToken = facade.register(new RegistrationReq("player1", "password", "p1@email.com")).authToken();
+    var newAuthToken = facade.login(new LoginReq("player1","password"));
+    assertNotEquals(authToken, newAuthToken);
+  }
+
+  @Test
+  void negLogin() throws ResponseException {
+    facade.register(new RegistrationReq("player1", "password", "p1@email.com"));
+    assertThrows(ResponseException.class, () -> {
+      facade.login(new LoginReq("player2", "password"));
+    });
+  }
 }

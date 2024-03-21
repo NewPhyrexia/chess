@@ -33,9 +33,11 @@ public class ServerFacade {
     return res;
   }
 
-  public String login(LoginReq request) throws ResponseException {
+  public LoginRes login(LoginReq request) throws ResponseException {
     var path = "/session";
-    return this.makeRequest("POST",path, request, LoginRes.class).authToken();
+    LoginRes res = this.makeRequest("POST",path, request, LoginRes.class);
+    authToken = res.authToken();
+    return res;
   }
 
   public void logout() throws ResponseException {
@@ -43,21 +45,21 @@ public class ServerFacade {
     this.makeRequest("DELETE", path, new LogoutReq(authToken), null);
   }
 
-//  public int createGame(CreateGameReq request) throws ResponseException {
-//    var path = "/game";
-//    return this.makeRequest("POST",path, request, CreateGameRes.class).gameID();
-//  }
-//
-//  public GameData[] listGames(ListGamesReq request) throws ResponseException {
-//    var path = "/game";
-//    var response = this.makeRequest("GET",path, null, ListGamesRes.class);
-//    return response.games();
-//  }
-//
-//  public void joinGame(JoinGameReq request) throws ResponseException { // Is this method done?
-//    var path = "/game";
-//    this.makeRequest("PUT",path, request, JoinGameRes.class);
-//  }
+  public int createGame(CreateGameReq request) throws ResponseException {
+    var path = "/game";
+    return this.makeRequest("POST",path, request, CreateGameRes.class).gameID();
+  }
+
+  public GameData[] listGames(ListGamesReq request) throws ResponseException {
+    var path = "/game";
+    var response = this.makeRequest("GET",path, null, ListGamesRes.class);
+    return response.games();
+  }
+
+  public void joinGame(JoinGameReq request) throws ResponseException { // Is this method done?
+    var path = "/game";
+    this.makeRequest("PUT",path, request, JoinGameRes.class);
+  }
 
 
   private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
