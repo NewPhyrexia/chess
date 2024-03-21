@@ -17,17 +17,20 @@ import java.net.*;
 
 public class ServerFacade {
   private final String serverUrl;
+  private String authToken;
 
   public ServerFacade(String url) {serverUrl = url;}
 
-  public void clearApp() throws ResponseException {
+  public void clearApp(ClearAppServiceReq request) throws ResponseException {
     var path = "/db";
-    this.makeRequest("DELETE",path, null, null);
+    this.makeRequest("DELETE",path, request, ClearAppServiceRes.class);
   }
 
-  public String register(RegistrationReq request) throws ResponseException {
+  public RegistrationRes register(RegistrationReq request) throws ResponseException {
     var path = "/user";
-    return this.makeRequest("POST", path, request, RegistrationRes.class).authToken();
+    RegistrationRes res = this.makeRequest("POST", path, request, RegistrationRes.class);
+    authToken = res.authToken();
+    return res;
   }
 
   public String login(LoginReq request) throws ResponseException {
@@ -35,26 +38,26 @@ public class ServerFacade {
     return this.makeRequest("POST",path, request, LoginRes.class).authToken();
   }
 
-  public void logout(LogoutReq request) throws ResponseException {
+  public void logout() throws ResponseException {
     var path = "/session";
-    this.makeRequest("DELETE", path, request, null);
+    this.makeRequest("DELETE", path, new LogoutReq(authToken), null);
   }
 
-  public int createGame(CreateGameReq request) throws ResponseException {
-    var path = "/game";
-    return this.makeRequest("POST",path, request, CreateGameRes.class).gameID();
-  }
-
-  public GameData[] listGames(ListGamesReq request) throws ResponseException {
-    var path = "/game";
-    var response = this.makeRequest("GET",path, null, ListGamesRes.class);
-    return response.games();
-  }
-
-  public void joinGame(JoinGameReq request) throws ResponseException { // Is this method done?
-    var path = "/game";
-    this.makeRequest("PUT",path, request, JoinGameRes.class);
-  }
+//  public int createGame(CreateGameReq request) throws ResponseException {
+//    var path = "/game";
+//    return this.makeRequest("POST",path, request, CreateGameRes.class).gameID();
+//  }
+//
+//  public GameData[] listGames(ListGamesReq request) throws ResponseException {
+//    var path = "/game";
+//    var response = this.makeRequest("GET",path, null, ListGamesRes.class);
+//    return response.games();
+//  }
+//
+//  public void joinGame(JoinGameReq request) throws ResponseException { // Is this method done?
+//    var path = "/game";
+//    this.makeRequest("PUT",path, request, JoinGameRes.class);
+//  }
 
 
   private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {

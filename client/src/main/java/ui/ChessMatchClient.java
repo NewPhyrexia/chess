@@ -14,8 +14,6 @@ public class ChessMatchClient {
 
   private final String serverUrl;
 
-  private String authToken;
-
   private int gameID;
 
 //  private NotificationHandler notificationHandler; // websocket
@@ -34,12 +32,13 @@ public class ChessMatchClient {
       var cmd = (tokens.length > 0) ? tokens[0] : "help";
       var params = Arrays.copyOfRange(tokens, 1, tokens.length);
       return switch (cmd) {
+        case "clearApp" -> clearApp();
         case "register" -> register(params);
         case "login" -> login(params);
         case "logout" -> logout();
-        case "createGame" -> createGame(params);
-        case "listGames" -> listGames();
-        case "join", "observer" -> joinGame(params);
+//        case "createGame" -> createGame(params);
+//        case "listGames" -> listGames();
+//        case "join", "observer" -> joinGame(params);
         // other methods for websocket
         default -> help();
       };
@@ -48,10 +47,17 @@ public class ChessMatchClient {
     }
   }
 
+  public String clearApp() throws ResponseException {
+    if (true) {
+      server.clearApp(new ClearAppServiceReq());
+      return "db cleared";
+    }
+    throw new ResponseException(400, "failed to clear db");
+  }
   public String register(String... params) throws ResponseException {
     if (params.length >= 3) {
-      authToken = server.register(new RegistrationReq(params[0],params[1], params[2])); // I dont need this auth token?
-      return String.format("You are registered as %s", params[0]);
+      server.register(new RegistrationReq(params[0],params[1], params[2]));
+      return String.format("You are logged as %s", params[0]);
     }
     throw new ResponseException(400, "Expected: <username> <password> <email>");
   }
@@ -59,7 +65,7 @@ public class ChessMatchClient {
   public String login(String... params) throws ResponseException {
     if (params.length >= 2) {
       state = State.LOGGED_IN;
-      authToken = server.login(new LoginReq(params[0], params[1]));
+      server.login(new LoginReq(params[0], params[1]));
       //      visitorName = String.join("-", params);
       //      // websocket here
       return String.format("You are logged in as %s", params[0]);
@@ -68,37 +74,34 @@ public class ChessMatchClient {
   }
 
   public String logout() throws ResponseException {
-    if (!authToken.isEmpty()) {
-      server.logout(new LogoutReq(authToken));
+      server.logout();
       return "You have logged out";
-    }
-    throw new ResponseException(400, "Could not log out"); // Not sure what error to put here
   }
 
-  public String createGame(String... params) throws ResponseException {
-    if (params.length >= 1) {
-      gameID = server.createGame(new CreateGameReq(authToken, params[0]));
-      return String.format("You created game %s with id: %d ", params[0], gameID);
-    }
-    throw new ResponseException(400, "Expected: <gameName>");
-  }
-
-  public String listGames() throws ResponseException {
-    if (!authToken.isEmpty()) {
-      var games = server.listGames(new ListGamesReq(authToken));
-      return ""; // how do I list all the games in the return?
-    }
-    throw new ResponseException(400, "Not a valid user to list games");
-  }
-
-  public String joinGame(String... params) throws ResponseException {
-    if (params.length >= 2 && !params[1].isEmpty()) { // player
-      server.joinGame(new JoinGameReq(authToken, params[1], Integer.parseInt(params[0])));
-    } else if (params.length >= 2) { //observer
-      server.joinGame(new JoinGameReq(authToken, null, Integer.parseInt(params[0])));
-    }
-    throw new ResponseException(400, "Expected: <gameID> [WHITE|BLACK|<empty>]");
-  }
+//  public String createGame(String... params) throws ResponseException {
+//    if (params.length >= 1) {
+//      gameID = server.createGame(new CreateGameReq(authToken, params[0]));
+//      return String.format("You created game %s with id: %d ", params[0], gameID);
+//    }
+//    throw new ResponseException(400, "Expected: <gameName>");
+//  }
+//
+//  public String listGames() throws ResponseException {
+//    if (!authToken.isEmpty()) {
+//      var games = server.listGames(new ListGamesReq(authToken));
+//      return ""; // how do I list all the games in the return?
+//    }
+//    throw new ResponseException(400, "Not a valid user to list games");
+//  }
+//
+//  public String joinGame(String... params) throws ResponseException {
+//    if (params.length >= 2 && !params[1].isEmpty()) { // player
+//      server.joinGame(new JoinGameReq(authToken, params[1], Integer.parseInt(params[0])));
+//    } else if (params.length >= 2) { //observer
+//      server.joinGame(new JoinGameReq(authToken, null, Integer.parseInt(params[0])));
+//    }
+//    throw new ResponseException(400, "Expected: <gameID> [WHITE|BLACK|<empty>]");
+//  }
 
   public String help() {
     if (state == State.LOGGED_OUT) {
