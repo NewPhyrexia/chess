@@ -22,7 +22,7 @@ public class Repl {
 
       try {
         result = client.eval(line);
-        System.out.print(SET_TEXT_COLOR_BLUE + result);
+        System.out.print(/*SET_TEXT_COLOR_BLUE +*/ result);
       } catch (Throwable e) {
         System.out.print(e.getMessage());
       }
@@ -36,6 +36,6 @@ public class Repl {
 //  }
 
   private void printPrompt()  {
-    System.out.print("\n" + ">>> ");
+    System.out.print("\n" +  ">>> ");
   }
 }

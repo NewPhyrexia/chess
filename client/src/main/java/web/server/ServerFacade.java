@@ -21,9 +21,9 @@ public class ServerFacade {
 
   public ServerFacade(String url) {serverUrl = url;}
 
-  public void clearApp() throws ResponseException {
+  public ClearAppServiceRes clearApp() throws ResponseException {
     var path = "/db";
-    this.makeRequest("DELETE",path, null, ClearAppServiceRes.class);
+    return this.makeRequest("DELETE",path, null, ClearAppServiceRes.class);
   }
 
   public RegistrationRes register(RegistrationReq request) throws ResponseException {
@@ -59,7 +59,8 @@ public class ServerFacade {
 
   public JoinGameRes joinGame(JoinGameReq request) throws ResponseException {
     var path = "/game";
-    return this.makeRequest("PUT", path, new JoinGameReq(authToken,request.playerColor(),request.gameID()), JoinGameRes.class);
+    var res =  this.makeRequest("PUT", path, new JoinGameReq(authToken,request.playerColor(),request.gameID()), JoinGameRes.class);
+    return res;
   }
 
 
