@@ -6,6 +6,7 @@ import chess.ChessGame;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
+import static java.lang.Math.abs;
 import static ui.EscapeSequences.*;
 
 public class RenderBoard {
@@ -50,15 +51,20 @@ public class RenderBoard {
         for (int rows = 0; rows < BOARD_ROWS; rows++) {
           // print grey col
           setBoarder(out);
-          var rowNum = Integer.toString(rows + 1);
+          var rowNum = Integer.toString(abs(rows - 8));
           out.print(" " + rowNum +" ");
 
           for (int cols = 0; cols < BOARD_COLS; cols++) {
 
             out.print(EMPTY.repeat(LINE_WIDTH_IN_CHARS));
+
             // print board row out
+
               // check for piece at location col row
+
                 // assign text color based on piece color
+
+//            else { out.print(EMPTY); }
           }
           // print grey col
           out.print(" " + rowNum +" ");
@@ -107,11 +113,11 @@ public class RenderBoard {
     out.print(SET_TEXT_COLOR_BLACK);
   }
 
-  private static void printWhitePlayer(PrintStream out) {
+  private static void printBlackPlayer(PrintStream out) {
     out.print(SET_TEXT_COLOR_BLUE);
   }
 
-  private static void printBlackPlayer(PrintStream out) {
+  private static void printWhitePlayer(PrintStream out) {
     out.print(SET_TEXT_COLOR_RED);
   }
 }
