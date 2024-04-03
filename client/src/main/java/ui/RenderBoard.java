@@ -11,7 +11,7 @@ import static ui.EscapeSequences.*;
 public class RenderBoard {
 
   private static final int BOARD_ROWS = 8;
-  private static final int BOARD_COLS = 10;
+  private static final int BOARD_COLS = 8;
   private static final int LINE_WIDTH_IN_CHARS = 1;
 
 
@@ -43,21 +43,26 @@ public class RenderBoard {
     var teamTurn = game.getTeamTurn();
 
     switch (teamTurn) {
+
       case WHITE:
 
         printWhiteHeaderFooter(out);
-        for (int cols = 0; cols < BOARD_COLS; cols++) {
+        for (int rows = 0; rows < BOARD_ROWS; rows++) {
+          // print grey col
+          setBoarder(out);
+          var rowNum = Integer.toString(rows + 1);
+          out.print(" " + rowNum +" ");
 
-          for (int rows = 0; rows < BOARD_ROWS; rows++) {
-            // print grey col
+          for (int cols = 0; cols < BOARD_COLS; cols++) {
 
+            out.print(EMPTY.repeat(LINE_WIDTH_IN_CHARS));
             // print board row out
               // check for piece at location col row
                 // assign text color based on piece color
-
-            // print grey col
-
           }
+          // print grey col
+          out.print(" " + rowNum +" ");
+
           out.print(RESET_TEXT_COLOR);
           out.print(RESET_BG_COLOR);
           out.println();
