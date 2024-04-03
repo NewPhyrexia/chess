@@ -2,6 +2,7 @@ package ui;
 
 import chess.ChessBoard;
 import chess.ChessGame;
+import chess.ChessPosition;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -41,6 +42,7 @@ public class RenderBoard {
   private static void drawChessBoard(PrintStream out, ChessGame game) {
     ChessBoard board = game.getBoard();
     board.resetBoard(); // temp for testing
+    var boardPieceArray = board.getBoard();
     var teamTurn = game.getTeamTurn();
 
     switch (teamTurn) {
@@ -60,15 +62,42 @@ public class RenderBoard {
             if (isWhite) {
               setWhite(out);
             } else { setBlack(out); }
-            out.print(EMPTY);
 
-            // print board row out
+            // sets piece color/type and prints
+            if (board.getPiece(new ChessPosition(rows+1, cols+1)) != null) {
+              var row = abs(rows - 7);
+//              cols = abs(cols - 7);
+              var chessPieceType = boardPieceArray[row][cols].getPieceType();
+              var pieceColor = boardPieceArray[row][cols].getTeamColor();
+              var pieceToPrint = "X";
 
-              // check for piece at location col row
+              if (pieceColor == ChessGame.TeamColor.WHITE) {
+                setWhitePlayer(out);
+              } else {setBlackPlayer(out);}
 
-                // assign text color based on piece color
+              switch (chessPieceType) {
+                case KING:
+                  pieceToPrint = "K";
+                  break;
+                case QUEEN:
+                  pieceToPrint = "Q";
+                  break;
+                case BISHOP:
+                  pieceToPrint = "B";
+                  break;
+                case ROOK:
+                  pieceToPrint = "R";
+                  break;
+                case KNIGHT:
+                  pieceToPrint = "N";
+                  break;
+                case PAWN:
+                  pieceToPrint = "P";
+                  break;
+              }
+              out.print(" " + pieceToPrint + " ");
 
-//            else { out.print(EMPTY); }
+            } else { out.print(EMPTY); }
             isWhite = !isWhite;
           }
           isWhite = !isWhite;
@@ -120,11 +149,11 @@ public class RenderBoard {
     out.print(SET_TEXT_COLOR_BLACK);
   }
 
-  private static void printBlackPlayer(PrintStream out) {
+  private static void setBlackPlayer(PrintStream out) {
     out.print(SET_TEXT_COLOR_BLUE);
   }
 
-  private static void printWhitePlayer(PrintStream out) {
+  private static void setWhitePlayer(PrintStream out) {
     out.print(SET_TEXT_COLOR_RED);
   }
 }
