@@ -47,6 +47,7 @@ public class RenderBoard {
 
       case WHITE:
 
+        boolean isWhite = true;
         printWhiteHeaderFooter(out);
         for (int rows = 0; rows < BOARD_ROWS; rows++) {
           // print grey col
@@ -56,7 +57,10 @@ public class RenderBoard {
 
           for (int cols = 0; cols < BOARD_COLS; cols++) {
 
-            out.print(EMPTY.repeat(LINE_WIDTH_IN_CHARS));
+            if (isWhite) {
+              setWhite(out);
+            } else { setBlack(out); }
+            out.print(EMPTY);
 
             // print board row out
 
@@ -65,8 +69,11 @@ public class RenderBoard {
                 // assign text color based on piece color
 
 //            else { out.print(EMPTY); }
+            isWhite = !isWhite;
           }
+          isWhite = !isWhite;
           // print grey col
+          setBoarder(out);
           out.print(" " + rowNum +" ");
 
           out.print(RESET_TEXT_COLOR);
