@@ -15,22 +15,16 @@ public class RenderBoard {
   private static final int BOARD_ROWS = 8;
   private static final int BOARD_COLS = 8;
   private static final int LINE_WIDTH_IN_CHARS = 1;
+  private ChessGame game = null;
+  private static final String EMPTY = "   ";
 
+  public RenderBoard(ChessGame game) {
+    this.game = game;
+  }
 
-
-  private final static String EMPTY = "   ";
-
-  public static void main(String[] args) {
+  public void main() {
     var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-
-//    if (args.length != 2) {
-//      return;
-//    }
-
-    ChessGame game = new ChessGame();
-//    ChessBoard game = args[1].getBoard();
-
-
+//    ChessGame game = new ChessGame();
     out.print(ERASE_SCREEN);
 
     drawChessBoard(out, game);
@@ -41,7 +35,7 @@ public class RenderBoard {
 
   private static void drawChessBoard(PrintStream out, ChessGame game) {
     ChessBoard board = game.getBoard();
-    board.resetBoard(); // temp for testing
+//    board.resetBoard(); // temp for testing
     var boardPieceArray = board.getBoard();
     var teamTurn = game.getTeamTurn();
 
@@ -110,7 +104,7 @@ public class RenderBoard {
           out.println();
         }
         printWhiteHeaderFooter(out);
-
+        break;
 
 //      case BLACK:
 
@@ -128,6 +122,23 @@ public class RenderBoard {
     out.print(" f ");
     out.print(" g ");
     out.print(" h ");
+    out.print("   ");
+    out.print(RESET_TEXT_COLOR);
+    out.print(RESET_BG_COLOR);
+    out.println();
+  }
+
+  private static void printBlackHeaderFooter(PrintStream out) {
+    setBoarder(out);
+    out.print("   ");
+    out.print(" h ");
+    out.print(" g ");
+    out.print(" f ");
+    out.print(" e ");
+    out.print(" d ");
+    out.print(" c ");
+    out.print(" b ");
+    out.print(" a ");
     out.print("   ");
     out.print(RESET_TEXT_COLOR);
     out.print(RESET_BG_COLOR);

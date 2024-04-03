@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessGame;
 import dataAccess.DataAccessException;
 import exception.ResponseException;
 import model.GameData;
@@ -111,41 +112,20 @@ public class ChessMatchClient {
     } else if (params.length == 2 && color.isEmpty()) { //observer
       server.joinGame(new JoinGameReq(null, null, Integer.parseInt(params[0])));
     } else {throw new ResponseException(400, "Expected: <gameID> [white|black]");}
-    return printChessBoard();
+    var game = new ChessGame();
+    new RenderBoard(game).main();
+    return "";
   }
 
   public String joinGameAsObserver(String... params) throws ResponseException {
     if (params.length == 1) {
       server.joinGame(new JoinGameReq(null, null, Integer.parseInt(params[0])));
     } else {throw new ResponseException(400, "Expected: <gameID>");}
-    return printChessBoard();
+    var game = new ChessGame();
+    new RenderBoard(game).main();
+    return "";
   }
 
-  private String printChessBoard() {
-    return """
-                   a b c d e f g h 
-                8 |r|n|b|q|k|b|n|r| 8
-                7 |p|p|p|p|p|p|p|p| 7
-                6 | | | | | | | | | 6
-                5 | | | | | | | | | 5
-                4 | | | | | | | | | 4
-                3 | | | | | | | | | 3
-                2 |P|P|P|P|P|P|P|P| 2
-                1 |R|N|B|Q|K|B|N|R| 1
-                   a b c d e f g h
-                   
-                   h g f e d c b a
-                1 |R|N|B|K|Q|B|N|R| 1
-                2 |P|P|P|P|P|P|P|P| 2
-                3 | | | | | | | | | 3
-                4 | | | | | | | | | 4
-                5 | | | | | | | | | 5
-                6 | | | | | | | | | 6
-                7 |p|p|p|p|p|p|p|p| 7
-                8 |r|n|b|k|q|b|n|r| 8
-                   h g f e d c b a
-                """;
-  }
 
   public String help() {
     if (state == State.LOGGED_OUT) {
