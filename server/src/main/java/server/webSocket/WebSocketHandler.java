@@ -5,7 +5,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import webSocketMessages.userCommands.JoinPlayerCommand;
-import webSocketMessages.userCommands.MakeMove;
+import webSocketMessages.userCommands.MakeMoveCommand;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class WebSocketHandler {
   public void onMessage(Session session, String message) throws IOException {
     var userGameCommand = new Gson().fromJson(message, UserGameCommand.class);
     var joinPlayerCommand = new Gson().fromJson(message, JoinPlayerCommand.class);
-    var makeMoveCommand = new Gson().fromJson(message, MakeMove.class);
+    var makeMoveCommand = new Gson().fromJson(message, MakeMoveCommand.class);
 
     switch (userGameCommand.getCommandType()) {
 
@@ -43,7 +43,7 @@ public class WebSocketHandler {
 
   }
 
-  private void makeMove(MakeMove command, Session session) throws IOException {
+  private void makeMove(MakeMoveCommand command, Session session) throws IOException {
 
   }
 
