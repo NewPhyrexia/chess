@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import dataAccess.*;
 import req.*;
+import server.webSocket.WebSocketHandler;
 import service.ClearAppService;
 import service.GameService;
 import service.UserService;
@@ -13,12 +14,14 @@ public class Server {
   private final ClearAppService clearAppService = new ClearAppService();
   private final UserService userService = new UserService();
   private final GameService gameService = new GameService();
+  private final WebSocketHandler webSocket = new WebSocketHandler();
 
 
   public int run(int desiredPort) {
     Spark.port(desiredPort);
 
     Spark.staticFiles.location("web");
+    Spark.webSocket("/connect", webSocket);
 
     // Register your endpoints and handle exceptions here.
     Spark.delete("/db", this::clearApp);
