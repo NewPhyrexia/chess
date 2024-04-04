@@ -1,8 +1,8 @@
 package server.webSocket;
 
 import org.eclipse.jetty.websocket.api.Session;
+import webSocketMessages.serverMessages.ServerMessage;
 
-import javax.management.Notification;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,12 +17,12 @@ public class ConnectionManager {
 
   public void remove(String userName) {connections.remove(userName);}
 
-  public void broadcast(String excludedUser, Notification notification) throws IOException {
+  public void broadcast(String excludedUser, ServerMessage message) throws IOException {
     var removeConnections =  new ArrayList<Connection>();
     for (var c : connections.values()) {
       if (c.session.isOpen()) {
         if (!c.userName.equals(excludedUser)) {
-          c.send(notification.toString());
+          c.send(message.toString());
         }
       } else {
         removeConnections.add(c);
