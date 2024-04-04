@@ -96,8 +96,8 @@ public class RenderBoard {
           out.println();
         }
         printWhiteHeaderFooter(out);
-//        break;  not needed while testing ---------------------------------------------
-        out.println(); // for testing --------------------------------------------------
+        break;  // not needed while testing
+//        out.println(); // for testing --------------------------------------------------
 
       case BLACK:
 
@@ -169,7 +169,6 @@ public class RenderBoard {
     out.print(RESET_BG_COLOR);
     out.println();
   }
-
   private static void printBlackHeaderFooter(PrintStream out) {
     setBoarder(out);
     out.print("   ");
@@ -186,13 +185,10 @@ public class RenderBoard {
     out.print(RESET_BG_COLOR);
     out.println();
   }
-
-
   private static void setWhite(PrintStream out) {
     out.print(SET_BG_COLOR_WHITE);
     out.print(SET_TEXT_COLOR_WHITE);
   }
-
   private static void setBlack(PrintStream out) {
     out.print(SET_BG_COLOR_BLACK);
     out.print(SET_TEXT_COLOR_BLACK);
@@ -201,11 +197,9 @@ public class RenderBoard {
     out.print(SET_BG_COLOR_LIGHT_GREY);
     out.print(SET_TEXT_COLOR_BLACK);
   }
-
   private static void setBlackPlayer(PrintStream out) {
     out.print(SET_TEXT_COLOR_BLUE);
   }
-
   private static void setWhitePlayer(PrintStream out) {
     out.print(SET_TEXT_COLOR_RED);
   }
