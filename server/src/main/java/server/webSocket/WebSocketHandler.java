@@ -5,6 +5,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import webSocketMessages.userCommands.JoinPlayerCommand;
+import webSocketMessages.userCommands.MakeMove;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import java.io.IOException;
@@ -16,52 +17,45 @@ public class WebSocketHandler {
 
   @OnWebSocketMessage
   public void onMessage(Session session, String message) throws IOException {
-//    System.out.print(message); // for testing
     var userGameCommand = new Gson().fromJson(message, UserGameCommand.class);
+    var joinPlayerCommand = new Gson().fromJson(message, JoinPlayerCommand.class);
+    var makeMoveCommand = new Gson().fromJson(message, MakeMove.class);
+
     switch (userGameCommand.getCommandType()) {
 
-      case LEAVE:
-        leave();
-        break;
-      case RESIGN:
-        resign();
-        break;
+      case LEAVE -> leave();
 
-      case MAKE_MOVE:
-        makeMove();
-        break;
+      case RESIGN -> resign();
 
-      case JOIN_PLAYER:
-        JoinPlayerCommand command = new Gson().fromJson(message, JoinPlayerCommand.class);
-        joinPlayer(command, session);
-        break;
+      case MAKE_MOVE -> makeMove(makeMoveCommand, session);
 
-      case JOIN_OBSERVER:
-        joinObserver();
-        break;
+      case JOIN_PLAYER -> joinPlayer(joinPlayerCommand, session);
 
+      case JOIN_OBSERVER -> joinObserver();
     }
-//    session.getRemote().sendString(message);  // for testing
   }
 
   private void leave() throws IOException {
+
   }
 
   private void resign() throws IOException {
+
   }
 
-  private void makeMove() throws IOException {
+  private void makeMove(MakeMove command, Session session) throws IOException {
+
   }
 
   private void joinPlayer(JoinPlayerCommand command, Session session) throws IOException {
     // check authtoken
     // get userName
+        //    connections.add(userName,session); // add in gameID
     // notify all but root that root joined game as ---- color
     // second notification to root with the game as the message in a json
-//    connections.add(userName,session); // add in gameID
-
   }
 
   private void joinObserver() throws IOException {
+
   }
 }
