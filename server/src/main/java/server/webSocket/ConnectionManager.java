@@ -10,8 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConnectionManager {
   public final ConcurrentHashMap<String, Connection> connections = new ConcurrentHashMap<>();
 
-  public void add(String userName, Session session) {
-    var connection = new Connection(userName, session);
+  public void add(String userName, int gameID, Session session) {
+    var connection = new Connection(userName, gameID, session);
     connections.put(userName, connection);
   }
 
