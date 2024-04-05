@@ -31,10 +31,10 @@ public class GameDAO implements GameDAOInterface {
   public void updateGame(String playerColor, int gameID, String username) {
     var gameData = getGame(gameID);
     if (playerColor.equalsIgnoreCase("black")){
-      var updatedGameData = new GameData(gameID, gameData.whiteUsername(), username, gameData.gameName(),gameData.implementation());
+      var updatedGameData = new GameData(gameID, gameData.whiteUsername(), username, gameData.gameName(),gameData.game());
       allGames.put(gameID, updatedGameData);
     } else if (playerColor.equalsIgnoreCase("white")){
-      var updatedGameData = new GameData(gameID, username, gameData.blackUsername(), gameData.gameName(),gameData.implementation());
+      var updatedGameData = new GameData(gameID, username, gameData.blackUsername(), gameData.gameName(),gameData.game());
       allGames.put(gameID, updatedGameData);
     }
   }

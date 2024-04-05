@@ -53,11 +53,11 @@ public class SqlGameDAO implements GameDAOInterface {
       try (var preparedStatement=conn.prepareStatement("UPDATE games SET game = ? WHERE id = ?")) {
         preparedStatement.setInt(2, id);
         if (playerColor.equalsIgnoreCase("black")) {
-          var updatedGameData=new GameData(id, gameData.whiteUsername(), username, gameData.gameName(), gameData.implementation());
+          var updatedGameData=new GameData(id, gameData.whiteUsername(), username, gameData.gameName(), gameData.game());
           var game=new Gson().toJson(updatedGameData);
           preparedStatement.setString(1, game);
         } else if (playerColor.equalsIgnoreCase("white")) {
-          var updatedGameData=new GameData(id, username, gameData.blackUsername(), gameData.gameName(), gameData.implementation());
+          var updatedGameData=new GameData(id, username, gameData.blackUsername(), gameData.gameName(), gameData.game());
           var game=new Gson().toJson(updatedGameData);
           preparedStatement.setString(1, game);
         }

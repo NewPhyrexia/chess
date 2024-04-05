@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import passoffTests.TestFactory;
 
 /**
- * Tests if the ChessGame implementation can handle En Passant moves
+ * Tests if the ChessGame game can handle En Passant moves
  * En Passant is a situational move in chess taken directly after your opponent has double moved a pawn
  * If their pawn moves next to one of your pawns, so it passes where your pawn could have captured it, you
  * may capture their pawn with your pawn as if they had only moved a single space. You may only take this move
