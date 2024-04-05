@@ -18,6 +18,10 @@ import webSocketMessages.userCommands.MakeMoveCommand;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import java.io.IOException;
+import java.util.Objects;
+
+import static chess.ChessGame.TeamColor.BLACK;
+import static chess.ChessGame.TeamColor.WHITE;
 
 @WebSocket
 public class WebSocketHandler {
@@ -64,20 +68,31 @@ public class WebSocketHandler {
   private void joinPlayer(JoinPlayerCommand command, Session session) throws IOException, DataAccessException {
     var commandAuthToken = command.getAuthString();
     var authToken = authInterface.getAuthToken(commandAuthToken);
+    var gameData = gameInterface.getGame(command.getGameID());
+
     if ( authToken == null) {
       // send "error" message to root
-      var errorMessage = new ErrorMessage("Error: Cannot join as player");
+      var errorMessage = new ErrorMessage("Error: unauthorized");
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
+    }
+
+    // additional checks
+    var userName = authToken.username();
+    if (gameData == null) {
+      var errorMessage = new ErrorMessage("Error: Game does not exist");
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
+    } else if ((command.getPlayerColor() == WHITE && !Objects.equals(gameData.whiteUsername(), userName))
+            || (command.getPlayerColor() == BLACK && !Objects.equals(gameData.blackUsername(), userName))) {
+      var errorMessage = new ErrorMessage("Error: PlayerColor already taken");
       session.getRemote().sendString(new Gson().toJson(errorMessage));
     } else {
-      var userName=authToken.username();
       connections.add(userName, command.getGameID(), session);
       // sends a Notification message to all other clients informing them what color the root client is joining as
-      var game = gameInterface.getGame(command.getGameID()).implementation();
       var message = String.format("%s has joined the game as %s", userName, command.getPlayerColor());
       connections.broadcast(userName, new NotificationMessage(message));
 
       // Server sends a LOAD_GAME message back to the root client.
-      session.getRemote().sendString(new Gson().toJson(new LoadGameMessage(game)));
+      session.getRemote().sendString(new Gson().toJson(new LoadGameMessage(gameData.implementation())));
     }
   }
 
