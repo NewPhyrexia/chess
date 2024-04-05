@@ -96,8 +96,30 @@ public class WebSocketHandler {
     }
   }
 
-  private void joinObserver(UserGameCommand command, Session session) throws IOException {
-    var authToken = command.getAuthString();
+  private void joinObserver(UserGameCommand command, Session session) throws IOException, DataAccessException {
+    var commandAuthToken = command.getAuthString();
+    var authToken = authInterface.getAuthToken(commandAuthToken);
+    var gameData = gameInterface.getGame(command.getGameID());
 
+    if ( authToken == null) {
+      // send "error" message to root
+      var errorMessage = new ErrorMessage("Error: unauthorized");
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
+    }
+
+    // additional checks
+    var userName = authToken.username();
+    if (gameData == null) {
+      var errorMessage = new ErrorMessage("Error: Game does not exist");
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
+    } else {
+      connections.add(userName, command.getGameID(), session);
+      // sends a Notification message to all other clients informing them what color the root client is joining as
+      var message = String.format("%s has joined the game as an observer", userName);
+      connections.broadcast(userName, new NotificationMessage(message));
+
+      // Server sends a LOAD_GAME message back to the root client.
+      session.getRemote().sendString(new Gson().toJson(new LoadGameMessage(gameData.implementation())));
+    }
   }
 }
