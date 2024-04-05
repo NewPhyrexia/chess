@@ -67,7 +67,7 @@ public class WebSocketHandler {
     if ( authToken == null) {
       // send "error" message to root
       var errorMessage = new ErrorMessage("Error: Cannot join as player");
-      session.getRemote().sendString(errorMessage.getErrorMessage());  // I think this may be wrong
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
     } else {
       var userName=authToken.username();
       connections.add(userName, command.getGameID(), session);
