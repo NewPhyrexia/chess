@@ -68,7 +68,7 @@ public class WebSocketHandler {
       // notify other clients that root left the game
       var message = String.format("%s has left the game", userName);
       connections.broadcast(userName, new NotificationMessage(message));
-      connections.remove(userName); // id this where im supposed to remove the connection? -------------------------------------
+      connections.remove(userName);
     }
   }
 
@@ -80,27 +80,26 @@ public class WebSocketHandler {
     if (gameData == null) {
       var errorMessage = new ErrorMessage("Error: Game does not exist");
       session.getRemote().sendString(new Gson().toJson(errorMessage));
-    } else if (!gameData.game().getGameOverStatus()) {
+    }
+
+    var blackUser = gameData.blackUsername();
+    var whiteUser = gameData.whiteUsername();
+    if (gameData.game().getGameOverStatus()) {
       var errorMessage = new ErrorMessage("Error: Game has already finished");
       session.getRemote().sendString(new Gson().toJson(errorMessage));
+    } else if (!Objects.equals(blackUser, userName) && !Objects.equals(whiteUser, userName)) {
+      var errorMessage=new ErrorMessage("Error: Observer cannot resign for a player");
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
     } else {
-      // update game to gameOver true
-      if (Objects.equals(gameData.blackUsername(), userName)) {
-        gameData.game().gameOver();
+      gameData.game().gameOver(); // update game to gameOver true
+      if (Objects.equals(blackUser, userName)) {
         gameInterface.updateGame("black", gameData.gameID(), userName);
-        // notify other clients that root left the game
-        var message = String.format("%s has resigned", userName);
-        connections.broadcast(userName, new NotificationMessage(message));
-      } else if (Objects.equals(gameData.whiteUsername(), userName)) {
-        gameData.game().gameOver();
-        gameInterface.updateGame("white", gameData.gameID(), userName);
-        // notify other clients that root left the game
-        var message = String.format("%s has resigned", userName);
-        connections.broadcast(userName, new NotificationMessage(message));
       } else {
-        var errorMessage = new ErrorMessage("Error: Observer cannot resign for a player");
-        session.getRemote().sendString(new Gson().toJson(errorMessage));
+        gameInterface.updateGame("white", gameData.gameID(), userName);
       }
+      // notify -all- clients that root left the game
+      var message = String.format("%s has resigned", userName);
+      connections.broadcast(null, new NotificationMessage(message));
     }
   }
 
