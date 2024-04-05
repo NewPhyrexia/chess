@@ -1,5 +1,6 @@
 package server.webSocket;
 
+import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.SqlAuthDAO;
@@ -31,7 +32,7 @@ public class WebSocketHandler {
   private final GameDAOInterface gameInterface = SqlGameDAO.getInstance();
 
   @OnWebSocketMessage
-  public void onMessage(Session session, String message) throws IOException, DataAccessException {
+  public void onMessage(Session session, String message) throws IOException, DataAccessException, InvalidMoveException {
     var userGameCommand = new Gson().fromJson(message, UserGameCommand.class);
     var joinPlayerCommand = new Gson().fromJson(message, JoinPlayerCommand.class);
     var makeMoveCommand = new Gson().fromJson(message, MakeMoveCommand.class);
@@ -103,10 +104,48 @@ public class WebSocketHandler {
     }
   }
 
-  private void makeMove(MakeMoveCommand command, Session session) throws IOException, DataAccessException {
+  private void makeMove(MakeMoveCommand command, Session session) throws IOException, DataAccessException, InvalidMoveException {
     var authToken=authCheck(command, session);
+    var userName = authToken.username();
+    var gameData = gameInterface.getGame(command.getGameID());
+    var move = command.getMove();
+    var startPos = move.getStartPosition();
+    var endPos = move.getEndPosition();
 
+    if (gameData == null) {
+      var errorMessage = new ErrorMessage("Error: Game does not exist");
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
+    }
 
+    var game = gameData.game();
+    var piece = game.getBoard().getPiece(startPos);
+    var blackUser = gameData.blackUsername();
+    var whiteUser = gameData.whiteUsername();
+
+    if (gameData.game().getGameOverStatus()) {
+      var errorMessage = new ErrorMessage("Error: Game has already finished");
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
+    } else if (!Objects.equals(blackUser, userName) && !Objects.equals(whiteUser, userName)) {
+      var errorMessage=new ErrorMessage("Error: Observer cannot move for a player");
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
+    } else if (!game.validMoves(startPos).contains(move)) { // syntax may be executed incorrectly
+      var errorMessage=new ErrorMessage("Error: Invalid move");
+      session.getRemote().sendString(new Gson().toJson(errorMessage));
+    } else {
+      var turn = gameData.game().getTeamTurn();
+      if (turn == WHITE && Objects.equals(whiteUser, userName)) {
+//        game.makeMove(move);
+//        gameInterface.updateGame("white", gameData.gameID(), userName, game);
+      } else {
+//        game.makeMove(move);
+//        gameInterface.updateGame("black", gameData.gameID(), userName, game);
+      }
+      // send game to all
+      connections.broadcast(null, new LoadGameMessage(gameData.game()));
+      // send notification to all but root
+      var message = String.format("%s has made move: %s from %s to %s.", userName, piece, startPos, endPos);
+      connections.broadcast(userName, new NotificationMessage(message));
+    }
   }
 
   private void joinPlayer(JoinPlayerCommand command, Session session) throws IOException, DataAccessException {
