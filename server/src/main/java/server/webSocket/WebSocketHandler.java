@@ -122,7 +122,6 @@ public class WebSocketHandler {
     var blackUser = gameData.blackUsername();
     var whiteUser = gameData.whiteUsername();
 
-
     if (game.getGameOverStatus()) {
       var errorMessage = new ErrorMessage("Error: Game has already finished");
       session.getRemote().sendString(new Gson().toJson(errorMessage));
@@ -135,13 +134,11 @@ public class WebSocketHandler {
     } else {
       var turn = gameData.game().getTeamTurn();
       if (turn == WHITE && Objects.equals(whiteUser, userName)) {
-//        game.makeMove(move);
-//        game.isInCheckmate(BLACK);
-//        gameInterface.updateGame("white", gameData.gameID(), userName, game);
+        game.makeMove(move);
+        gameInterface.updateGame("white", gameData.gameID(), userName, game);
       } else if (turn == BLACK && Objects.equals(blackUser, userName)) {
-//        game.makeMove(move);
-//        game.isInCheckmate(WHITE);
-//        gameInterface.updateGame("black", gameData.gameID(), userName, game);
+        game.makeMove(move);
+        gameInterface.updateGame("black", gameData.gameID(), userName, game);
       } else {
         var errorMessage=new ErrorMessage("Error: Opponent's turn");
         session.getRemote().sendString(new Gson().toJson(errorMessage));
@@ -154,13 +151,15 @@ public class WebSocketHandler {
       var message = String.format("%s has made move: %s from %s to %s.", userName, piece, startPos, endPos);
       connections.broadcast(userName, new NotificationMessage(message));
 
-//      if (game.isInCheckmate(WHITE)) { // check if opponent is now in checkmate
-//        var msg = String.format("%s is in checkmate", whiteUser);
-//        connections.broadcast(null, new NotificationMessage(msg));
-//      } else if (game.isInCheckmate(BLACK)) {
-//        var msg = String.format("%s is in checkmate", blackUser);
-//        connections.broadcast(null, new NotificationMessage(msg));
-//      }
+      if (game.isInCheckmate(WHITE)) {
+        game.gameOver();
+        var msg = String.format("%s is in checkmate", whiteUser);
+        connections.broadcast(null, new NotificationMessage(msg));
+      } else if (game.isInCheckmate(BLACK)) {
+        game.gameOver();
+        var msg = String.format("%s is in checkmate", blackUser);
+        connections.broadcast(null, new NotificationMessage(msg));
+      }
     }
   }
 

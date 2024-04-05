@@ -241,7 +241,6 @@ public class ChessGame {
             }
         }
 
-        gameOver();
         return true;
     }
 

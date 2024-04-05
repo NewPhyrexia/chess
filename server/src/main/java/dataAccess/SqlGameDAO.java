@@ -57,7 +57,7 @@ public class SqlGameDAO implements GameDAOInterface {
           var jsonGameData=new Gson().toJson(updatedGameData);
           preparedStatement.setString(1, jsonGameData);
         } else if (playerColor.equalsIgnoreCase("white")) {
-          var updatedGameData=new GameData(id, username, gameData.blackUsername(), gameData.gameName(), gameData.game());
+          var updatedGameData=new GameData(id, username, gameData.blackUsername(), gameData.gameName(), game);
           var jsonGameData =new Gson().toJson(updatedGameData);
           preparedStatement.setString(1, jsonGameData);
         }
