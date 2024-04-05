@@ -9,6 +9,10 @@ import dataAccess.interfaces.GameDAOInterface;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import webSocketMessages.serverMessages.ErrorMessage;
+import webSocketMessages.serverMessages.LoadGameMessage;
+import webSocketMessages.serverMessages.NotificationMessage;
+import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.JoinPlayerCommand;
 import webSocketMessages.userCommands.MakeMoveCommand;
 import webSocketMessages.userCommands.UserGameCommand;
@@ -59,15 +63,22 @@ public class WebSocketHandler {
 
   private void joinPlayer(JoinPlayerCommand command, Session session) throws IOException, DataAccessException {
     var commandAuthToken = command.getAuthString();
+    var authToken = authInterface.getAuthToken(commandAuthToken);
+    if ( authToken == null) {
+      // send "error" message to root
+      var errorMessage = new ErrorMessage("Error: Cannot join as player");
+      session.getRemote().sendString(errorMessage.getErrorMessage());  // I think this may be wrong
+    } else {
+      var userName=authToken.username();
+      connections.add(userName, command.getGameID(), session);
+      // sends a Notification message to all other clients informing them what color the root client is joining as
+      var game = gameInterface.getGame(command.getGameID()).implementation();
+      var message = String.format("%s has joined the game as %s", userName, command.getPlayerColor());
+      connections.broadcast(userName, new NotificationMessage(message));
 
-    if (authInterface.getAuthToken(commandAuthToken) == null) {
-      // send "error" message
+      // Server sends a LOAD_GAME message back to the root client.
+      session.getRemote().sendString(new Gson().toJson(new LoadGameMessage(game)));
     }
-    connections.add(command.getUserName(), command.getGameID(), session);
-
-    // notify all but root that root joined game as ---- color
-
-    // second notification to root with the game as the message in a json
   }
 
   private void joinObserver(UserGameCommand command, Session session) throws IOException {
