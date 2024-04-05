@@ -47,19 +47,19 @@ public class SqlGameDAO implements GameDAOInterface {
     return 0;
   }
 
-  public void updateGame(String playerColor, int id, String username) throws DataAccessException {
+  public void updateGame(String playerColor, int id, String username, ChessGame game) throws DataAccessException {
     var gameData = getGame(id);
     try(var conn = DatabaseManager.getConnection()) {
       try (var preparedStatement=conn.prepareStatement("UPDATE games SET game = ? WHERE id = ?")) {
         preparedStatement.setInt(2, id);
         if (playerColor.equalsIgnoreCase("black")) {
-          var updatedGameData=new GameData(id, gameData.whiteUsername(), username, gameData.gameName(), gameData.game());
-          var game=new Gson().toJson(updatedGameData);
-          preparedStatement.setString(1, game);
+          var updatedGameData=new GameData(id, gameData.whiteUsername(), username, gameData.gameName(), game);
+          var jsonGameData=new Gson().toJson(updatedGameData);
+          preparedStatement.setString(1, jsonGameData);
         } else if (playerColor.equalsIgnoreCase("white")) {
           var updatedGameData=new GameData(id, username, gameData.blackUsername(), gameData.gameName(), gameData.game());
-          var game=new Gson().toJson(updatedGameData);
-          preparedStatement.setString(1, game);
+          var jsonGameData =new Gson().toJson(updatedGameData);
+          preparedStatement.setString(1, jsonGameData);
         }
         preparedStatement.executeUpdate();
       }

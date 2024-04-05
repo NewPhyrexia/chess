@@ -95,7 +95,8 @@ public class GameService {
             return new JoinGameRes("Error: already taken");
           }
         }
-        gameInterface.updateGame(req.playerColor(), req.gameID(), username);
+        var game = gameInterface.getGame(req.gameID()).game();
+        gameInterface.updateGame(req.playerColor(), req.gameID(), username, game);
     } catch (Exception e) {
       if (e instanceof DataAccessException) {
         return new JoinGameRes("Error: DataAccessException.");

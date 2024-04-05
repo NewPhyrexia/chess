@@ -61,9 +61,9 @@ public class WebSocketHandler {
     } else {
         // remove root from game and update db
       if (Objects.equals(gameData.blackUsername(), userName)) {
-        gameInterface.updateGame("black", gameData.gameID(), null);
+        gameInterface.updateGame("black", gameData.gameID(), null, gameData.game());
       } else if (Objects.equals(gameData.whiteUsername(), userName)) {
-        gameInterface.updateGame("white", gameData.gameID(), null);
+        gameInterface.updateGame("white", gameData.gameID(), null, gameData.game());
       }
       // notify other clients that root left the game
       var message = String.format("%s has left the game", userName);
@@ -93,9 +93,9 @@ public class WebSocketHandler {
     } else {
       gameData.game().gameOver(); // update game to gameOver true
       if (Objects.equals(blackUser, userName)) {
-        gameInterface.updateGame("black", gameData.gameID(), userName);
+        gameInterface.updateGame("black", gameData.gameID(), userName, gameData.game());
       } else {
-        gameInterface.updateGame("white", gameData.gameID(), userName);
+        gameInterface.updateGame("white", gameData.gameID(), userName, gameData.game());
       }
       // notify -all- clients that root left the game
       var message = String.format("%s has resigned", userName);

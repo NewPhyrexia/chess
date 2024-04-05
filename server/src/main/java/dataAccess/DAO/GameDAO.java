@@ -28,7 +28,7 @@ public class GameDAO implements GameDAOInterface {
     return gameID;
   }
 
-  public void updateGame(String playerColor, int gameID, String username) {
+  public void updateGame(String playerColor, int gameID, String username, ChessGame game) {
     var gameData = getGame(gameID);
     if (playerColor.equalsIgnoreCase("black")){
       var updatedGameData = new GameData(gameID, gameData.whiteUsername(), username, gameData.gameName(),gameData.game());

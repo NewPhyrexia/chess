@@ -31,7 +31,7 @@ public class SqlGameDAOTests {
   @Test
   void updateGame() throws DataAccessException{
     var id = gameDAO.createGame("testGame");
-    gameDAO.updateGame("white", id, "testUsername");
+    gameDAO.updateGame("white", id, "testUsername", gameDAO.getGame(id).game());
     var game = gameDAO.getGame(id);
     assertEquals("testUsername", game.whiteUsername());
   }
@@ -39,7 +39,7 @@ public class SqlGameDAOTests {
   @Test
   void failUpdateGame() throws DataAccessException{
     var id = gameDAO.createGame("testGame");
-    gameDAO.updateGame("white", id, "testUsername");
+    gameDAO.updateGame("white", id, "testUsername", gameDAO.getGame(id).game());
     var game = gameDAO.getGame(id);
     assertNotEquals("negTestUsername", game.whiteUsername());
   }
@@ -47,14 +47,14 @@ public class SqlGameDAOTests {
   @Test
   void getGame() throws DataAccessException{
     var id = gameDAO.createGame("testGame");
-    gameDAO.updateGame("white", id, "testUsername");
+    gameDAO.updateGame("white", id, "testUsername", gameDAO.getGame(id).game());
     assertEquals("testGame", gameDAO.getGame(id).gameName());
   }
 
   @Test
   void failGetGame() throws DataAccessException{
     var id = gameDAO.createGame("testGame");
-    gameDAO.updateGame("white", id, "testUsername");
+    gameDAO.updateGame("white", id, "testUsername", gameDAO.getGame(id).game());
     assertNotEquals("negTestGame", gameDAO.getGame(id).gameName());
   }
 
