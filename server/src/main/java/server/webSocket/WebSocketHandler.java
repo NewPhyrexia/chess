@@ -68,7 +68,7 @@ public class WebSocketHandler {
       }
       // notify other clients that root left the game
       var message = String.format("%s has left the game", userName);
-      connections.broadcast(userName, new NotificationMessage(message));
+      connections.broadcast(userName, new NotificationMessage(message), command.getGameID());
       connections.remove(userName);
     }
   }
@@ -100,7 +100,7 @@ public class WebSocketHandler {
       }
       // notify -all- clients that root left the game
       var message = String.format("%s has resigned", userName);
-      connections.broadcast(null, new NotificationMessage(message));
+      connections.broadcast(null, new NotificationMessage(message), gameData.gameID());
     }
   }
 
@@ -146,19 +146,19 @@ public class WebSocketHandler {
       }
 
       // send game to all
-      connections.broadcast(null, new LoadGameMessage(gameData.game()));
+      connections.broadcast(null, new LoadGameMessage(gameData.game()), gameData.gameID());
       // send notification to all but root
       var message = String.format("%s has made move: %s from %s to %s.", userName, piece, startPos, endPos);
-      connections.broadcast(userName, new NotificationMessage(message));
+      connections.broadcast(userName, new NotificationMessage(message), gameData.gameID());
 
       if (game.isInCheckmate(WHITE)) {
         game.gameOver();
         var msg = String.format("%s is in checkmate", whiteUser);
-        connections.broadcast(null, new NotificationMessage(msg));
+        connections.broadcast(null, new NotificationMessage(msg), gameData.gameID());
       } else if (game.isInCheckmate(BLACK)) {
         game.gameOver();
         var msg = String.format("%s is in checkmate", blackUser);
-        connections.broadcast(null, new NotificationMessage(msg));
+        connections.broadcast(null, new NotificationMessage(msg), gameData.gameID());
       }
     }
   }
@@ -179,7 +179,7 @@ public class WebSocketHandler {
       connections.add(userName, command.getGameID(), session);
       // sends a Notification message to all other clients informing them what color the root client is joining as
       var message = String.format("%s has joined the game as %s", userName, command.getPlayerColor());
-      connections.broadcast(userName, new NotificationMessage(message));
+      connections.broadcast(userName, new NotificationMessage(message), gameData.gameID());
 
       // Server sends a LOAD_GAME message back to the root client.
       session.getRemote().sendString(new Gson().toJson(new LoadGameMessage(gameData.game())));
@@ -198,7 +198,7 @@ public class WebSocketHandler {
       connections.add(userName, command.getGameID(), session);
       // sends a Notification message to all other clients informing them what color the root client is joining as
       var message = String.format("%s has joined the game as an observer", userName);
-      connections.broadcast(userName, new NotificationMessage(message));
+      connections.broadcast(userName, new NotificationMessage(message), gameData.gameID());
 
       // Server sends a LOAD_GAME message back to the root client.
       session.getRemote().sendString(new Gson().toJson(new LoadGameMessage(gameData.game())));

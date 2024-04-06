@@ -18,11 +18,11 @@ public class ConnectionManager {
 
   public void remove(String userName) {connections.remove(userName);}
 
-  public void broadcast(String excludedUser, ServerMessage message) throws IOException {
+  public void broadcast(String excludedUser, ServerMessage message, int gameID) throws IOException {
     var removeConnections =  new ArrayList<Connection>();
     for (var c : connections.values()) {
       if (c.session.isOpen()) {
-        if (!c.userName.equals(excludedUser)) {
+        if (!c.userName.equals(excludedUser) && c.gameID == gameID) {
           c.send(new Gson().toJson(message));
         }
       } else {
