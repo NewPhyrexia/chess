@@ -130,6 +130,8 @@ public class ChessMatchClient {
     return "";
   }
 
+  // method bodies below for websocket
+
 
   public String help() {
     if (state == State.LOGGED_OUT) {
@@ -140,15 +142,23 @@ public class ChessMatchClient {
               - help
               """;
     }
-//    else if (state == State.JOINED_GAME) { //websocket place holder
-//      return """
-//              -
-//              """;
-//    } else if (state == State.JOINED_AS_OBSERVER) {
-//      return """
-//              -
-//              """;
-//    }
+    else if (state == State.JOINED_GAME) { //websocket place holder
+      return """
+              - redraw
+              - highlight <piece position>
+              - makeMove <piece position> <end position>
+              - resign
+              - leave
+              - help
+              """;
+    } else if (state == State.JOINED_AS_OBSERVER) {
+      return """
+              - redraw
+              - highlight <piece position>
+              - leave
+              - help
+              """;
+    }
     return """
             - createGame <gameName>
             - listGames
@@ -164,6 +174,4 @@ public class ChessMatchClient {
       throw new ResponseException(400, "You must be signed in");
     }
   }
-  // method bodies below
-
 }
