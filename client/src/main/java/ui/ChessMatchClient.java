@@ -6,12 +6,15 @@ import exception.ResponseException;
 import model.GameData;
 import req.*;
 import web.server.ServerFacade;
+import web.websocket.NotificationHandler;
+import web.websocket.WebSocketFacade;
+
 import java.util.Arrays;
 import java.util.Objects;
 
 
 public class ChessMatchClient {
-  private String visitorName = null;
+  private String userName = null;
 
   private final ServerFacade server;
 
@@ -19,20 +22,20 @@ public class ChessMatchClient {
 
   private int gameID;
 
-//  private NotificationHandler notificationHandler; // websocket
-//  private WebSocketFacade ws; // websocket
+  private NotificationHandler notificationHandler;
+  private WebSocketFacade ws;
   private State state = State.LOGGED_OUT;
 
-  public ChessMatchClient(String serverUrl) {
+  public ChessMatchClient(String serverUrl, NotificationHandler notificationHandler) {
     server = new ServerFacade(serverUrl);
     this.serverUrl = serverUrl;
-//    this.notificationHandler = notificationHandler; // Websocket
+    this.notificationHandler = notificationHandler;
   }
 
   public String eval(String input) {
     try {
-      var tokens = input.toLowerCase().split(" ");
-      var cmd = (tokens.length > 0) ? tokens[0] : "help";
+      var tokens = input.split(" ");
+      var cmd = (tokens.length > 0) ? tokens[0].toLowerCase() : "help";
       var params = Arrays.copyOfRange(tokens, 1, tokens.length);
       return switch (cmd) {
         case "clearapp" -> clearApp();
@@ -44,6 +47,7 @@ public class ChessMatchClient {
         case "join" -> joinGame(params);
         case "observer" -> joinGameAsObserver(params);
         // other methods for websocket
+
         case "quit" -> "quit";
         default -> help();
       };
@@ -59,7 +63,7 @@ public class ChessMatchClient {
   public String register(String... params) throws ResponseException {
     if (params.length == 3) {
       state = State.LOGGED_IN;
-      server.register(new RegistrationReq(params[0],params[1], params[2]));
+      server.register(new RegistrationReq(params[0], params[1], params[2]));
       return String.format("You are logged as %s", params[0]);
     }
     throw new ResponseException(400, "Expected: <username> <password> <email>");
@@ -69,7 +73,7 @@ public class ChessMatchClient {
     if (params.length == 2) {
       state = State.LOGGED_IN;
       server.login(new LoginReq(params[0], params[1]));
-      //      visitorName = String.join("-", params);
+      //      userName = String.join("-", params);
       //      // websocket here
       return String.format("You are logged in as %s", params[0]);
     }

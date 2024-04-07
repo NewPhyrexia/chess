@@ -8,7 +8,6 @@ public class ServerMain {
                 port = Integer.parseInt(args[0]);
             }
             var server = new Server().run(port);
-//            port = server.port();
             System.out.printf("Server started on port %d%n", port);
             return;
         } catch (Throwable ex) {
