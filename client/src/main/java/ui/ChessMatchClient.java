@@ -46,8 +46,11 @@ public class ChessMatchClient {
         case "listgames" -> listGames();
         case "join" -> joinGame(params);
         case "observer" -> joinGameAsObserver(params);
-        // other methods for websocket
-
+//        case "redraw" -> redrawBoard();
+//        case "highlight" -> highlightMove(params);
+//        case "makemove" -> makeMove(params);
+//        case "resign" -> resignGame(); // might need a gameID to resign
+//        case "leave" -> leaveGame();
         case "quit" -> "quit";
         default -> help();
       };
@@ -130,8 +133,27 @@ public class ChessMatchClient {
     return "";
   }
 
-  // method bodies below for websocket
+  // Websocket methods
 
+//  public String redrawBoard() {
+//
+//  }
+//
+//  public String highlightMove(params) {
+//
+//  }
+//
+//  public String makeMove(params)   {
+//
+//  }
+//
+//  public String resignGame() {
+//
+//  }
+//
+//  public String leaveGame() {
+//
+//  }
 
   public String help() {
     if (state == State.LOGGED_OUT) {
