@@ -8,7 +8,12 @@ import req.*;
 import web.server.ServerFacade;
 import web.websocket.NotificationHandler;
 import web.websocket.WebSocketFacade;
+import webSocketMessages.userCommands.JoinPlayerCommand;
+import webSocketMessages.userCommands.LeaveCommand;
+import webSocketMessages.userCommands.ResignCommand;
+import webSocketMessages.userCommands.UserGameCommand;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -24,6 +29,8 @@ public class ChessMatchClient {
 
   private NotificationHandler notificationHandler;
   private WebSocketFacade ws;
+
+  private Repl repl;
   private State state = State.LOGGED_OUT;
 
   public ChessMatchClient(String serverUrl, NotificationHandler notificationHandler) {
@@ -46,15 +53,15 @@ public class ChessMatchClient {
         case "listgames" -> listGames();
         case "join" -> joinGame(params);
         case "observer" -> joinGameAsObserver(params);
-//        case "redraw" -> redrawBoard();
-//        case "highlight" -> highlightMove(params);
-//        case "makemove" -> makeMove(params);
-//        case "resign" -> resignGame(); // might need a gameID to resign
-//        case "leave" -> leaveGame();
+        case "redraw" -> redrawBoard();
+        case "highlight" -> highlightMove(params);
+        case "makemove" -> makeMove(params);
+        case "resign" -> resignGame(); // might need a gameID to resign
+        case "leave" -> leaveGame();
         case "quit" -> "quit";
         default -> help();
       };
-    } catch (ResponseException ex) {
+    } catch (ResponseException | IOException ex) {
       return ex.getMessage();
     }
   }
@@ -76,8 +83,6 @@ public class ChessMatchClient {
     if (params.length == 2) {
       state = State.LOGGED_IN;
       server.login(new LoginReq(params[0], params[1]));
-      //      userName = String.join("-", params);
-      //      // websocket here
       return String.format("You are logged in as %s", params[0]);
     }
     throw new ResponseException(400, "Expected: <username> <password>");
@@ -112,13 +117,19 @@ public class ChessMatchClient {
       return Arrays.toString(games);
   }
 
-  public String joinGame(String... params) throws ResponseException {
+  public String joinGame(String... params) throws ResponseException, IOException {
     var color = params[1].replace("[", "").replace("]", "");
+    color = color.toLowerCase();
     if (params.length == 2 && (color.equalsIgnoreCase("white")|| color.equalsIgnoreCase("black"))) { // player
       server.joinGame(new JoinGameReq(null, color, Integer.parseInt(params[0])));
     } else if (params.length == 2 && color.isEmpty()) { //observer
       server.joinGame(new JoinGameReq(null, null, Integer.parseInt(params[0])));
     } else {throw new ResponseException(400, "Expected: <gameID> [white|black]");}
+    state = State.JOINED_GAME;
+    ws = new WebSocketFacade(serverUrl, repl);
+    if (color.equals("white")) {
+      ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.WHITE));
+    } else {ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.BLACK));}
     var game = new ChessGame();
     new RenderBoard(game).main();
     return "";
@@ -128,6 +139,13 @@ public class ChessMatchClient {
     if (params.length == 1) {
       server.joinGame(new JoinGameReq(null, null, Integer.parseInt(params[0])));
     } else {throw new ResponseException(400, "Expected: <gameID>");}
+    state = State.JOINED_AS_OBSERVER;
+//    ws = new WebSocketFacade(serverUrl, repl);
+//    var command = new UserGameCommand(server.getAuthToken(), gameID);
+    // set command type to Join observer
+//    var response = ws.sendMessage(command);
+    // do something with string response
+
     var game = new ChessGame();
     new RenderBoard(game).main();
     return "";
@@ -135,25 +153,37 @@ public class ChessMatchClient {
 
   // Websocket methods
 
-//  public String redrawBoard() {
-//
-//  }
-//
-//  public String highlightMove(params) {
-//
-//  }
-//
-//  public String makeMove(params)   {
-//
-//  }
-//
-//  public String resignGame() {
-//
-//  }
-//
-//  public String leaveGame() {
-//
-//  }
+  public String redrawBoard() throws ResponseException {
+    return "";
+  }
+
+  public String highlightMove(String... params) throws ResponseException {
+    return "";
+  }
+
+  public String makeMove(String... params) throws ResponseException {
+    return "";
+  }
+
+  public String resignGame() throws ResponseException, IOException {
+    // prompt 'are you sure?'
+
+
+    // main logic
+    ws = new WebSocketFacade(serverUrl, repl);
+    var command = new ResignCommand(server.getAuthToken(), gameID);
+    ws.sendMessage(command);
+    return "";
+  }
+
+  public String leaveGame() throws ResponseException, IOException {
+    state = State.LOGGED_IN;
+    // send leave command to server facade
+    ws.sendMessage(new LeaveCommand(server.getAuthToken(), gameID));
+    // remove from ws
+//    ws.close();  // do I just set this to null?
+    return "";
+  }
 
   public String help() {
     if (state == State.LOGGED_OUT) {
@@ -164,7 +194,7 @@ public class ChessMatchClient {
               - help
               """;
     }
-    else if (state == State.JOINED_GAME) { //websocket place holder
+    else if (state == State.JOINED_GAME) {
       return """
               - redraw
               - highlight <piece position>

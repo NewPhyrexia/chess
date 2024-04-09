@@ -21,6 +21,8 @@ public class ServerFacade {
 
   public ServerFacade(String url) {serverUrl = url;}
 
+  public String getAuthToken() { return authToken;}
+
   public ClearAppServiceRes clearApp() throws ResponseException {
     var path = "/db";
     return this.makeRequest("DELETE",path, null, ClearAppServiceRes.class);

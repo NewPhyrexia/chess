@@ -2,7 +2,13 @@ package web.websocket;
 
 import com.google.gson.Gson;
 import exception.ResponseException;
+import server.webSocket.WebSocketHandler;
+import webSocketMessages.serverMessages.ErrorMessage;
+import webSocketMessages.serverMessages.LoadGameMessage;
+import webSocketMessages.serverMessages.NotificationMessage;
 import webSocketMessages.serverMessages.ServerMessage;
+import webSocketMessages.userCommands.JoinPlayerCommand;
+import webSocketMessages.userCommands.UserGameCommand;
 
 import javax.websocket.*;
 import java.io.IOException;
@@ -13,6 +19,8 @@ public class WebSocketFacade extends Endpoint {
 
   Session session;
   NotificationHandler notificationHandler;
+
+  WebSocketHandler webSocketHandler;
 
   public WebSocketFacade(String url, NotificationHandler notificationHandler) throws ResponseException {
     try {
@@ -27,7 +35,23 @@ public class WebSocketFacade extends Endpoint {
         @Override
         public void onMessage(String message) {
           ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
-          notificationHandler.notify(serverMessage);
+
+          // filter messages here to notify
+          switch (serverMessage.getServerMessageType()) {
+
+            case LOAD_GAME -> {
+              var loadGameMessage = new Gson().fromJson(message, LoadGameMessage.class);
+              notificationHandler.notify(loadGameMessage);
+            }
+            case ERROR -> {
+              var errorMessage = new Gson().fromJson(message, ErrorMessage.class);
+              notificationHandler.notify(errorMessage);
+            }
+            case NOTIFICATION -> {
+              var notificationMessage = new Gson().fromJson(message, NotificationMessage.class);
+              notificationHandler.notify(notificationMessage);
+            }
+          }
         }
       });
     } catch (DeploymentException | IOException | URISyntaxException ex) {
@@ -40,8 +64,10 @@ public class WebSocketFacade extends Endpoint {
   }
 
 
-  public void sendMessage() {
-
+  public void sendMessage(UserGameCommand command) throws IOException {
+   // take userGameCommand and send to webSocketHandler
+    var jsonCommand = new Gson().toJson(command);
+    this.session.getBasicRemote().sendText(jsonCommand);
   }
 
 }

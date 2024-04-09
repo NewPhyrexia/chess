@@ -1,6 +1,10 @@
 package ui;
 
+import com.google.gson.Gson;
 import web.websocket.NotificationHandler;
+import webSocketMessages.serverMessages.ErrorMessage;
+import webSocketMessages.serverMessages.LoadGameMessage;
+import webSocketMessages.serverMessages.NotificationMessage;
 import webSocketMessages.serverMessages.ServerMessage;
 
 import java.util.Scanner;
@@ -33,10 +37,22 @@ public class Repl implements NotificationHandler {
     System.out.println();
   }
 
-  public void notify (ServerMessage message) {
-//    System.out.println(SET_TEXT_COLOR_RED + message.message());
-    // filter message by type
-    //
+  public void notify(ServerMessage message) {
+    // filter messages here to notify
+    switch (message.getServerMessageType()) {
+      case LOAD_GAME -> {
+        var loadGameMessage = new Gson().fromJson(message, LoadGameMessage.class);
+        // update game
+      }
+      case ERROR -> {
+        // print error
+      }
+      case NOTIFICATION -> {
+        // print notification
+      }
+    }
+
+
     printPrompt();
   }
 
