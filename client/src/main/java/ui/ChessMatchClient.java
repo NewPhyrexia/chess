@@ -133,8 +133,8 @@ public class ChessMatchClient {
       ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.WHITE));
     } else {ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.BLACK));}
 
-    var game = new ChessGame();
-    new RenderBoard(game).main();
+//    var game = new ChessGame();
+//    new RenderBoard(game).main();
     return "";
   }
 
@@ -184,7 +184,7 @@ public class ChessMatchClient {
     // send leave command to server facade
     ws.sendMessage(new LeaveCommand(server.getAuthToken(), gameID));
     // remove from ws
-//    ws.close();  // do I just set this to null?
+//    ws add close session inside of ws
     return "";
   }
 
