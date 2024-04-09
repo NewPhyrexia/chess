@@ -41,20 +41,23 @@ public class Repl implements NotificationHandler {
     // filter messages here to notify
     switch (message.getServerMessageType()) {
       case LOAD_GAME -> {
+        // cast to correct class
         var loadGame = (LoadGameMessage) message;
-//        var loadGameMessage = new Gson().fromJson(message, LoadGameMessage.class);
-        // update game
-
+        var game = loadGame.getGame();
         // render from client
+        new RenderBoard(game);
       }
       case ERROR -> {
-        // print error
+        // cast to correct class
+        var errorMessage = (ErrorMessage) message;
+        System.out.print(errorMessage.getErrorMessage());
       }
       case NOTIFICATION -> {
-        // print notification
+        // cast to correct class
+        var notificationMessage = (NotificationMessage) message;
+        System.out.print(notificationMessage.getMessage());
       }
     }
-
 
     printPrompt();
   }

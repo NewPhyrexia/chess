@@ -7,6 +7,7 @@ import req.*;
 import web.server.ServerFacade;
 import web.websocket.NotificationHandler;
 import web.websocket.WebSocketFacade;
+import webSocketMessages.userCommands.JoinObserverCommand;
 import webSocketMessages.userCommands.JoinPlayerCommand;
 import webSocketMessages.userCommands.LeaveCommand;
 import webSocketMessages.userCommands.ResignCommand;
@@ -135,19 +136,18 @@ public class ChessMatchClient {
     return "";
   }
 
-  public String joinGameAsObserver(String... params) throws ResponseException {
+  public String joinGameAsObserver(String... params) throws ResponseException, IOException {
     if (params.length == 1) {
       server.joinGame(new JoinGameReq(null, null, Integer.parseInt(params[0])));
     } else {throw new ResponseException(400, "Expected: <gameID>");}
-    state = State.JOINED_AS_OBSERVER;
-//    ws = new WebSocketFacade(serverUrl, repl);
-//    var command = new UserGameCommand(server.getAuthToken(), gameID);
-    // set command type to Join observer
-//    var response = ws.sendMessage(command);
-    // do something with string response
 
-    var game = new ChessGame();
-    new RenderBoard(game).main();
+    state = State.JOINED_AS_OBSERVER;
+    ws = new WebSocketFacade(serverUrl, repl);
+    var command = new JoinObserverCommand(server.getAuthToken(), gameID);
+    ws.sendMessage(command);
+
+//    var game = new ChessGame();
+//    new RenderBoard(game).main();
     return "";
   }
 

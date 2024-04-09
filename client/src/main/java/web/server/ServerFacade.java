@@ -8,11 +8,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import exception.ResponseException;
-import model.GameData;
 import req.*;
 import res.*;
 
-import java.io.*;
 import java.net.*;
 
 public class ServerFacade {
