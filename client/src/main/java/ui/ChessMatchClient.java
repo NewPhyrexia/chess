@@ -125,11 +125,14 @@ public class ChessMatchClient {
     } else if (params.length == 2 && color.isEmpty()) { //observer
       server.joinGame(new JoinGameReq(null, null, Integer.parseInt(params[0])));
     } else {throw new ResponseException(400, "Expected: <gameID> [white|black]");}
+
     state = State.JOINED_GAME;
     ws = new WebSocketFacade(serverUrl, repl);
+
     if (color.equals("white")) {
       ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.WHITE));
     } else {ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.BLACK));}
+
     var game = new ChessGame();
     new RenderBoard(game).main();
     return "";

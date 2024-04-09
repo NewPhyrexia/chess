@@ -35,7 +35,7 @@ public class RenderBoard {
 
   private static void drawChessBoard(PrintStream out, ChessGame game) {
     ChessBoard board = game.getBoard();
-    board.resetBoard(); // temp for testing-------------------------------------------------------------------
+//    board.resetBoard(); // temp for testing-------------------------------------------------------------------
 //    board.addPiece(new ChessPosition(3,6), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN)); // for testing
 //    board.addPiece(new ChessPosition(6,3), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
     var boardPieceArray = board.getBoard();
