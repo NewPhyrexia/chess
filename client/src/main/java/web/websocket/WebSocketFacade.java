@@ -2,7 +2,6 @@ package web.websocket;
 
 import com.google.gson.Gson;
 import exception.ResponseException;
-import server.webSocket.WebSocketHandler;
 import webSocketMessages.serverMessages.ErrorMessage;
 import webSocketMessages.serverMessages.LoadGameMessage;
 import webSocketMessages.serverMessages.NotificationMessage;
@@ -19,8 +18,6 @@ public class WebSocketFacade extends Endpoint {
 
   Session session;
   NotificationHandler notificationHandler;
-
-  WebSocketHandler webSocketHandler;
 
   public WebSocketFacade(String url, NotificationHandler notificationHandler) throws ResponseException {
     try {
@@ -64,6 +61,9 @@ public class WebSocketFacade extends Endpoint {
   }
 
 
+  public void closeConnection() throws IOException {
+    session.close();
+  }
   public void sendMessage(UserGameCommand command) throws IOException {
     var jsonCommand = new Gson().toJson(command);
     this.session.getBasicRemote().sendText(jsonCommand);

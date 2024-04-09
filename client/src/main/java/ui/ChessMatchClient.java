@@ -1,7 +1,6 @@
 package ui;
 
 import chess.ChessGame;
-import dataAccess.DataAccessException;
 import exception.ResponseException;
 import model.GameData;
 import req.*;
@@ -11,11 +10,9 @@ import web.websocket.WebSocketFacade;
 import webSocketMessages.userCommands.JoinPlayerCommand;
 import webSocketMessages.userCommands.LeaveCommand;
 import webSocketMessages.userCommands.ResignCommand;
-import webSocketMessages.userCommands.UserGameCommand;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Objects;
 
 
 public class ChessMatchClient {
@@ -181,10 +178,8 @@ public class ChessMatchClient {
 
   public String leaveGame() throws ResponseException, IOException {
     state = State.LOGGED_IN;
-    // send leave command to server facade
     ws.sendMessage(new LeaveCommand(server.getAuthToken(), gameID));
-    // remove from ws
-//    ws add close session inside of ws
+    ws.closeConnection();
     return "";
   }
 
