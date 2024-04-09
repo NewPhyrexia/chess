@@ -28,7 +28,6 @@ public class ChessMatchClient {
   private NotificationHandler notificationHandler;
   private WebSocketFacade ws;
 
-  private Repl repl;
   private State state = State.LOGGED_OUT;
 
   public ChessMatchClient(String serverUrl, NotificationHandler notificationHandler) {
@@ -125,7 +124,7 @@ public class ChessMatchClient {
     } else {throw new ResponseException(400, "Expected: <gameID> [white|black]");}
 
     state = State.JOINED_GAME;
-    ws = new WebSocketFacade(serverUrl, repl);
+    ws = new WebSocketFacade(serverUrl, notificationHandler);
 
     if (color.equals("white")) {
       ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.WHITE));
@@ -142,7 +141,7 @@ public class ChessMatchClient {
     } else {throw new ResponseException(400, "Expected: <gameID>");}
 
     state = State.JOINED_AS_OBSERVER;
-    ws = new WebSocketFacade(serverUrl, repl);
+    ws = new WebSocketFacade(serverUrl, notificationHandler);
     var command = new JoinObserverCommand(server.getAuthToken(), gameID);
     ws.sendMessage(command);
 
@@ -170,7 +169,7 @@ public class ChessMatchClient {
 
 
     // main logic
-    ws = new WebSocketFacade(serverUrl, repl);
+    ws = new WebSocketFacade(serverUrl, notificationHandler);
     var command = new ResignCommand(server.getAuthToken(), gameID);
     ws.sendMessage(command);
     return "";
