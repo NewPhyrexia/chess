@@ -14,6 +14,7 @@ import webSocketMessages.userCommands.ResignCommand;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 
 public class ChessMatchClient {
@@ -159,13 +160,22 @@ public class ChessMatchClient {
   }
 
   public String resignGame() throws ResponseException, IOException {
-    // prompt 'are you sure?'
+    Scanner scanner = new Scanner(System.in);
+    var result = "";
+    while (true) {
+      System.out.println("Are you sure you want to resign? [yes|no]");
+      System.out.print(">>> ");
+      result=scanner.nextLine();
+      if (result.equalsIgnoreCase("yes")) {
+        ws = new WebSocketFacade(serverUrl, notificationHandler);
+        var command = new ResignCommand(server.getAuthToken(), gameID);
+        ws.sendMessage(command);
+        break;
+      } else if (result.equalsIgnoreCase("no")) {
+        break;
+      }
+    }
 
-
-    // main logic
-    ws = new WebSocketFacade(serverUrl, notificationHandler);
-    var command = new ResignCommand(server.getAuthToken(), gameID);
-    ws.sendMessage(command);
     return "";
   }
 
