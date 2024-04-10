@@ -3,7 +3,6 @@ package ui;
 import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPosition;
-import dataAccess.interfaces.GameDAOInterface;
 import exception.ResponseException;
 import model.GameData;
 import req.*;
@@ -173,7 +172,7 @@ public class ChessMatchClient {
         var col=letterToNum(stringArray[0]);
         var position = new ChessPosition(row, col);
         // pass position into method for highlight
-
+        new RenderBoard().drawChessBoard(Repl.getGame(), userColor, position);
       }
 
     } else {
