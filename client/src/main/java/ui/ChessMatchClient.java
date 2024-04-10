@@ -129,9 +129,6 @@ public class ChessMatchClient {
     if (color.equals("white")) {
       ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.WHITE));
     } else {ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.BLACK));}
-
-//    var game = new ChessGame();
-//    new RenderBoard(game).main();
     return "";
   }
 
@@ -144,9 +141,6 @@ public class ChessMatchClient {
     ws = new WebSocketFacade(serverUrl, notificationHandler);
     var command = new JoinObserverCommand(server.getAuthToken(), gameID);
     ws.sendMessage(command);
-
-//    var game = new ChessGame();
-//    new RenderBoard(game).main();
     return "";
   }
 

@@ -45,7 +45,8 @@ public class Repl implements NotificationHandler {
         var loadGame = (LoadGameMessage) message;
         var game = loadGame.getGame();
         // render from client
-        new RenderBoard(game);
+        System.out.print("\n");
+        new RenderBoard(game).main();
       }
       case ERROR -> {
         // cast to correct class
