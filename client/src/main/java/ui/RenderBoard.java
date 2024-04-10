@@ -74,20 +74,10 @@ public class RenderBoard {
               } else { setBlack(out); }
             }
 
-//            if (isWhite) {
-//              setWhite(out);
-//            } else { setBlack(out); }
-
             // sets piece color/type and prints
             if (board.getPiece(new ChessPosition(row+1, cols+1)) != null) {
               var chessPieceType = boardPieceArray[row][cols].getPieceType();
               var pieceColor = boardPieceArray[row][cols].getTeamColor();
-//              if (validMoves.contains(new ChessMove(position, new ChessPosition(row-1, cols-1),null))) {
-//                row--;
-//                cols--;
-//                chessPieceType = boardPieceArray[row][cols].getPieceType();
-//                pieceColor = boardPieceArray[row][cols].getTeamColor();
-//              }
               var pieceToPrint = "X";
 
               if (pieceColor == ChessGame.TeamColor.WHITE) {
@@ -156,20 +146,10 @@ public class RenderBoard {
               } else { setBlack(out); }
             }
 
-//            if (isWhite) {
-//              setWhite(out);
-//            } else { setBlack(out); }
-
             // sets piece color/type and prints
             if (board.getPiece(new ChessPosition(rows+1, col+1)) != null) {
               var chessPieceType = boardPieceArray[rows][col].getPieceType();
               var pieceColor = boardPieceArray[rows][col].getTeamColor();
-//              if (validMoves.contains(new ChessMove(position, new ChessPosition(rows-1, col-1),null))) {
-//                rows--;
-//                col--;
-//                chessPieceType = boardPieceArray[rows][col].getPieceType();
-//                pieceColor = boardPieceArray[rows][col].getTeamColor();
-//              }
               var pieceToPrint = "X";
 
               if (pieceColor == ChessGame.TeamColor.WHITE) {

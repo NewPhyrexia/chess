@@ -283,9 +283,4 @@ public class ChessMatchClient {
             """;
   }
 
-//  private void assertSignedIn() throws ResponseException {
-//    if (state == State.LOGGED_OUT)  {
-//      throw new ResponseException(400, "You must be signed in");
-//    }
-//  }
 }
