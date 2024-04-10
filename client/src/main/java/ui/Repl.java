@@ -50,7 +50,7 @@ public class Repl implements NotificationHandler {
         game = loadGame.getGame();
         // render from client
         System.out.print("\n");
-        renderBoard.drawChessBoard(game);
+        renderBoard.drawChessBoard(game, client.getUserColor());
       }
       case ERROR -> {
         // cast to correct class

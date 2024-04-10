@@ -3,6 +3,7 @@ package ui;
 import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPosition;
+import dataAccess.interfaces.GameDAOInterface;
 import exception.ResponseException;
 import model.GameData;
 import req.*;
@@ -17,13 +18,13 @@ import java.util.Scanner;
 
 
 public class ChessMatchClient {
-  private String userName = null;
-
   private final ServerFacade server;
 
   private final String serverUrl;
 
   private int gameID;
+
+  private ChessGame.TeamColor userColor = null;
 
   private NotificationHandler notificationHandler;
   private WebSocketFacade ws;
@@ -35,6 +36,8 @@ public class ChessMatchClient {
     this.serverUrl = serverUrl;
     this.notificationHandler = notificationHandler;
   }
+
+  public ChessGame.TeamColor getUserColor() { return userColor; }
 
   public String eval(String input) {
     try {
@@ -131,8 +134,12 @@ public class ChessMatchClient {
     gameID = Integer.parseInt(params[0]);
 
     if (color.equals("white")) {
+      userColor = ChessGame.TeamColor.WHITE;
       ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.WHITE));
-    } else {ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.BLACK));}
+    } else {
+      userColor = ChessGame.TeamColor.BLACK;
+      ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.BLACK));
+    }
     return "";
   }
 
@@ -142,6 +149,7 @@ public class ChessMatchClient {
     } else {throw new ResponseException(400, "Expected: <gameID>");}
 
     state = State.JOINED_AS_OBSERVER;
+    userColor = ChessGame.TeamColor.WHITE;
     ws = new WebSocketFacade(serverUrl, notificationHandler);
     gameID = Integer.parseInt(params[0]);
     var command = new JoinObserverCommand(server.getAuthToken(), gameID);
@@ -150,12 +158,27 @@ public class ChessMatchClient {
   }
 
   public String redrawBoard() throws ResponseException {
-    new RenderBoard().drawChessBoard(Repl.getGame());
+    new RenderBoard().drawChessBoard(Repl.getGame(), userColor);
     return "";
   }
 
   public String highlightMove(String... params) throws ResponseException {
+    // takes in a chess position
+    if (params.length == 1){
+      String[] stringArray = params[0].toLowerCase().split("");
+      String validChar = "abcdefgh";
+      String validNum = "12345678";
+      if ((validChar.contains(stringArray[0]) && validNum.contains(stringArray[1]))) {
+        var row=Integer.valueOf(stringArray[1]);
+        var col=letterToNum(stringArray[0]);
+        var position = new ChessPosition(row, col);
+        // pass position into method for highlight
 
+      }
+
+    } else {
+      throw new ResponseException(400, "Expected: <a2>");
+    }
     return "";
   }
 
@@ -219,6 +242,7 @@ public class ChessMatchClient {
 
   public String leaveGame() throws ResponseException, IOException {
     state = State.LOGGED_IN;
+    userColor = null;
     ws.sendMessage(new LeaveCommand(server.getAuthToken(), gameID));
     ws.closeConnection();
     return "";

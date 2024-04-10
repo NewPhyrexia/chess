@@ -2,6 +2,7 @@ package ui;
 
 import chess.ChessBoard;
 import chess.ChessGame;
+import chess.ChessMove;
 import chess.ChessPosition;
 
 import java.io.PrintStream;
@@ -18,15 +19,17 @@ public class RenderBoard {
   public RenderBoard() {
   }
 
-  public void drawChessBoard(ChessGame game) {
+  public void drawChessBoard(ChessGame game, ChessGame.TeamColor userColor) {
+    drawChessBoard(game, userColor, null);
+  }
+  public void drawChessBoard(ChessGame game, ChessGame.TeamColor userColor, ChessMove[] moves) {
     var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
     out.print(ERASE_SCREEN);
 
     ChessBoard board = game.getBoard();
     var boardPieceArray = board.getBoard();
-    var teamTurn = game.getTeamTurn();
 
-    switch (teamTurn) {
+    switch (userColor) {
 
       case WHITE:
 
