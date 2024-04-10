@@ -14,34 +14,17 @@ public class RenderBoard {
 
   private static final int BOARD_ROWS = 8;
   private static final int BOARD_COLS = 8;
-  private ChessGame game = null;
   private static final String EMPTY = "   ";
-
-  public RenderBoard(ChessGame game) {
-    this.game = game;
+  public RenderBoard() {
   }
 
-  public /*static*/ void main(/*String[] agrs*/) {
+  public void drawChessBoard(ChessGame game) {
     var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-    ChessGame game = new ChessGame();
     out.print(ERASE_SCREEN);
 
-    drawChessBoard(out, game);
-
-    out.print(SET_BG_COLOR_BLACK);
-    out.print(SET_TEXT_COLOR_WHITE);
-  }
-
-  private static void drawChessBoard(PrintStream out, ChessGame game) {
     ChessBoard board = game.getBoard();
-//    board.resetBoard(); // temp for testing-------------------------------------------------------------------
-//    board.addPiece(new ChessPosition(3,6), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN)); // for testing
-//    board.addPiece(new ChessPosition(6,3), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
     var boardPieceArray = board.getBoard();
     var teamTurn = game.getTeamTurn();
-//    teamTurn = ChessGame.TeamColor.BLACK; // for testing------------------------------------------------------
-
-
 
     switch (teamTurn) {
 
@@ -150,6 +133,8 @@ public class RenderBoard {
         printBlackHeaderFooter(out);
         break;
     }
+    out.print(SET_BG_COLOR_BLACK);
+    out.print(SET_TEXT_COLOR_WHITE);
   }
 
   private static void printWhiteHeaderFooter(PrintStream out) {

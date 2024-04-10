@@ -1,16 +1,15 @@
 package ui;
 
 import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
 import exception.ResponseException;
 import model.GameData;
 import req.*;
 import web.server.ServerFacade;
 import web.websocket.NotificationHandler;
 import web.websocket.WebSocketFacade;
-import webSocketMessages.userCommands.JoinObserverCommand;
-import webSocketMessages.userCommands.JoinPlayerCommand;
-import webSocketMessages.userCommands.LeaveCommand;
-import webSocketMessages.userCommands.ResignCommand;
+import webSocketMessages.userCommands.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -68,6 +67,7 @@ public class ChessMatchClient {
     server.clearApp();
     return "db cleared";
   }
+
   public String register(String... params) throws ResponseException {
     if (params.length == 3) {
       state = State.LOGGED_IN;
@@ -115,6 +115,8 @@ public class ChessMatchClient {
       return Arrays.toString(games);
   }
 
+  // Websocket methods
+
   public String joinGame(String... params) throws ResponseException, IOException {
     var color = params[1].replace("[", "").replace("]", "");
     color = color.toLowerCase();
@@ -126,6 +128,7 @@ public class ChessMatchClient {
 
     state = State.JOINED_GAME;
     ws = new WebSocketFacade(serverUrl, notificationHandler);
+    gameID = Integer.parseInt(params[0]);
 
     if (color.equals("white")) {
       ws.sendMessage(new JoinPlayerCommand(server.getAuthToken(), gameID, ChessGame.TeamColor.WHITE));
@@ -140,23 +143,59 @@ public class ChessMatchClient {
 
     state = State.JOINED_AS_OBSERVER;
     ws = new WebSocketFacade(serverUrl, notificationHandler);
+    gameID = Integer.parseInt(params[0]);
     var command = new JoinObserverCommand(server.getAuthToken(), gameID);
     ws.sendMessage(command);
     return "";
   }
 
-  // Websocket methods
-
   public String redrawBoard() throws ResponseException {
+    new RenderBoard().drawChessBoard(Repl.getGame());
     return "";
   }
 
   public String highlightMove(String... params) throws ResponseException {
+
     return "";
   }
 
-  public String makeMove(String... params) throws ResponseException {
+  public String makeMove(String... params) throws ResponseException, IOException {
+    if (params.length == 1) {
+      String[] stringArray = params[0].toLowerCase().split("");
+      String validChar = "abcdefgh";
+      String validNum = "12345678";
+      if ((validChar.contains(stringArray[0]) && validNum.contains(stringArray[1])
+              && (validChar.contains(stringArray[2])) && validNum.contains(stringArray[3]))) {
+        var row1=Integer.valueOf(stringArray[1]);
+        var col1=letterToNum(stringArray[0]);
+
+        var row2=Integer.valueOf(stringArray[3]);
+        var col2=letterToNum(stringArray[2]);
+
+        ChessMove move=new ChessMove(new ChessPosition(row1, col1), new ChessPosition(row2, col2), null);
+        ws=new WebSocketFacade(serverUrl, notificationHandler);
+        var command=new MakeMoveCommand(server.getAuthToken(), gameID, move);
+        ws.sendMessage(command);
+      }
+    } else {
+      throw new ResponseException(400, "Expected: <a2a4>");
+    }
     return "";
+  }
+
+  private int letterToNum(String c) {
+    int num = 0;
+    switch (c){
+      case "a" -> num = 1;
+      case "b" -> num = 2;
+      case "c" -> num = 3;
+      case "d" -> num = 4;
+      case "e" -> num = 5;
+      case "f" -> num = 6;
+      case "g" -> num = 7;
+      case "h" -> num = 8;
+    }
+    return num;
   }
 
   public String resignGame() throws ResponseException, IOException {
@@ -175,7 +214,6 @@ public class ChessMatchClient {
         break;
       }
     }
-
     return "";
   }
 
@@ -199,7 +237,7 @@ public class ChessMatchClient {
       return """
               - redraw
               - highlight <piece position>
-              - makeMove <piece position> <end position>
+              - makeMove <start position end position>
               - resign
               - leave
               - help

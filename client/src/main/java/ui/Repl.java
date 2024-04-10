@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import web.websocket.NotificationHandler;
 import webSocketMessages.serverMessages.ErrorMessage;
@@ -14,6 +15,9 @@ import static ui.EscapeSequences.*;
 public class Repl implements NotificationHandler {
 
   private final ChessMatchClient client;
+
+  private final RenderBoard renderBoard = new RenderBoard();
+  private static ChessGame game;
 
   public Repl(String serverUrl) {client = new ChessMatchClient(serverUrl, this);}
 
@@ -43,10 +47,10 @@ public class Repl implements NotificationHandler {
       case LOAD_GAME -> {
         // cast to correct class
         var loadGame = (LoadGameMessage) message;
-        var game = loadGame.getGame();
+        game = loadGame.getGame();
         // render from client
         System.out.print("\n");
-        new RenderBoard(game).main();
+        renderBoard.drawChessBoard(game);
       }
       case ERROR -> {
         // cast to correct class
@@ -63,6 +67,7 @@ public class Repl implements NotificationHandler {
     printPrompt();
   }
 
+  public static ChessGame getGame() { return game; }
   private void printPrompt()  {
     System.out.print("\n" +  ">>> ");
   }

@@ -128,7 +128,7 @@ public class WebSocketHandler {
     } else if (!Objects.equals(blackUser, userName) && !Objects.equals(whiteUser, userName)) {
       var errorMessage=new ErrorMessage("Error: Observer cannot move for a player");
       session.getRemote().sendString(new Gson().toJson(errorMessage));
-    } else if (!game.validMoves(startPos).contains(move)) { // syntax may be executed incorrectly
+    } else if (!game.validMoves(startPos).contains(move)) {
       var errorMessage=new ErrorMessage("Error: Invalid move");
       session.getRemote().sendString(new Gson().toJson(errorMessage));
     } else {
