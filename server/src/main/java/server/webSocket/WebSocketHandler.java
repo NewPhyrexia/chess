@@ -159,6 +159,12 @@ public class WebSocketHandler {
         game.gameOver();
         var msg = String.format("%s is in checkmate", blackUser);
         connections.broadcast(null, new NotificationMessage(msg), gameData.gameID());
+      } else if (game.isInCheck(WHITE)) {
+        var msg = String.format("%s is in check", whiteUser);
+        connections.broadcast(null, new NotificationMessage(msg), gameData.gameID());
+      } else if (game.isInCheck(BLACK)) {
+        var msg = String.format("%s is in check", whiteUser);
+        connections.broadcast(null, new NotificationMessage(msg), gameData.gameID());
       }
     }
   }
