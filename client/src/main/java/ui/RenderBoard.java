@@ -1,9 +1,6 @@
 package ui;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessMove;
-import chess.ChessPosition;
+import chess.*;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +21,6 @@ public class RenderBoard {
     drawChessBoard(game, userColor, null);
   }
   public void drawChessBoard(ChessGame game, ChessGame.TeamColor userColor, ChessPosition position) {
-    // game.validMoves(startPos).contains(move)
     Collection<ChessMove> validMoves = null;
 
     if (position != null) {
@@ -49,56 +45,7 @@ public class RenderBoard {
           var rowNum = Integer.toString(abs(rows - 8));
           out.print(" " + rowNum +" ");
 
-          for (int cols = 0; cols < BOARD_COLS; cols++) {
-            var row = abs(rows - 7);
-
-            if (validMoves != null){
-              // do extra checks for highlighting
-              if (isWhite) {
-                if (validMoves.contains(new ChessMove(position, new ChessPosition(row+1, cols+1),null))) {
-                  setGreenWhite(out);
-                } else {
-                  setWhite(out);
-                }
-              } else {
-                if(validMoves.contains(new ChessMove(position, new ChessPosition(row+1, cols+1),null))) {
-                  setGreenBlack(out);
-                } else {
-                  setBlack(out);
-                }
-              }
-            } else {
-              // non highlighted checks
-              if (isWhite) {
-                setWhite(out);
-              } else { setBlack(out); }
-            }
-
-            // sets piece color/type and prints
-            if (board.getPiece(new ChessPosition(row+1, cols+1)) != null) {
-              var chessPieceType = boardPieceArray[row][cols].getPieceType();
-              var pieceColor = boardPieceArray[row][cols].getTeamColor();
-              var pieceToPrint = "X";
-
-              if (pieceColor == ChessGame.TeamColor.WHITE) {
-                setWhitePlayer(out);
-              } else {
-                setBlackPlayer(out);
-              }
-
-              pieceToPrint=switch (chessPieceType) {
-                case KING -> "K";
-                case QUEEN -> "Q";
-                case BISHOP -> "B";
-                case ROOK -> "R";
-                case KNIGHT -> "N";
-                case PAWN -> "P";
-              };
-              out.print(" " + pieceToPrint + " ");
-
-            } else { out.print(EMPTY); }
-            isWhite = !isWhite;
-          }
+          isWhite=printSquaresWhiteView(position, rows, validMoves, isWhite, out, board, boardPieceArray);
           isWhite = !isWhite;
           // print grey col
           setBoarder(out);
@@ -121,54 +68,7 @@ public class RenderBoard {
           var rowNum = Integer.toString(rows+1);
           out.print(" " + rowNum +" ");
 
-          for (int cols = 0; cols < BOARD_COLS; cols++) {
-            var col = abs(cols - 7);
-
-            if (validMoves != null){
-              // do extra checks for highlighting
-              if (isWhite) {
-                if (validMoves.contains(new ChessMove(position, new ChessPosition(rows+1, col+1),null))) {
-                  setGreenWhite(out);
-                } else {
-                  setWhite(out);
-                }
-              } else {
-                if(validMoves.contains(new ChessMove(position, new ChessPosition(rows+1, col+1),null))) {
-                  setGreenBlack(out);
-                } else {
-                  setBlack(out);
-                }
-              }
-            } else {
-              // non highlighted checks
-              if (isWhite) {
-                setWhite(out);
-              } else { setBlack(out); }
-            }
-
-            // sets piece color/type and prints
-            if (board.getPiece(new ChessPosition(rows+1, col+1)) != null) {
-              var chessPieceType = boardPieceArray[rows][col].getPieceType();
-              var pieceColor = boardPieceArray[rows][col].getTeamColor();
-              var pieceToPrint = "X";
-
-              if (pieceColor == ChessGame.TeamColor.WHITE) {
-                setWhitePlayer(out);
-              } else {setBlackPlayer(out);}
-
-              pieceToPrint=switch (chessPieceType) {
-                case KING -> "K";
-                case QUEEN -> "Q";
-                case BISHOP -> "B";
-                case ROOK -> "R";
-                case KNIGHT -> "N";
-                case PAWN -> "P";
-              };
-              out.print(" " + pieceToPrint + " ");
-
-            } else { out.print(EMPTY); }
-            isWhite = !isWhite;
-          }
+          isWhite=printSquaresBlackView(position, validMoves, isWhite, rows, out, board, boardPieceArray);
           isWhite = !isWhite;
           // print grey col
           setBoarder(out);
@@ -185,6 +85,95 @@ public class RenderBoard {
     out.print(SET_TEXT_COLOR_WHITE);
   }
 
+  private static boolean printSquaresBlackView(ChessPosition position, Collection<ChessMove> validMoves, boolean isWhite, int rows, PrintStream out, ChessBoard board, ChessPiece[][] boardPieceArray) {
+    for (int cols = 0; cols < BOARD_COLS; cols++) {
+      var col = abs(cols - 7);
+
+      setSquareColors(position, validMoves, isWhite, rows, col, out);
+
+      // sets piece color/type and prints
+      if (board.getPiece(new ChessPosition(rows +1, col+1)) != null) {
+        var chessPieceType = boardPieceArray[rows][col].getPieceType();
+        var pieceColor = boardPieceArray[rows][col].getTeamColor();
+        var pieceToPrint = "X";
+
+        if (pieceColor == ChessGame.TeamColor.WHITE) {
+          setWhitePlayer(out);
+        } else {setBlackPlayer(out);}
+
+        pieceToPrint=switch (chessPieceType) {
+          case KING -> "K";
+          case QUEEN -> "Q";
+          case BISHOP -> "B";
+          case ROOK -> "R";
+          case KNIGHT -> "N";
+          case PAWN -> "P";
+        };
+        out.print(" " + pieceToPrint + " ");
+
+      } else { out.print(EMPTY); }
+      isWhite= !isWhite;
+    }
+    return isWhite;
+  }
+
+  private static boolean printSquaresWhiteView(ChessPosition position, int rows, Collection<ChessMove> validMoves, boolean isWhite, PrintStream out, ChessBoard board, ChessPiece[][] boardPieceArray) {
+    for (int cols = 0; cols < BOARD_COLS; cols++) {
+      var row = abs(rows - 7);
+
+      setSquareColors(position, validMoves, isWhite, row, cols, out);
+
+      // sets piece color/type and prints
+      if (board.getPiece(new ChessPosition(row+1, cols+1)) != null) {
+        var chessPieceType = boardPieceArray[row][cols].getPieceType();
+        var pieceColor = boardPieceArray[row][cols].getTeamColor();
+        var pieceToPrint = "X";
+
+        if (pieceColor == ChessGame.TeamColor.WHITE) {
+          setWhitePlayer(out);
+        } else {
+          setBlackPlayer(out);
+        }
+
+        pieceToPrint=switch (chessPieceType) {
+          case KING -> "K";
+          case QUEEN -> "Q";
+          case BISHOP -> "B";
+          case ROOK -> "R";
+          case KNIGHT -> "N";
+          case PAWN -> "P";
+        };
+        out.print(" " + pieceToPrint + " ");
+
+      } else { out.print(EMPTY); }
+      isWhite= !isWhite;
+    }
+    return isWhite;
+  }
+
+  private static void setSquareColors(ChessPosition position, Collection<ChessMove> validMoves, boolean isWhite, int row, int cols, PrintStream out) {
+    if (validMoves != null){
+      // do extra checks for highlighting
+      if (isWhite) {
+        if (validMoves.contains(new ChessMove(position, new ChessPosition(row +1, cols +1),null))) {
+          setGreenWhite(out);
+        } else {
+          setWhite(out);
+        }
+      } else {
+        if(validMoves.contains(new ChessMove(position, new ChessPosition(row +1, cols +1),null))) {
+          setGreenBlack(out);
+        } else {
+          setBlack(out);
+        }
+      }
+    } else {
+      // non highlighted checks
+      if (isWhite) {
+        setWhite(out);
+      } else { setBlack(out); }
+    }
+  }
   private static void printWhiteHeaderFooter(PrintStream out) {
     setBoarder(out);
     out.print("   ");
