@@ -1,5 +1,6 @@
 package server.webSocket;
 
+import chess.ChessPosition;
 import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
@@ -148,7 +149,9 @@ public class WebSocketHandler {
       // send game to all
       connections.broadcast(null, new LoadGameMessage(gameData.game()), gameData.gameID());
       // send notification to all but root
-      var message = String.format("%s has made move: %s from %s to %s.", userName, piece, startPos, endPos);
+      var englishStart = codeToEnglish(startPos.getColumn(), startPos.getRow());
+      var englishEnd = codeToEnglish(endPos.getColumn(), endPos.getRow());
+      var message = String.format("%s moved their %s from %s to %s.", userName, piece.getPieceType(), englishStart, englishEnd);
       connections.broadcast(userName, new NotificationMessage(message), gameData.gameID());
 
       if (game.isInCheckmate(WHITE)) {
@@ -167,6 +170,22 @@ public class WebSocketHandler {
         connections.broadcast(null, new NotificationMessage(msg), gameData.gameID());
       }
     }
+  }
+
+  private String codeToEnglish(int... params) {
+    var letter1 = "";
+    switch (params[0]) {
+      case 1 -> letter1 = "a";
+      case 2 -> letter1 = "b";
+      case 3 -> letter1 = "c";
+      case 4 -> letter1 = "d";
+      case 5 -> letter1 = "e";
+      case 6 -> letter1 = "f";
+      case 7 -> letter1 = "g";
+      case 8 -> letter1 = "h";
+    }
+    var letter2 = String.valueOf(params[1]);
+    return letter1+letter2;
   }
 
   private void joinPlayer(JoinPlayerCommand command, Session session) throws IOException, DataAccessException {
